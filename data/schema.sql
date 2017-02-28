@@ -1,0 +1,244 @@
+use `pricing_2`;
+
+DROP TABLE IF EXISTS `item_table_checkbox`;
+DROP TABLE IF EXISTS `row_plus_items_page`;
+DROP TABLE IF EXISTS `item_price_override`;
+DROP TABLE IF EXISTS `pricing_override_report`;
+DROP TABLE IF EXISTS `user_products`;
+DROP TABLE IF EXISTS `products`;
+DROP TABLE IF EXISTS `customers`;
+DROP TABLE IF EXISTS `user_role`;
+drop table if exists `role_permission`;
+drop table if exists `permissions`;
+drop table if exists `roles`;
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `version` INTEGER DEFAULT 1,
+  `session_id` varchar(255) DEFAULT NULL,
+  `email` varchar(128) NOT NULL,
+  `full_name` varchar(512) NOT NULL,
+  `password` varchar(256) NOT NULL,
+  `status` int(11) NOT NULL,
+  `date_created` datetime NOT NULL,
+  `pwd_reset_token` varchar(32) DEFAULT NULL,
+  `pwd_reset_token_creation_date` datetime DEFAULT NULL,
+  `salespersonname` varchar(100) NOT NULL,
+  `phone1` varchar(100) NOT NULL,
+  `sales_attr_id` integer NOT NULL,
+  `last_login` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email_idx` (`email`)
+);
+
+CREATE INDEX index_users_salespersonname
+ON users (salespersonname);
+
+CREATE INDEX index_users_sales_attr_id
+ON users (sales_attr_id);
+
+CREATE INDEX cmp_index_users_salespersonname_sales_attr_id
+ON users (salespersonname, sales_attr_id);
+
+CREATE INDEX cmp_index_users_username_salespersonname_sales_attr_id
+ON users (email, salespersonname, sales_attr_id);
+
+INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(1, 'Jason Palmer', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', 'Jason Palmer', 183, 'jpalmer@fultonfishmarket.com', '630-999-0139');
+INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(2, 'Foo Bar', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', 'Foo Bar X', 247, 'foobar@fultonfishmarket.com', '802-233-9957');
+INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(3, 'David Tanzer', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'dtanzer@fultonfishmarket.com', '802-233-9957');
+INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1)
+VALUES(4, 'Jeff Downs', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'jdowns@fultonfishmarket.com', '802-238-1452');
+INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(5, 'Cyndi Metallo', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'cmetallo@fultonfishmarket.com', '847-809-6512');
+INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(6, 'Mike Spindler', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'mspindler@fultonfishmarket.com', '847-809-6512');
+INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(7, 'Bill Zakrinski', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Bill Zakrinski', 206, 'bzak@fultonfishmarket.com', '347-680-2772');
+INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(8, 'Iris Derfler', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Iris Derfler', 181, 'iderfler@fultonfishmarket.com', '847-606-2555');
+INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(9, 'Jody Meade', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Jody Meade', 180, 'jody@fultonfishmarket.com', '570-335-6484');
+
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(48) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_B63E2EC75E237E06` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `roles` (`id`, `name`) 
+VALUES(1, 'admin');
+
+INSERT INTO `roles` (`id`, `name`) 
+VALUES(2, 'sales');
+
+CREATE TABLE `user_role` (
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `role_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `IDX_2DE8C6A3A76ED395` (`user_id`),
+  KEY `IDX_2DE8C6A3D60322AC` (`role_id`),
+  CONSTRAINT `FK_2DE8C6A3A76ED395` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_2DE8C6A3D60322AC` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 1);
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 3);
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 4);
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 6);
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 5);
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 7);
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 2);
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 8);
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 9);
+
+CREATE TABLE `permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_2DEDCC6F5E237E06` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(1, 'user/login', 'User Login');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(2, 'items/index', 'Items Index Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(3, 'items/report', 'Items Report Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(4, 'sales/index', 'Sales Index Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(5, 'users/index', 'Users Index Action');
+
+
+CREATE TABLE `role_permission` (
+  `role_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`role_id`,`permission_id`),
+  KEY `IDX_6F7DF886D60322AC` (`role_id`),
+  KEY `IDX_6F7DF886FED90CCA` (`permission_id`),
+  CONSTRAINT `FK_6F7DF886D60322AC` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_6F7DF886FED90CCA` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 1);#login sales
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 2);#items sales
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 3);#items sales
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 5);#users sales
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 4);#sales admin
+
+CREATE TABLE `products` (
+    `id` INTEGER PRIMARY KEY,
+    `version` INTEGER DEFAULT 1,
+    `sku` VARCHAR(25),
+    `productname` VARCHAR(255) NOT NULL,
+    `description` VARCHAR(255),
+    `qty` INTEGER,
+    `wholesale` DECIMAL(22,2),
+    `retail` DECIMAL(22,2),
+    `uom` VARCHAR(100) NOT NULL,
+    `status` BOOLEAN,
+    `saturdayenabled` BOOLEAN,
+    `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE INDEX index_products_sku
+ON `products` (`sku`);
+
+CREATE INDEX index_products_productname
+ON `products` (`productname`);
+
+CREATE TABLE `customers` (
+    `id` INTEGER PRIMARY KEY,
+    `version` INTEGER DEFAULT 1,
+    `email` VARCHAR(100) NOT NULL,
+    `name` VARCHAR(100) NOT NULL,
+    `company` VARCHAR(255) NOT NULL,
+    `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE INDEX index_customers_email
+ON `customers` (`email`);
+
+CREATE INDEX index_customers_name
+ON `customers` (`name`);
+
+CREATE INDEX index_customers_company
+ON `customers` (`company`);
+
+CREATE TABLE `user_products` (
+    `customer` INTEGER,
+    `product` INTEGER,
+    `version` INTEGER DEFAULT 1,
+    `comment` VARCHAR(255) DEFAULT NULL,
+    `option` VARCHAR(255) DEFAULT NULL,
+    `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY(`customer`, `product`),
+    FOREIGN KEY(product) REFERENCES products(id),
+    FOREIGN KEY(customer) REFERENCES customers(id)
+);
+
+CREATE TABLE `row_plus_items_page` (
+    `id` INTEGER PRIMARY KEY AUTO_INCREMENT, 
+    `version` INTEGER DEFAULT 1,
+    `overrideprice` DECIMAL(22,2),
+    `active` BOOLEAN,
+    `sku` VARCHAR(25),
+    `productname` VARCHAR(255) NOT NULL,
+    `description` VARCHAR(255),
+    `comment` VARCHAR(255),
+    `uom` VARCHAR(100) NOT NULL,
+    `status` BOOLEAN,
+    `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `customerid` INTEGER NOT NULL,
+    `salesperson` int(11) NOT NULL,
+    FOREIGN KEY(salesperson) REFERENCES users(id),
+    FOREIGN KEY(customerid) REFERENCES customers(id)
+);
+
+CREATE TABLE `item_price_override` (
+    `id` INTEGER PRIMARY KEY AUTO_INCREMENT, 
+    `version` INTEGER DEFAULT 1,
+    `product` INTEGER NOT NULL,
+    `overrideprice` DECIMAL(22,2),
+    `active` BOOLEAN,
+    `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `customerid` INTEGER NOT NULL,
+    `salesperson` int(11) NOT NULL,
+     FOREIGN KEY(salesperson) REFERENCES users(id),
+     FOREIGN KEY(product) REFERENCES products(id),
+     FOREIGN KEY(customerid) REFERENCES customers(id)
+);
+
+CREATE TABLE `pricing_override_report` (
+    `id` INTEGER PRIMARY KEY AUTO_INCREMENT, 
+    `version` INTEGER DEFAULT 1,
+    `product` INTEGER,
+    `row_plus_items_page_id` INTEGER,
+    `overrideprice` DECIMAL(22,2),
+    `retail` DECIMAL(22,2),
+    `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `customerid` INTEGER NOT NULL,
+    `salesperson` int(11) NOT NULL,
+     FOREIGN KEY(salesperson) REFERENCES users(id),
+     FOREIGN KEY(product) REFERENCES products(id),
+     FOREIGN KEY(customerid) REFERENCES customers(id)
+);
+
+CREATE TABLE `item_table_checkbox` (
+    `id` INTEGER PRIMARY KEY AUTO_INCREMENT, 
+    `version` INTEGER DEFAULT 1,
+    `product` INTEGER,
+    `row_plus_items_page_id` INTEGER,
+    `checked` BOOLEAN DEFAULT 0,
+    `customerid` INTEGER NOT NULL,
+    `salesperson` int(11) NOT NULL,
+    `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(product) REFERENCES products(id),
+    FOREIGN KEY(row_plus_items_page_id) REFERENCES row_plus_items_page(id),
+    FOREIGN KEY(salesperson) REFERENCES users(id),
+    FOREIGN KEY(customerid) REFERENCES customers(id)
+);

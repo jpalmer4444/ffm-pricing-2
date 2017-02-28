@@ -1,0 +1,117 @@
+// Dashboard Page
+
+.dashboard
+	.container.main
+		padding: 0
+	.page-header
+		padding-left: 15px
+	h4
+		text-transform: none
+	.bottom div > h4
+		padding-left: 1.4em
+		padding-top: 0.5em
+
+// Charts
+
+#piechart_a, #piechart_b, #piechart_c
+	float: left
+	width: 30%
+	height: 100%
+
+#piechart_a
+	height: 100%
+	width: 70%
+
+#piechart_b
+	margin-bottom: 20px
+
+#line_chart
+	clear: left
+	height: 360px
+
+// Tables
+
+.dashboard
+	.table
+		> tbody > tr > td
+			line-height: 1.3em
+			padding: 4px 6px
+		tr th
+			line-height: 1em
+	.top, .bottom
+		background: #fff
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.23)
+		padding: 0 15px
+		margin-bottom: 20px
+	.top
+		padding-bottom: 15px
+	.bottom > div:nth-child(2)
+		float: right
+	table
+		min-width: auto
+	.dataTables_wrapper
+		margin-top: 0
+	#processedItemsGrid, #pendingOrdersGrid
+		overflow: hidden
+		padding: 0
+	.table-header
+		display: none
+
+@media screen and (min-width: 1200px)
+	.dashboard .bottom > div:nth-child(2)
+		border-left: 2px solid #d5d5d5
+		padding-left: 20px
+
+.group
+	float: left
+	width: 70%
+
+.legend
+	float: left
+	margin-left: 20px
+	width: 25%
+	li
+		display: table
+	strong
+		display: table-cell
+		padding-right: 6px
+	span:before
+		content: " "
+		display: inline-block
+		height: 15px
+		margin-right: 5px
+		width: 40px
+	h4
+		border-bottom: 1px solid #d3d3d3
+		font-weight: 200
+		line-height: 2em
+		text-align: center
+	ul
+		padding-top: 3em
+
+span
+	&.b2c:before
+		background-color: #669aa8
+	&.b2b:before
+		background-color: #01576e
+
+.processed h4
+	color: #4ac78d
+
+.problematic h4
+	color: #ef9404
+
+.rejected h4
+	color: #f92020
+
+.processed .table-striped > tbody > tr:nth-of-type(2n+1)
+	background: #daf4e7
+
+.problematic .table-striped > tbody > tr:nth-of-type(2n+1)
+	background: #fceacd
+
+.rejected .table-striped > tbody > tr:nth-of-type(2n+1)
+	background: #fed2d2
+
+.dashboard .table > thead > tr:first-of-type > th
+	padding: 8px

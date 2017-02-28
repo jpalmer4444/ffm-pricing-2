@@ -1,0 +1,47 @@
+
+#two-tables
+	position: relative
+			
+	.table-header
+		+clearfix
+		position: absolute
+		top: 0
+		left: 0
+		width: 100%
+		background-color: #fff
+		//z-index: 4  
+		padding: 0 15px
+
+	.zf-table-wrap
+		width: 100%
+		margin: 0px auto
+		overflow: hidden
+
+	.ui-resizable-n
+		background-color: $nav-active
+		height: 30px
+		top: -15px
+		+user-select(none)
+		+transform(rotate(90deg))
+		
+		i:before
+			font-size: 2rem
+			color: #fff
+			margin-top: 5px
+			margin-left: 6px
+
+	.dataTables_wrapper
+		margin-top: 42px
+
+#also, #resizable
+	width: 100%
+	height: 50%
+	background-color: $main-bg
+
+#also
+	float: left
+
+#resizable
+	position: absolute
+	top: 50%
+	left: 0

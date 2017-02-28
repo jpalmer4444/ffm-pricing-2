@@ -11,7 +11,24 @@
  * This should be an array of module namespaces used in the application.
  */
 return [
+    'DhErrorLogging',
+    'Zend\ServiceManager\Di',
+    'Zend\Mvc\Plugin\Prg',
+    'Zend\Mvc\Plugin\Identity',
+    'Zend\Mvc\Plugin\FlashMessenger',
+    'Zend\Mvc\Plugin\FilePrg',
+    'Zend\Mvc\I18n',
+    'Zend\Mvc\Console',
+    'Zend\Form',
+    'Zend\Log',
+    'Zend\Cache',
+    'Zend\Session',
     'Zend\Router',
     'Zend\Validator',
+    'DoctrineModule',
+    'DoctrineORMModule',
+    'ZfTable',
+    'User',
     'Application',
+    
 ];

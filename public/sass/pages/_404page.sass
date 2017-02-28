@@ -1,0 +1,109 @@
+#errorPage
+	text-align: center
+
+	.title
+		margin-top: 20vh
+		text-align: center
+		+clearfix
+
+	h1
+		display: inline
+		font-size: 3rem
+		font-weight: 600
+		text-transform: none
+		color: $accent
+
+	.fish-tank
+		position: relative
+		width: 100%
+		max-width: 400px
+		margin: 0 auto
+		+user-select(none)
+
+		img
+			max-width: 320px
+			margin-top: 214px
+
+		span
+			position: absolute
+			top: 133px
+			left: 57px
+			font-size: 4rem
+			font-weight: 600
+			color: $accent
+			opacity: 0
+
+	p
+		margin-top: 82px
+		font-size: 1.8rem
+
+	a
+		text-transform: uppercase
+		font-weight: 600
+
+$seconds: 4s
+$q1-delay: 0s
+$q2-delay: $seconds/5
+$q3-delay: $seconds/5*2
+$q4-delay: $seconds/5*3
+
+@mixin custom-animation($content...)
+	animation: $content
+	-webkit-animation: $content
+	-moz-animation: $content
+	-o-animation: $content
+
+.q1
+	+custom-animation(moveclouds $seconds linear infinite $q1-delay, sideLeft $seconds $ease-out-quad infinite $q1-delay, opacity $seconds $ease-in-sine infinite $q1-delay, rotateLeft $seconds $ease-in-out-quad infinite $q1-delay)
+
+.q2
+	+custom-animation(moveclouds $seconds linear infinite $q2-delay, sideRight $seconds $ease-out-quad infinite $q2-delay, opacity $seconds $ease-in-sine infinite $q2-delay, rotateRight $seconds $ease-in-out-quad infinite $q2-delay)
+
+.q3
+	+custom-animation(moveclouds $seconds linear infinite $q3-delay, sideLeft $seconds $ease-out-quad infinite $q3-delay, opacity $seconds $ease-in-sine infinite $q3-delay, rotateLeft $seconds $ease-in-out-quad infinite $q3-delay)
+
+.q4
+	+custom-animation(moveclouds $seconds linear infinite $q4-delay, sideRight $seconds $ease-out-quad infinite $q4-delay, opacity $seconds $ease-in-sine infinite $q4-delay, rotateRight $seconds $ease-in-out-quad infinite $q4-delay)
+
+
++keyframes(moveclouds)
+	0%  
+		top: 155px
+	
+	100%  
+		top: 30px
+
++keyframes(opacity)
+	5%  
+		+opacity(1)
+	
+	100%  
+		+opacity(0)
+
++keyframes(sideRight)
+	0%  
+		left: 57px
+	
+	100%  
+		left: 100px
+
++keyframes(sideLeft)
+	0%  
+		left: 57px
+	
+	100%  
+		left: 45px
+
++keyframes(rotateRight)
+	0%  
+		+transform(rotate(0))
+	
+	100%  
+		+transform(rotate(55deg))
+
++keyframes(rotateLeft)
+	0%  
+		+transform(rotate(0))
+	
+	100%  
+		+transform(rotate(-55deg))

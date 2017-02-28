@@ -1,0 +1,16 @@
+{
+  "name": "pricing_app_v2",
+  "version": "1.0.0",
+  "description": "this is the list of packages for gulp",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "packages"
+  },
+  "author": "jpalmer",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^1.5.4"
+  }
+}

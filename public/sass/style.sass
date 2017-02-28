@@ -1,0 +1,139 @@
+//////// IMPORTS ////////////////////////////
+
+// variables
+@import 'variables'
+
+// external libraries
+@import 'vendor/bourbon/bourbon'
+@import 'vendor/jquery-ui-custom'
+@import 'vendor/bootstrap-sass/bootstrap'
+@import 'vendor/bootstrap-select'
+@import 'vendor/ionicons/ionicons'
+
+// main-structure
+@import 'main-structure/top-nav'
+@import 'main-structure/footer'
+
+@import 'vendor/datatables/fixedHeader'
+@import 'vendor/datatables/dataTables.bootstrap'
+@import 'vendor/zf-table'
+@import 'vendor/datepicker'
+
+// components
+@import 'components/loader'
+@import 'components/fonts'
+@import 'components/icons'
+@import 'components/components'
+@import 'components/interactive'
+@import 'components/form-control'
+@import 'components/modal'
+@import 'components/checkbox'
+@import 'components/animations'
+
+// table
+@import 'table/table-header'
+@import 'table/table'
+@import 'table/selected-tr'
+@import 'table/custom'
+
+///////////////////////////////////////////////
+
+html
+	position: relative
+	min-height: 100%
+	&.overflow-y
+		overflow-y: hidden
+
+body
+	overflow-y: inherit
+	min-height: 80vh
+	margin-bottom: 22px
+	min-width: $main-min-width
+	+font-smoothing
+
+@-ms-viewport
+	width: device-width
+
+img.logo
+	width: 125px
+
+ul
+	margin: 0
+	padding: 0
+	list-style-type: none
+	
+.container
+	width: 100% 
+	&.main
+		width: 100%
+		min-width: $main-min-width
+		padding: 0 15px
+		background: #efefef
+
+.overlay
+	background-color: rgba(#000, .6)
+	display: none
+	height: 100%
+	left: 0
+	position: fixed
+	top: 0
+	width: 100%
+	z-index: 99998
+
+#lazyLoadingOverlay
+	position: fixed
+	top: 43px
+	left: 0
+	right: 0
+	bottom: $footer-height
+	background-color: $main-bg
+	z-index: 99999
+
+	.progress
+		height: 3px
+		.progress-bar
+			background-color: $accent
+
+.processing-message
+	padding: 10px 50px 85px
+	width: 100%
+	text-align: center
+	position: fixed
+	top: 50vh
+	margin-top: -65px
+	left: 0
+	color: #fff
+	z-index: 1045
+
+	p
+		font-size: 2.4rem
+
+
+.page-header
+	margin: 0
+
+//fix for bootstrap dropdown on touch screen devices
+.dropdown-backdrop
+	position: static
+
+
+//////// IMPORTS / PAGES ////////////////////////////
+
+@import 'pages/login'
+@import 'pages/orders-page/resize'
+@import 'pages/orders-page/editable'
+@import 'pages/dashboard'
+@import 'pages/item-table'
+@import 'pages/my-account'
+@import 'pages/permissions-roles'
+@import 'pages/barcodes'
+@import 'pages/404page'
+
+///////////////////////////////////////////////
+
+//////// IMPORTS / Last components //////////////////
+
+@import 'last-components'
+
+///////////////////////////////////////////////
+

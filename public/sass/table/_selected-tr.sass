@@ -1,0 +1,93 @@
+
+
+.selected-tr, .item-main
+	background-color: $selected-tr-bg !important
+	color: $selected-tr-color
+
+	.editable
+		cursor: pointer
+
+		a
+			&:hover
+				color: $empty-color-selected-tr
+				border-bottom-color: $empty-color-selected-tr
+
+	.empty
+		a
+			color: $empty-color-selected-tr
+			border-bottom-color: $empty-color-selected-tr
+			&:hover
+				color: $empty-color-selected-tr-hover
+				border-bottom-color: $empty-color-selected-tr-hover
+
+	.required
+		a
+			color: $required-color-selected-tr !important
+			border-bottom-color: $required-color-selected-tr !important
+			&:hover
+				color: $required-color-selected-tr-hover !important
+				border-bottom-color: $required-color-selected-tr-hover !important
+
+	.editable-focus
+		background-color: $required-focus-bg
+		a
+			color: $text-color
+			border-bottom-color: $text-color
+			&:hover, &:focus
+				color: $text-color
+				border-bottom-color: $text-color
+
+	.editable-focus
+		+box-shadow(inset 0 0 3px red)
+
+#two-tables .selected-tr
+	.default-weight
+		+box-shadow(inset 0 0 3px red)
+
+.selected-tr-secondary
+	background-color: $selected-tr-secondary-bg !important
+
+.selected-tr, .selected-tr-secondary, .item-main
+	.open>.dropdown-toggle.btn-default
+		background-color: lighten($accent-hover, 20%)
+
+	.form-control
+		background-color: $selected-tr-and-secondary-form-control-bg
+		color: $text-color
+		
+		.btn
+			&:hover
+				background-color: $selected-tr-and-secondary-form-control-bg-hover
+			&:focus
+				color: $text-color
+				background-color: lighten($selected-tr-and-secondary-form-control-bg-hover, 20%)
+			&:visited
+				background-color: $selected-tr-and-secondary-form-control-bg-hover
+			&:active
+				background-color: $selected-tr-and-secondary-form-control-bg-hover
+
+.selected-tr-product
+	background-color: $selected-tr-product-bg !important
+	color: $selected-tr-product-color
+
+.item-main
+	background-color: $item-main !important
+
+	&:hover
+		background-color: $item-main
+
+.pkg
+	
+	&.red-row
+		background-color: #ff8080
+
+		&.selected-tr
+			.editable
+				background-color: #ff8080
+	
+	&.green-row
+		background-color: #80c080
+
+		&.selected-tr
+			.editable
+				background-color: #80c080

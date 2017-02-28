@@ -1,0 +1,41 @@
+.editable
+	a
+		font-style: italic
+		color: $editable-color
+		border-bottom: 1px dashed $editable-color
+
+		&:hover
+			text-decoration: none
+			color: $editable-color-hover
+			border-bottom-color: $editable-color-hover
+
+		&:focus, &:active, &:visited
+			text-decoration: none
+			color: $editable-color-selected-tr-focus-active
+			border-bottom-color: $editable-color-selected-tr-focus-active
+
+.empty
+	a
+		color: $empty-color
+		border-bottom-color: $empty-color
+
+		&:hover
+			color: $empty-color-hover
+			border-bottom-color: $empty-color-hover
+
+		&:focus, &:active, &:visited
+			color: $empty-color-selected-tr-focus-active
+			border-bottom-color: $empty-color-selected-tr-focus-active
+
+.required
+	a
+		color: $required-color
+		border-bottom-color: $required-color
+
+		&:hover
+			color: $required-color-hover
+			border-bottom-color: $required-color-hover
+
+		&:focus, &:active, &:visited
+			color: $required-color-selected-tr-focus-active
+			border-bottom-color: $required-color-selected-tr-focus-active

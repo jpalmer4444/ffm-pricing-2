@@ -1,0 +1,85 @@
+
+
+.btn
+	padding: 4px 12px
+
+	&:focus
+		outline: none
+		color: #fff
+	&:hover
+		color: #fff
+
+form .btn
+	margin-top: 1em
+	min-width: 107px
+	padding: 0.5em 1em
+
+
+.reset-btn
+	background-color: transparent
+	color: $btn-normal
+	border: 1px solid #ccc
+
+	&:hover
+		background-color: #ccc
+	&:focus
+		background-color: #bbb
+	
+
+.bootstrap-select .dropdown-toggle:focus
+	outline: none !important
+	color: $text-color
+
+.btn-primary, a.btn
+	border: none
+	&:hover
+		background-color: $btn-hover
+	&:active, &:focus
+		background-color: $btn-active
+	&:disabled
+		background-color: $btn-disabled
+
+.dropdown-toggle
+	color: inherit
+	background-color: inherit
+	min-height: $form-control-height
+	&:hover
+		color: inherit
+
+table
+	.dropdown-toggle:hover
+		color: $table-color
+
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus
+	outline: none
+
+.dropdown-menu
+
+	.active>a
+		background-color: $accent
+	.active>a:hover,
+	.active>a:focus
+		background-color: $accent-hover
+
+	.selected
+		a
+			background-color: $accent
+			color: #fff !important
+		
+			&:hover
+				background-color: $accent-hover !important
+
+	&.openFromRight
+		left: auto
+		right: 0
+
+.form-control 
+	height: $form-control-height
+
+.bootstrap-select
+	.btn
+		border-radius: 0
+
+.redBtn
+	color: red !important
+	font-weight: 700

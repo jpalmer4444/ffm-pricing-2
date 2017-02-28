@@ -12,4 +12,9 @@
  */
 
 return [
+    'phpSettings'   => [
+        'date.timezone' => 'UTC',
+    ],
 ];
+
+

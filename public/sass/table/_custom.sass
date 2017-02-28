@@ -1,0 +1,157 @@
+#two-tables, #one-table
+
+	table
+		max-width: none
+		table-layout: inherit
+
+		td, th 
+			word-wrap: break-word
+
+	// .dataTables_scrollBody
+	// 	overflow-y: scroll !important
+		
+	// .tbody-wrap
+	// 	margin-right: -15px
+
+#one-table
+	background-color: #fff
+	
+	.zf-table-wrap
+		position: relative
+
+	.dataTables_wrapper
+		margin-top: 42px
+
+	.table-header
+		+clearfix
+		position: absolute
+		top: -42px
+		left: 0
+		width: 100%
+		background-color: #fff
+		z-index: 4
+
+#pendingOrdersGrid, #one-table
+	header h4
+		color: $title-color-pending
+	tbody tr
+		&:hover
+			background-color: $rows-bg-hover-pending
+		&.product
+			background-color: $rows-bg-pending
+			&:focus
+				outline: none
+
+
+#processedOrdersGrid 
+	header h4
+		color: $title-color-processed
+	tbody tr
+		&:hover
+			background-color: $rows-bg-hover-processed
+		&.product
+			background-color: $rows-bg-processed
+
+.tblContainer, #pendingOrdersGrid, #processedOrdersGrid
+	background-color: #fff
+	box-shadow: $around-box-shadow
+	padding: 0 15px 20px
+
+#userGrid, #errorsGrid
+	table
+
+		span
+			cursor: pointer
+
+	.tbody-wrap
+		overflow-y: auto
+
+$min-width-fabrication: 1566px
+$min-width-assembly: 1701px
+
+#pendingOrdersGrid
+	table
+		min-width: 2132px //2052px
+
+#processedOrdersGrid
+	table
+		min-width: 2052px
+
+#fabricationOrdersGrid
+	table
+		min-width: $min-width-fabrication
+
+#assemblyOrdersGrid
+	table
+		min-width: $min-width-assembly
+
+#packingOrdersGrid
+	table
+		min-width: 2104px
+
+#userGrid
+	table
+		min-width: 1375px
+
+#errorsGrid
+	table 
+		min-width: 1700px
+
+@media screen and (min-width: 1880px)
+	#pendingOrdersGrid, #processedOrdersGrid, #packingOrdersGrid
+		table
+			min-width: 100%
+			width: 100% !important
+
+@media screen and (min-width: $min-width-fabrication)
+	#fabricationOrdersGrid
+		table
+			min-width: 100%
+			width: 100% !important
+
+@media screen and (min-width: $min-width-assembly)
+	#assemblyOrdersGrid
+		table
+			min-width: 100%
+			width: 100% !important
+
+$label-left-padding: 30px
+
+#permissions, #generateBarcodesForm
+	.checkbox
+		left: -$label-left-padding 
+		width: 0
+
+	label
+		cursor: pointer
+		clear: both
+
+	label.selectAll
+		padding-left: $label-left-padding
+
+	.options label
+		padding-left: $label-left-padding * 2
+
+	a.moreRoles
+		margin-left: 15px
+
+	@-moz-document url-prefix()
+		.checkbox
+			width: 16px
+			left: -$label-left-padding + 14
+
+		label.selectAll
+			padding-left: $label-left-padding - 14
+
+		.options label
+			padding-left: $label-left-padding * 2
+
+
+@media (min-width: $screen-lg-min)
+	#rolesGrid, #generateBarcodesForm
+		margin-right: 15px
+
+	#permissionsGrid, #barcodesExportGrid
+		margin-left: 15px
+
+	

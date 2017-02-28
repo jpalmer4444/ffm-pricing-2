@@ -1,0 +1,77 @@
+
+// latin
+@font-face
+  font-family: 'Roboto'
+  font-style: normal
+  font-weight: 300
+  src: local("Roboto Light"), local("Roboto-Thin"), url(../fonts/RobotoTTF/Roboto-Thin.ttf)
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000
+
+// latin
+@font-face
+  font-family: 'Roboto'
+  font-style: normal
+  font-weight: 400
+  src: local("Roboto"), local("Roboto-Regular"), url(../fonts/RobotoTTF/Roboto-Regular.ttf)
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000
+
+// latin
+@font-face
+  font-family: 'Roboto'
+  font-style: italic
+  font-weight: 400
+  src: local("Roboto"), local("Roboto-Italic"), url(../fonts/RobotoTTF/Roboto-Italic.ttf)
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000
+
+// latin
+@font-face
+  font-family: 'Roboto'
+  font-style: normal
+  font-weight: 700
+  src: local("Roboto Bold"), local("Roboto-Bold"), url(../fonts/RobotoTTF/Roboto-Bold.ttf)
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000
+
+
+// fonts
+$primary-font: "Roboto", sans-serif
+
+body
+  font:
+    family: $primary-font
+
+h1, h2, h3, h4, h5, h6
+  color: $title-color
+  +font-feature-settings("liga", "dlig")
+  font-family: inherit
+  text-transform: uppercase
+
+.wf-loading h2, .wf-loading a 
+  visibility: hidden
+
+.wf-active h2, .wf-active a
+  visibility: visible
+
+a
+  cursor: pointer
+
+h1, h2
+  font-weight: 200
+  padding-bottom: 0.3em
+
+h5, h6
+  font-weight: 700
+
+.help-block
+  font-size: 1.2rem
+
+.font20
+  font-size: 2rem
+
+.font18
+  font-size: 1.8rem
+
+.font16
+  font-size: 1.6rem
+
+.bold
+  font-weight: 700
