@@ -24,12 +24,6 @@ use ZfcRbac\Exception\UnauthorizedException;
  * @author jasonpalmer
  */
 abstract class BaseController extends AbstractActionController{
-    
-    /**
-     *
-     * @var Adapter
-     */
-    protected $dbAdapter;
 
     protected function getBasePath()
     {
@@ -45,44 +39,11 @@ abstract class BaseController extends AbstractActionController{
     }
 
     /**
-     * Check if user has permissions to access current route
-     * @param MvcEvent $e
-     * @return mixed
-     * @throws UnauthorizedException
-     */
-    public function onDispatch(MvcEvent $e)
-    {
-        $routeMatch = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
-
-        if (is_null($this->getCurrentUser())) {
-            
-        } else {
-            
-        }
-
-        parent::onDispatch($e);
-    }
-
-    /**
-     * Get logged user
-     *
-     * @return User
-     */
-    protected function getCurrentUser()
-    {
-        
-
-        return null;
-    }
-
-    /**
      * @return ViewModel
      */
-    public function getView()
+    public function getView($data = NULL)
     {
-        $view = new ViewModel();
-        $view->user = $this->getCurrentUser();
-
+        $view = !empty($data) ? new ViewModel($data) : new ViewModel();
         return $view;
     }
 
@@ -104,19 +65,6 @@ abstract class BaseController extends AbstractActionController{
         $response->setStatusCode(200);
         $response->setContent(json_encode($data));
         return $response;
-    }
-
-    /**
-     *
-     * @return Adapter
-     */
-    protected function getDbAdapter()
-    {
-        if (!$this->dbAdapter) {
-            $this->dbAdapter = $this->getZFDBAdapter();
-        }
-
-        return $this->dbAdapter;
     }
     
 }

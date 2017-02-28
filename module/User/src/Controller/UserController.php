@@ -1,12 +1,15 @@
 <?php
 namespace User\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Doctrine\ORM\EntityManager;
+use Exception;
+use User\Service\UserManager;
 use User\Entity\User;
-use User\Form\UserForm;
 use User\Form\PasswordChangeForm;
 use User\Form\PasswordResetForm;
+use User\Form\UserForm;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 /**
  * This controller is responsible for user management (adding, editing, 
@@ -16,7 +19,7 @@ class UserController extends AbstractActionController
 {
     /**
      * Entity manager.
-     * @var Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $entityManager;
     
@@ -29,7 +32,7 @@ class UserController extends AbstractActionController
     /**
      * Constructor. 
      */
-    public function __construct($entityManager, $userManager)
+    public function __construct(EntityManager $entityManager, UserManager $userManager)
     {
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
@@ -277,7 +280,7 @@ class UserController extends AbstractActionController
         
         // Validate input argument.
         if($id!='invalid-email' && $id!='sent' && $id!='set' && $id!='failed') {
-            throw new \Exception('Invalid message ID specified');
+            throw new Exception('Invalid message ID specified');
         }
         
         return new ViewModel([
@@ -294,7 +297,7 @@ class UserController extends AbstractActionController
         
         // Validate token length
         if ($token!=null && (!is_string($token) || strlen($token)!=32)) {
-            throw new \Exception('Invalid token type or length');
+            throw new Exception('Invalid token type or length');
         }
         
         if($token===null || 

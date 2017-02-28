@@ -2,13 +2,6 @@
 
 namespace Application;
 
-use Application\Controller\IndexController;
-use Application\View\Helper\Breadcrumbs;
-use Application\View\Helper\Factory\MenuFactory;
-use Application\View\Helper\Menu;
-use Zend\I18n\View\Helper\Translate;
-use Zend\ServiceManager\Factory\InvokableFactory;
-
 return [
     // Doctrine config
     'doctrine' => [
@@ -24,7 +17,7 @@ return [
     'service_manager' => include __DIR__ . '/services.config.php',
     'controllers' => [
         'factories' => [
-            'Application\Controller\Index' => 'Application\Controller\Factory\IndexControllerFactory'
+            'Application\Controller\IndexController' => 'Application\Controller\Factory\IndexControllerFactory'
         ],
     ],
     'access_filter' => [
@@ -38,7 +31,7 @@ return [
             'mode' => 'restrictive'
         ],
         'controllers' => [
-            IndexController::class => [
+            'Application\Controller\IndexController' => [
                 // Allow anyone to visit "index" and "about" actions
                 ['actions' => ['index', 'about'], 'allow' => '*'],
                 // Allow authorized users to visit "settings" action
@@ -57,19 +50,17 @@ return [
         ],
     ],
     
-    'navigation' => include __DIR__ . '/navigation.config.php',
-    
     'view_helpers' => [
         'factories' => [
-            Menu::class => MenuFactory::class,
-            Breadcrumbs::class => InvokableFactory::class,
+            'Application\View\Helper\Menu' => 'Application\View\Helper\Factory\MenuFactory',
+            'Application\View\Helper\Breadcrumbs' => 'Zend\ServiceManager\Factory\InvokableFactory',
         ],
         'aliases' => [
-            'mainMenu' => Menu::class,
-            'pageBreadcrumbs' => Breadcrumbs::class,
+            'mainMenu' => 'Application\View\Helper\Menu',
+            'pageBreadcrumbs' => 'Application\View\Helper\Breadcrumbs',
         ],
         'invokables' => [
-            'translate' => Translate::class
+            'translate' => 'Zend\I18n\View\Helper\Translate'
         ]
     ],
     'view_manager' => [

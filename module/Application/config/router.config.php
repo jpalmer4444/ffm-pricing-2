@@ -3,34 +3,34 @@
 return [
     'routes' => [
             'home' => [
-                'type' => Literal::class,
+                'type' => 'Literal',
                 'options' => [
                     'route'    => '/',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => 'Application\Controller\IndexController',
                         'action'     => 'index',
                     ],
                 ],
             ],
             'application' => [
-                'type'    => Segment::class,
+                'type'    => 'Segment',
                 'options' => [
                     'route'    => '/application[/:action]',
                     'defaults' => [
-                        'controller'    => Controller\IndexController::class,
+                        'controller'    => 'Application\Controller\IndexController',
                         'action'        => 'index',
                     ],
                 ],
             ],
             'about' => [
-                'type' => Literal::class,
+                'type' => 'Literal',
                 'options' => [
                     'route'    => '/about',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => 'Application\Controller\IndexController',
                         'action'     => 'about',
                     ],
                 ],
-            ],            
+            ],          
         ],
 ];

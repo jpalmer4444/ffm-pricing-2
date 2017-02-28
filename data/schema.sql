@@ -45,7 +45,7 @@ CREATE INDEX cmp_index_users_username_salespersonname_sales_attr_id
 ON users (email, salespersonname, sales_attr_id);
 
 INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
-VALUES(1, 'Jason Palmer', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', 'Jason Palmer', 183, 'jpalmer@fultonfishmarket.com', '630-999-0139');
+VALUES(1, 'Jason Palmer', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', 'Jason Palmer', 183, 'jpalmer@meadedigital.com', '630-999-0139');
 INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
 VALUES(2, 'Foo Bar', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', 'Foo Bar X', 247, 'foobar@fultonfishmarket.com', '802-233-9957');
 INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
@@ -74,7 +74,7 @@ INSERT INTO `roles` (`id`, `name`)
 VALUES(1, 'admin');
 
 INSERT INTO `roles` (`id`, `name`) 
-VALUES(2, 'sales');
+VALUES(2, 'user');
 
 CREATE TABLE `user_role` (
   `user_id` int(11) NOT NULL DEFAULT '0',
@@ -86,15 +86,15 @@ CREATE TABLE `user_role` (
   CONSTRAINT `FK_2DE8C6A3D60322AC` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 1);
-INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 3);
-INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 4);
-INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 6);
-INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 5);
-INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 7);
-INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 2);
-INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 8);
-INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 9);
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 1);# admin jpalmer
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 3);# admin dtanzer
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 4);# admin jdowns
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 6);# admin mspindler
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(1, 5);# admin cmetallo
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 7);# user bzakrinsky
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 2);# user foobarx
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 8);# user iderfler
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 9);# user jmeade
 
 CREATE TABLE `permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -104,11 +104,21 @@ CREATE TABLE `permissions` (
   UNIQUE KEY `UNIQ_2DEDCC6F5E237E06` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(1, 'user/login', 'User Login');
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(2, 'items/index', 'Items Index Action');
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(3, 'items/report', 'Items Report Action');
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(4, 'sales/index', 'Sales Index Action');
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(5, 'users/index', 'Users Index Action');
+# AuthController IS NOT PROTECTED.
+# UserController->{add,changePassword,resetPassword,setPassword,view,edit,index,message}
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(1, 'user/add', 'Add User');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(2, 'user/changePassword', 'Change Password');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(3, 'user/resetPassword', 'Reset Password');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(4, 'user/setPassword', 'Set Password');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(5, 'user/view', 'View User');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(6, 'user/edit', 'Edit User');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(7, 'user/index', 'List Users');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(8, 'user/message', 'Message User');
+
+# IndexController
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(9, 'index/about', 'About Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(10, 'index/index', 'Index Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(11, 'index/settings', 'Settings Action');
 
 
 CREATE TABLE `role_permission` (
@@ -121,11 +131,20 @@ CREATE TABLE `role_permission` (
   CONSTRAINT `FK_6F7DF886FED90CCA` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 1);#login sales
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 2);#items sales
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 3);#items sales
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 5);#users sales
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 4);#sales admin
+# Admin Permissions
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 1); # admin user/add (Add User)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 2); # admin user/changePassword (Change Password)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 3); # admin user/resetPassword (Reset Password)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 4); # admin user/setPassword (Set Password)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 5); # admin user/view (View User)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 6); # admin user/edit (Edit User)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 7); # admin user/index (List Users)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 8); # admin user/message (Message User)
+
+# User Permissions
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 9); # sales index/about (About Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 10); # sales index/index (Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 11); # sales index/settings (Settings Action)
 
 CREATE TABLE `products` (
     `id` INTEGER PRIMARY KEY,

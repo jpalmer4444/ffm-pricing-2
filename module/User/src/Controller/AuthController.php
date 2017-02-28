@@ -41,7 +41,7 @@ class AuthController extends AbstractActionController
     /**
      * Constructor.
      */
-    public function __construct($entityManager, $authManager, $authService, $userManager)
+    public function __construct(\Doctrine\ORM\EntityManager $entityManager, \User\Service\AuthManager $authManager, \Zend\Authentication\AuthenticationService $authService, \User\Service\UserManager $userManager)
     {
         $this->entityManager = $entityManager;
         $this->authManager = $authManager;
@@ -67,6 +67,7 @@ class AuthController extends AbstractActionController
         
         // Create login form
         $form = new LoginForm(); 
+        
         $form->get('redirect_url')->setValue($redirectUrl);
         
         // Store login status.

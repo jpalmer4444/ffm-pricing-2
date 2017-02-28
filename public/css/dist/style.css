@@ -4299,9 +4299,7 @@ select.mobile-device {
   .navbar .navbar-brand {
     color: inherit;
     text-shadow: none;
-    padding: 12px 15px;
     margin-left: -15px;
-    height: 42px;
     border-right: 1px solid #00576e;
     float: left; }
   .navbar .navbar-nav {

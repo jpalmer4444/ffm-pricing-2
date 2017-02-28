@@ -8,72 +8,13 @@ use User\Controller\Factory\AuthControllerFactory;
 use User\Controller\Factory\UserControllerFactory;
 use User\Controller\UserController;
 use Zend\Authentication\AuthenticationService;
-use Zend\Router\Http\Literal;
-use Zend\Router\Http\Segment;
 
 return [
-    'router' => [
-        'routes' => [
-            'login' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route'    => '/login',
-                    'defaults' => [
-                        'controller' => AuthController::class,
-                        'action'     => 'login',
-                    ],
-                ],
-            ],
-            'logout' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route'    => '/logout',
-                    'defaults' => [
-                        'controller' => AuthController::class,
-                        'action'     => 'logout',
-                    ],
-                ],
-            ],
-            'reset-password' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route'    => '/reset-password',
-                    'defaults' => [
-                        'controller' => UserController::class,
-                        'action'     => 'resetPassword',
-                    ],
-                ],
-            ],
-            'set-password' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route'    => '/set-password',
-                    'defaults' => [
-                        'controller' => UserController::class,
-                        'action'     => 'setPassword',
-                    ],
-                ],
-            ],
-            'users' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/users[/:action[/:id]]',
-                    'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[a-zA-Z0-9_-]*',
-                    ],
-                    'defaults' => [
-                        'controller'    => UserController::class,
-                        'action'        => 'index',
-                    ],
-                ],
-            ],
-        ],
-    ],
+    'router' => include __DIR__ . '/router.config.php',
     'controllers' => [
         'factories' => [
             AuthController::class => AuthControllerFactory::class,
-            UserController::class => UserControllerFactory::class,            
+            UserController::class => UserControllerFactory::class,
         ],
     ],
     // The 'access_filter' key is used by the User module to restrict or permit
@@ -89,14 +30,7 @@ return [
             ],
         ]
     ],
-    'service_manager' => [
-        'factories' => [
-            AuthenticationService::class => Service\Factory\AuthenticationServiceFactory::class,
-            Service\AuthAdapter::class => Service\Factory\AuthAdapterFactory::class,
-            Service\AuthManager::class => Service\Factory\AuthManagerFactory::class,
-            Service\UserManager::class => Service\Factory\UserManagerFactory::class,
-        ],
-    ],
+    'service_manager' => include __DIR__ . '/services.config.php',
     'view_manager' => [
         'template_path_stack' => [
             __DIR__ . '/../view',
