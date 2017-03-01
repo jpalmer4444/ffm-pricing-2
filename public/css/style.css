@@ -15,6 +15,31 @@ a:hover{
     top:3px;
 }
 
+a{
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.settings-logo{
+    width: 18px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+a.dropdown-toggle:hover img.settings-logo{
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
 .breadcrumb {
     padding: 8px 15px;
     margin-bottom: 20px;
@@ -38,4 +63,13 @@ a:hover{
 
 .navbar .navbar-brand {
     height: 42px;
+}
+
+.navbar-right > li > span {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #CCCCCC;
+    font-weight: 700;
+    text-transform: uppercase;
 }

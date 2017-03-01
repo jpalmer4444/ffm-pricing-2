@@ -4,22 +4,25 @@ $this->headTitle('Welcome');
 $this->mainMenu()->setActiveItemId('home');
 
 $this->pageBreadcrumbs()->setItems([
-            'Home'=>$this->url('home')
-            ]);
+    'Home' => $this->url('home')
+]);
 ?>
 
 <h1>Welcome</h1>
 
 <p>
-    This is the Fulton Skeleton Application.
+    Hi, <?php echo $this->identity() ?>. This is the Fulton Skeleton Application.
 </p>
 
-<div>
-    
+
+<?php if (empty($this->identity())):?>
+    <div>
+
     Click the <em>Sign in</em> button at the top right. To sign in. You must have an account. If you 
     do not have an account, you must have an administrator create one for you.
-    
+
 </div>
+<?php endif;?>
 
 
 

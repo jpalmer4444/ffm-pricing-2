@@ -82,7 +82,7 @@ class Module {
         // Execute the access filter on every controller except AuthController
         // and IndexController/index and IndexController/about
         // (to avoid infinite redirect).
-        $bypass = $controllerName == IndexController::class && ($actionName == 'about' || $actionName == 'index');
+        $bypass = ($controllerName == IndexController::class && ($actionName == 'index'));
         if ($controllerName != AuthController::class &&
                 empty($bypass) &&
                 !$authManager->filterAccess($controllerName, $actionName)) {

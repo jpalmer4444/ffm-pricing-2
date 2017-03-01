@@ -21,16 +21,6 @@ return [
                         'action'        => 'index',
                     ],
                 ],
-            ],
-            'about' => [
-                'type' => 'Literal',
-                'options' => [
-                    'route'    => '/about',
-                    'defaults' => [
-                        'controller' => 'Application\Controller\IndexController',
-                        'action'     => 'about',
-                    ],
-                ],
-            ],          
+            ],        
         ],
 ];
