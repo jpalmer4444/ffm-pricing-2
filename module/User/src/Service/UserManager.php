@@ -81,28 +81,6 @@ class UserManager
     }
     
     /**
-     * This method checks if at least one user presents, and if not, creates 
-     * 'Admin' user with email 'admin@example.com' and password 'Secur1ty'. 
-     */
-    public function createAdminUserIfNotExists()
-    {
-        $user = $this->entityManager->getRepository(User::class)->findOneBy([]);
-        if ($user==null) {
-            $user = new User();
-            $user->setEmail('admin@example.com');
-            $user->setFullName('Admin');
-            $bcrypt = new Bcrypt();
-            $passwordHash = $bcrypt->create('Secur1ty');        
-            $user->setPassword($passwordHash);
-            $user->setStatus(User::STATUS_ACTIVE);
-            $user->setDateCreated(date('Y-m-d H:i:s'));
-            
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-        }
-    }
-    
-    /**
      * Checks whether an active user with given email address already exists in the database.     
      */
     public function checkUserExists($email) {

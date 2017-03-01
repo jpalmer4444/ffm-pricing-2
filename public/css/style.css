@@ -35,3 +35,7 @@ a:hover{
     padding: 16px;
     text-decoration: none;
 }
+
+.navbar .navbar-brand {
+    height: 42px;
+}

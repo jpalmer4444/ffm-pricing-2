@@ -47,42 +47,37 @@ class Module {
         // Get controller and action to which the HTTP request was dispatched.
         $controller = $event->getTarget();
         $controllerName = $event->getRouteMatch()->getParam('controller', null);
-        $actionName = $event->getRouteMatch()->getParam('action', null);
+        $actionNameDashed = $event->getRouteMatch()->getParam('action', null);
 
         // Convert dash-style action name to camel-case.
-        $actionName = str_replace('-', '', lcfirst(ucwords($actionName, '-')));
+        $actionName = str_replace('-', '', lcfirst(ucwords($actionNameDashed, '-')));
 
         // Get the instance of AuthManager service.
         $authManager = $event->getApplication()->getServiceManager()->get(AuthManager::class);
         
+        // Get the instance of logger.
         $logger = $event->getApplication()->getServiceManager()->get('Zend\Log\Logger');
 
         // need to login user by sessionId when AuthService has no identity. Which happens
         // in a load-balanced environment when subsequent requests go to a different server.
-        $authenticationService = $event->getApplication()->getServiceManager()->get('Zend\Authentication\AuthenticationService');
+        $authenticationService = $event->getApplication()->
+                getServiceManager()->get('Zend\Authentication\AuthenticationService');
 
-        $userService = $event->getApplication()->getServiceManager()->get('Application\Service\UserService');
+        // Get the instance of UserService.
+        $userService = $event->getApplication()->
+                getServiceManager()->get('Application\Service\UserService');
 
-        $sessionManager = $event->getApplication()->getServiceManager()->get('Zend\Session\SessionManager');
+        // Get the instance of SessionManager.
+        $sessionManager = $event->getApplication()->
+                getServiceManager()->get('Zend\Session\SessionManager');
 
+        // check if $authenticationService has a logged-in user.
         if (empty($authenticationService->getIdentity())) {
             //attempt to lookup User by sessionId.
             $sessionId = $sessionManager->getId();
-            if (!empty($sessionId)) {
-                $user = $userService->findBySessionId($sessionId);
-                if (!empty($user)) {
-                    // Authenticate with login/password.
-                    $authAdapter = $authenticationService->getAdapter();
-                    $authAdapter->setEmail($user->getEmail());
-                    $authAdapter->setPassword($user->getPassword());
-                    $authAdapter->setUseBcrypt(FALSE);
-                    $authenticationService->authenticate();
-                } else {
-                    $logger->log(Logger::ERR, "User not found by session id");
-                }
-            } else {
-                $logger->log(Logger::ERR, "Session Id empty");
-            }
+            $this->balanceLogin($sessionId, $userService, $authenticationService, $logger);
+        } else{
+            $this->log(Logger::INFO, "Authentication Service has logged-in user.", $logger);
         }
         // Execute the access filter on every controller except AuthController
         // and IndexController/index and IndexController/about
@@ -108,14 +103,7 @@ class Module {
         }
     }
 
-    private function logMessage($message, $level = Logger::INFO) {
-        $logger = new Logger;
-        $writer = new Stream(__DIR__ . '/../../data/log/error.out');
-        $logger->addWriter($writer);
-        $logger->log($level, $message);
-    }
-
-    private function balanceLogin($sessionId, $userService, $authenticationService) {
+    private function balanceLogin($sessionId, $userService, $authenticationService, $logger) {
         if (!empty($sessionId)) {
                 $user = $userService->findBySessionId($sessionId);
                 if (!empty($user)) {
@@ -125,13 +113,16 @@ class Module {
                     $authAdapter->setPassword($user->getPassword());
                     $authAdapter->setUseBcrypt(FALSE);
                     $authenticationService->authenticate();
-                    $this->logMessage("balanceLogin success", Logger::INFO);
                 } else {
-                    $this->logMessage("User not found by session id", Logger::ERR);
+                    $this->log(Logger::ERR, "User not found by session id", $logger);
                 }
             } else {
-                $this->logMessage("Session Id empty", Logger::ERR);
+                $this->log(Logger::ERR, "Session Id empty", $logger);
             }
+    }
+    
+    private function log($level, $message, $logger){
+        $logger->log($level, '(User\Module.php): ' . $message);
     }
 
 }

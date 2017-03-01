@@ -15,7 +15,7 @@ class User
 {
     // User status constants.
     const STATUS_ACTIVE       = 1; // Active user.
-    const STATUS_RETIRED      = 0; // Retired user.
+    const STATUS_DISABLED      = 0; // Retired user.
     
     /**
      * @ORM\Id
@@ -70,6 +70,19 @@ class User
      * @ORM\Column(name="session_id", type="string", nullable=true)
      */
     protected $sessionId;
+    
+    /**
+     * @ORM\Column(name="last_login", type="datetime", nullable=true)
+     */
+    protected $lastlogin;
+    
+    public function setLastlogin($lastlogin) {
+        $this->lastlogin = $lastlogin;
+    }
+    
+    public function getLastlogin() {
+        return $this->lastlogin;
+    }
     
     public function getSessionId() {
         return $this->sessionId;
@@ -168,7 +181,7 @@ class User
     {
         return [
             self::STATUS_ACTIVE => 'Active',
-            self::STATUS_RETIRED => 'Retired'
+            self::STATUS_DISABLED => 'Disabled'
         ];
     }    
     

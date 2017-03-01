@@ -3,6 +3,7 @@
 namespace User\Service;
 
 use Application\Service\UserService;
+use DateTime;
 use Exception;
 use ReflectionClass;
 use Zend\Authentication\AuthenticationService;
@@ -11,13 +12,17 @@ use Zend\Log\Logger;
 use Zend\Session\SessionManager;
 
 /**
- * The AuthManager service is responsible for user's login/logout and simple access 
+ * The AuthManager service is responsible for user's login/logout and RBAC access 
  * filtering. The access filtering feature checks whether the current visitor 
  * is allowed to see the given page or not. The AuthManager is also responsible for
  * persisting sessionId to the DB for load-balanced session management.
  */
 class AuthManager {
     
+    /**
+     * Logger service
+     * @var Logger
+     */
     private $logger;
 
     /**
@@ -63,7 +68,7 @@ class AuthManager {
         // Check if user has already logged in. If so, do not allow to log in 
         // twice.
         if ($this->authService->getIdentity() != null) {
-            throw new Exception('Already logged in');
+            $this->logMessage('The user is already logged in!', Logger::INFO);
         }
 
         // Authenticate with login/password.
@@ -95,7 +100,7 @@ class AuthManager {
     public function logout() {
         // Allow to log out only when user is logged in.
         if ($this->authService->getIdentity() == null) {
-            $this->logMessage('The user is not logged in!', Logger::ERR);
+            $this->logMessage('The user is not logged in!', Logger::INFO);
         }
         
         //pass email of logged-in user and NULL to clear sessionId in DB.
@@ -126,14 +131,9 @@ class AuthManager {
             if (!empty($permissions)) {
                 foreach ($permissions as $permission) {
                     
-                    //$controllerName is Controllers shortName.
-                    //checks name=user/index 
-                    //cuts to slash (user) uppercases user (User) concatenates Controller 
-                    //(UserController) - then compare to name of controller called.
                     if ($this->checkControllerName($permission->getName(), $controllerName)) {
                         
-                        //ControllerName has matched.
-                        //check if action name matches and allow if true.
+                        //check if action matches.
                         if ($this->checkActionName($permission->getName(), $actionName)) {
                             return true;
                         }
@@ -156,10 +156,12 @@ class AuthManager {
      * @return boolean
      */
     private function checkControllerName($name, $controllerName) {
+        
         if (strpos(ucwords(substr($name, 0, strpos($name, '/'))) . "Controller", 
                 (new ReflectionClass($controllerName))->getShortName()) !== FALSE) {
             return true;
         }
+        
         return false;
     }
 
@@ -171,9 +173,11 @@ class AuthManager {
      * @return boolean
      */
     private function checkActionName($name, $actionName) {
+        
         if (strpos(substr($name, strrpos($name, '/')), $actionName) !== FALSE) {
             return true;
         }
+        
         return false;
     }
     
@@ -189,6 +193,7 @@ class AuthManager {
             
             $user = $this->userService->findByEmail($email);
             $user->setSessionId($sessionId);
+            $user->setLastLogin(new DateTime());
             $this->userService->save($user);
             
         }else if (!empty($email)){

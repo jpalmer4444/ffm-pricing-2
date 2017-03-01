@@ -91,7 +91,8 @@ class Menu extends AbstractHelper
         $result = '<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">';
         $result .= '<div class="container">';
         $result .= '<div class="navbar-header">';
-        $result .= '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">';
+        //display:none because the navbar collapse and toggle is not enabled.
+        $result .= '<button type="button" style="display:none;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">';
         $result .= '<span class="icon-bar"></span>';
         $result .= '<span class="icon-bar"></span>';
         $result .= '<span class="icon-bar"></span>';

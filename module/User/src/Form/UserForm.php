@@ -1,10 +1,14 @@
 <?php
+
 namespace User\Form;
 
-use Zend\Form\Form;
-use Zend\Form\Fieldset;
-use Zend\InputFilter\InputFilter;
+use Doctrine\ORM\EntityManager;
+use User\Entity\User;
 use User\Validator\UserExistsValidator;
+use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
+use Zend\Validator\Hostname;
+
 
 /**
  * This form is used to collect user's email, full name, password and status. The form 
@@ -21,13 +25,13 @@ class UserForm extends Form
     
     /**
      * Entity manager.
-     * @var Doctrine\ORM\EntityManager 
+     * @var EntityManager 
      */
     private $entityManager = null;
     
     /**
      * Current user.
-     * @var User\Entity\User 
+     * @var User 
      */
     private $user = null;
     
@@ -103,7 +107,7 @@ class UserForm extends Form
                 'label' => 'Status',
                 'value_options' => [
                     1 => 'Active',
-                    2 => 'Retired',                    
+                    0 => 'Disabled',                    
                 ]
             ],
         ]);
@@ -145,7 +149,7 @@ class UserForm extends Form
                     [
                         'name' => 'EmailAddress',
                         'options' => [
-                            'allow' => \Zend\Validator\Hostname::ALLOW_DNS,
+                            'allow' => Hostname::ALLOW_DNS,
                             'useMxCheck'    => false,                            
                         ],
                     ],
@@ -221,7 +225,7 @@ class UserForm extends Form
                     ['name' => 'ToInt'],
                 ],                
                 'validators' => [
-                    ['name'=>'InArray', 'options'=>['haystack'=>[1, 2]]]
+                    ['name'=>'InArray', 'options'=>['haystack'=>[1, 0]]]
                 ],
             ]);        
     }           

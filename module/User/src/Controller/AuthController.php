@@ -71,10 +71,6 @@ class AuthController extends AbstractActionController
             throw new Exception("Too long redirectUrl argument passed");
         }
         
-        // Check if we do not have users in database at all. If so, create 
-        // the 'Admin' user.
-        $this->userManager->createAdminUserIfNotExists();
-        
         // Create login form
         $form = new LoginForm(); 
         
