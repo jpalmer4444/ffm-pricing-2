@@ -41,8 +41,17 @@ class Breadcrumbs extends AbstractHelper
         if (count($this->items)==0)
             return ''; // Do nothing if there are no items.
         
+        /*
+         * <nav class="breadcrumb">
+                                                                                            <li>
+                                    <a href="/sales">Bill Zakrinski</a>
+                                </li>
+                                                                            <li class="active">Customers</li>
+            </nav>
+         */
+        
         // Resulting HTML code will be stored in this var
-        $result = '<ol class="breadcrumb">';
+        $result = '<nav class="breadcrumb">';
         
         // Get item count
         $itemCount = count($this->items); 
@@ -62,7 +71,7 @@ class Breadcrumbs extends AbstractHelper
             $itemNum++;
         }
         
-        $result .= '</ol>';
+        $result .= '</nav>';
         
         return $result;
         
@@ -84,7 +93,7 @@ class Breadcrumbs extends AbstractHelper
         if (!$isActive)
             $result .= '<a href="'.$escapeHtml($link).'">'.$escapeHtml($label).'</a>';
         else
-            $result .= $escapeHtml($label);
+            $result .= '<span>' . $escapeHtml($label) . '</span>';
                     
         $result .= '</li>';
     

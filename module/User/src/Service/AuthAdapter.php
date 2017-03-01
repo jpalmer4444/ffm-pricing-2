@@ -1,10 +1,12 @@
 <?php
 namespace User\Service;
 
+use Doctrine\ORM\EntityManager;
+use User\Entity\User;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result;
 use Zend\Crypt\Password\Bcrypt;
-use User\Entity\User;
+use Zend\Session\SessionManager;
 
 /**
  * Adapter used for authenticating user. It takes login and password on input
@@ -15,6 +17,9 @@ use User\Entity\User;
  */
 class AuthAdapter implements AdapterInterface
 {
+    
+    private $useBcrypt = TRUE;
+    
     /**
      * User email.
      * @var string 
@@ -29,16 +34,23 @@ class AuthAdapter implements AdapterInterface
     
     /**
      * Entity manager.
-     * @var Doctrine\ORM\EntityManager 
+     * @var EntityManager 
      */
     private $entityManager;
+    
+    /**
+     * Session manager.
+     * @var SessionManager 
+     */
+    private $sessionManager;
         
     /**
      * Constructor.
      */
-    public function __construct($entityManager)
+    public function __construct(EntityManager $entityManager, SessionManager $sessionManager)
     {
         $this->entityManager = $entityManager;
+        $this->sessionManager = $sessionManager;
     }
     
     /**
@@ -55,6 +67,14 @@ class AuthAdapter implements AdapterInterface
     public function setPassword($password) 
     {
         $this->password = (string)$password;        
+    }
+    
+    /**
+     * Sets useBcrypt.     
+     */
+    public function setUseBcrypt($useBcrypt) 
+    {
+        $this->useBcrypt = $useBcrypt;        
     }
     
     /**
@@ -88,14 +108,22 @@ class AuthAdapter implements AdapterInterface
         $bcrypt = new Bcrypt();
         $passwordHash = $user->getPassword();
         
-        if ($bcrypt->verify($this->password, $passwordHash)) {
+        if (!empty($this->useBcrypt) && $bcrypt->verify($this->password, $passwordHash)) {
             // Great! The password hash matches. Return user identity (email) to be
             // saved in session for later use.
             return new Result(
                     Result::SUCCESS, 
                     $this->email, 
-                    ['Authenticated successfully.']);        
-        }             
+                    ['Authenticated successfully.']);     
+            
+            // 2nd case used for auto-login across servers.
+        }else if(empty($this->useBcrypt)){
+            
+            return new Result(
+                    Result::SUCCESS, 
+                    $this->email, 
+                    ['Authenticated successfully.']); 
+        }           
         
         // If password check didn't pass return 'Invalid Credential' failure status.
         return new Result(

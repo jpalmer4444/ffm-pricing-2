@@ -9,6 +9,7 @@
 namespace Application\Controller\Factory;
 
 use Application\Controller\IndexController;
+use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
@@ -20,7 +21,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 class IndexControllerFactory implements FactoryInterface{
     
     public function __invoke(ContainerInterface $container, $requestedName, array $options = NULL) {
-        return new IndexController();
+        return new IndexController($container->get(EntityManager::class));
 	}
 
 }

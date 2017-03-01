@@ -2,11 +2,17 @@
 
 namespace Application\Controller;
 
+use Doctrine\ORM\EntityManager;
+use Exception;
+use User\Entity\User;
+
 class IndexController extends BaseController
 {
     
-    public function __construct() {
-        
+    private $entityManager;
+    
+    public function __construct(EntityManager $entityManager) {
+        $this->entityManager = $entityManager;
     }
     
     public function indexAction()
@@ -40,7 +46,7 @@ class IndexController extends BaseController
                 ->findOneByEmail($this->identity());
         
         if ($user==null) {
-            throw new \Exception('Not found user with such email');
+            throw new Exception('Not found user with such email');
         }
         
         return $this->getView([

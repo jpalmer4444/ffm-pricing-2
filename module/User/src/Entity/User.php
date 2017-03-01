@@ -1,7 +1,10 @@
 <?php
 namespace User\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\JoinTable;
 
 /**
  * This class represents a registered user.
@@ -57,12 +60,50 @@ class User
     protected $passwordResetTokenCreationDate;
     
     /**
+     * @var ArrayCollection|Role[]
+     * @ManyToMany(targetEntity="Role", inversedBy="users")
+     * @JoinTable(name="user_role")
+     */
+    protected $roles;
+    
+    /**
+     * @ORM\Column(name="session_id", type="string", nullable=true)
+     */
+    protected $sessionId;
+    
+    public function getSessionId() {
+        return $this->sessionId;
+    }
+    
+    public function setSessionId($sessionId) {
+        $this->sessionId = $sessionId;
+    }
+    
+    /**
      * Returns user ID.
      * @return integer
      */
     public function getId() 
     {
         return $this->id;
+    }
+    
+    /**
+     * 
+     * @return [Role]
+     */
+    public function getRoles() 
+    {
+        return $this->roles;
+    }
+    
+    /**
+     * Sets roles. 
+     * @param array $roles    
+     */
+    public function setRoles($roles) 
+    {
+        $this->roles = $roles;
     }
 
     /**

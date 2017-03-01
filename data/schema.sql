@@ -140,6 +140,9 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 5); # admin
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 6); # admin user/edit (Edit User)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 7); # admin user/index (List Users)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 8); # admin user/message (Message User)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 9); # adminindex/about (About Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 10); # admin index/index (Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 11); # admin index/settings (Settings Action)
 
 # User Permissions
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 9); # sales index/about (About Action)

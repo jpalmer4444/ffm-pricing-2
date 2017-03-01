@@ -8,13 +8,11 @@ namespace Application\Service;
 
 use DateTime;
 use Doctrine\ORM\EntityRepository;
-use DoctrineORMModule\Options\EntityManager;
-use Zend\Log\Formatter\Simple;
 use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
 use Zend\ServiceManager\Config;
 use ZendPdf\Resource\Font\AbstractFont;
-use ZfTable\AbstractTable;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Description of BaseService
@@ -22,7 +20,7 @@ use ZfTable\AbstractTable;
  * @author jasonpalmer
  */
 class BaseService {
-    
+
     /**
      * @var EntityRepository
      */
@@ -34,22 +32,22 @@ class BaseService {
     protected $entityManager;
 
     /**
-     * @var AbstractTable
-     */
-    protected $table;
-
-    /**
      * @var Config
      */
     protected $config;
+    
+    public function __construct(EntityManager $entityManager, array $config, $clazz) {
+        $this->config = $config;
+        $this->entityManager = $entityManager;
+        $this->repository = $this->entityManager->getRepository($clazz);
+    }
 
     /**
      * Retrieve entity repository instance
      *
      * @return EntityRepository
      */
-    public function getRepository()
-    {
+    public function getRepository() {
         return $this->repository;
     }
 
@@ -59,8 +57,7 @@ class BaseService {
      * @param EntityRepository $repository
      * @return $this
      */
-    public function setRepository(EntityRepository $repository)
-    {
+    public function setRepository(EntityRepository $repository) {
         $this->repository = $repository;
 
         return $this;
@@ -71,8 +68,7 @@ class BaseService {
      *
      * @return EntityManager
      */
-    public function getEntityManager()
-    {
+    public function getEntityManager() {
         return $this->entityManager;
     }
 
@@ -82,27 +78,10 @@ class BaseService {
      * @param EntityManager $entityManager
      * @return $this
      */
-    public function setEntityManager(EntityManager $entityManager)
-    {
+    public function setEntityManager(EntityManager $entityManager) {
         $this->entityManager = $entityManager;
 
         return $this;
-    }
-
-    /**
-     * @return AbstractTable
-     */
-    public function getTable()
-    {
-        return $this->table;
-    }
-
-    /**
-     * @param AbstractTable $table
-     */
-    public function setTable(AbstractTable $table)
-    {
-        $this->table = $table;
     }
 
     /**
@@ -113,10 +92,9 @@ class BaseService {
      * @param               $fontSize
      * @return float
      */
-    protected function getTextWidth($text, AbstractFont $font, $fontSize)
-    {
-        $drawingText = $text;//iconv ( '', $encoding, $text );
-        $characters = array ();
+    protected function getTextWidth($text, AbstractFont $font, $fontSize) {
+        $drawingText = $text; //iconv ( '', $encoding, $text );
+        $characters = array();
         for ($i = 0; $i < strlen($drawingText); $i ++) {
             $characters[] = ord($drawingText[$i]);
         }
@@ -130,18 +108,17 @@ class BaseService {
     }
 
     /**
-     * @param string $message
-     * @param string $path
+     * 
+     * @param type $message
+     * @param type $level
      */
-    protected function logError($message, $path)
-    {
-        $writer = new Stream($path);
-        $format = '%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL;
-        $formatter = new Simple($format);
-        $writer->setFormatter($formatter);
-        $logger = new Logger();
-        $logger->addWriter($writer);
-        $logger->err($message);
+    protected function logMessage($message, $level = Zend\Log\Logger::INFO) {
+        if (!$this->logger) {
+            $this->logger = new Logger;
+            $writer = new Stream(__DIR__ . '/../../../../data/log/error.out');
+            $this->logger->addWriter($writer);
+        }
+        $this->logger->log($level, $message);
     }
 
     /**
@@ -149,10 +126,8 @@ class BaseService {
      *
      * @return string
      */
-    protected function getDatetime()
-    {
+    protected function getDatetime() {
         return (new DateTime())->format('Y-m-d H:i:s');
     }
-    
-    
+
 }

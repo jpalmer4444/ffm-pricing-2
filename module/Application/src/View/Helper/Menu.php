@@ -56,18 +56,52 @@ class Menu extends AbstractHelper
         if (count($this->items)==0)
             return ''; // Do nothing if there are no items.
         
-        $result = '<nav class="navbar navbar-default" role="navigation">';
+        /*
+         * <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="<?= $this->url('home') ?>">
+         * 
+         * BASE_PATH.'/'
+         * 
+                        <img src="<?php echo $this->basePath('img/pricing-logo.svg') ?>" alt="Pricing Logo" class="logo ffm-svg-header"/>
+                        <span class='text-primary ffm-text-header'>
+                            FFM
+                        </span>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                            $items:float:left
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                            $items:float:right
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div>
+        </nav>
+         */
+        
+        $urlHelper = $this->getView()->plugin('url');
+        $result = '<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">';
+        $result .= '<div class="container">';
         $result .= '<div class="navbar-header">';
-        $result .= '<button type="button" class="navbar-toggle" data-toggle="collapse"';
-        $result .= 'data-target=".navbar-ex1-collapse">';
-        $result .= '<span class="sr-only">Toggle navigation</span>';
+        $result .= '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">';
         $result .= '<span class="icon-bar"></span>';
         $result .= '<span class="icon-bar"></span>';
         $result .= '<span class="icon-bar"></span>';
         $result .= '</button>';
+        $result .= '<a class="navbar-brand" href="' . $urlHelper('home') . '">';
+        $result .= '<img src="/img/pricing-logo.svg' . '" alt="Pricing Logo" class="logo ffm-svg-header"/>';
+        $result .= '<span class="text-primary ffm-text-header">FFM</span>';
+        $result .= '</a>';
         $result .= '</div>';
-        
-        $result .= '<div class="collapse navbar-collapse navbar-ex1-collapse">';        
+        $result .= '<div class="collapse navbar-collapse">';
         $result .= '<ul class="nav navbar-nav">';
         
         // Render items
@@ -86,6 +120,7 @@ class Menu extends AbstractHelper
         }
         
         $result .= '</ul>';
+        $result .= '</div>';
         $result .= '</div>';
         $result .= '</nav>';
         

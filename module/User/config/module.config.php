@@ -2,26 +2,19 @@
 
 namespace User;
 
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use User\Controller\AuthController;
-use User\Controller\Factory\AuthControllerFactory;
-use User\Controller\Factory\UserControllerFactory;
-use User\Controller\UserController;
-use Zend\Authentication\AuthenticationService;
-
 return [
     'router' => include __DIR__ . '/router.config.php',
     'controllers' => [
         'factories' => [
-            AuthController::class => AuthControllerFactory::class,
-            UserController::class => UserControllerFactory::class,
+            'User\Controller\AuthController' => 'User\Controller\Factory\AuthControllerFactory',
+            'User\Controller\UserController' => 'User\Controller\Factory\UserControllerFactory',
         ],
     ],
     // The 'access_filter' key is used by the User module to restrict or permit
     // access to certain controller actions for unauthorized visitors.
     'access_filter' => [
         'controllers' => [
-            UserController::class => [
+            'User\Controller\UserController' => [
                 // Give access to "resetPassword", "message" and "setPassword" actions
                 // to anyone.
                 ['actions' => ['resetPassword', 'message', 'setPassword'], 'allow' => '*'],
@@ -39,9 +32,11 @@ return [
     'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
-                'class' => AnnotationDriver::class,
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => [__DIR__ . '/../src/Entity']
+                'paths' => [
+                    __DIR__ . '/../src/Entity'
+                    ]
             ],
             'orm_default' => [
                 'drivers' => [

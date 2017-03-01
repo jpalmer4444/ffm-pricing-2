@@ -4,7 +4,7 @@ namespace Application\View\Helper\Factory;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Application\View\Helper\Menu;
-use Application\Service\NavManager;
+use Application\Navigation\NavManager;
 
 /**
  * This is the factory for Menu view helper. Its purpose is to instantiate the

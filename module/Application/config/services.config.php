@@ -8,6 +8,10 @@ return [
     ],
     'factories' => [
         'Zend\Validator\Translator\TranslatorInterface' => 'Zend\I18n\Translator\TranslatorServiceFactory',
-        'Application\Service\NavManager' => 'Application\Service\Factory\NavManagerFactory',
+        'Application\Navigation\NavManager' => 'Application\Navigation\Factory\NavManagerFactory',
+        //services
+        'Application\Service\PermissionService' => 'Application\Service\Factory\PermissionServiceFactory',
+        'Application\Service\RolesService' => 'Application\Service\Factory\RolesServiceFactory',
+        'Application\Service\UserService' => 'Application\Service\Factory\UserServiceFactory',
     ],
 ];

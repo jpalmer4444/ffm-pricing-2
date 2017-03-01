@@ -14,3 +14,24 @@ a:hover{
     right: 30px;
     top:3px;
 }
+
+.breadcrumb {
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    list-style-type: none;
+    overflow: hidden;
+}
+
+.breadcrumb li {
+    float: left;
+}
+
+.breadcrumb li a, .breadcrumb li span {
+    display: block;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}

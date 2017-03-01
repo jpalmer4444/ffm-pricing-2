@@ -1,0 +1,34 @@
+2017-03-01T00:10:00-06:00 INFO (6): Permission: user/add
+2017-03-01T00:10:00-06:00 INFO (6): checkControllerName name: user/add controllerName: Application\Controller\IndexController
+2017-03-01T00:10:00-06:00 INFO (6): Permission: user/changePassword
+2017-03-01T00:10:00-06:00 INFO (6): checkControllerName name: user/changePassword controllerName: Application\Controller\IndexController
+2017-03-01T00:10:00-06:00 INFO (6): Permission: user/resetPassword
+2017-03-01T00:10:00-06:00 INFO (6): checkControllerName name: user/resetPassword controllerName: Application\Controller\IndexController
+2017-03-01T00:10:00-06:00 INFO (6): Permission: user/setPassword
+2017-03-01T00:10:00-06:00 INFO (6): checkControllerName name: user/setPassword controllerName: Application\Controller\IndexController
+2017-03-01T00:10:00-06:00 INFO (6): Permission: user/view
+2017-03-01T00:10:00-06:00 INFO (6): checkControllerName name: user/view controllerName: Application\Controller\IndexController
+2017-03-01T00:10:00-06:00 INFO (6): Permission: user/edit
+2017-03-01T00:10:00-06:00 INFO (6): checkControllerName name: user/edit controllerName: Application\Controller\IndexController
+2017-03-01T00:10:00-06:00 INFO (6): Permission: user/index
+2017-03-01T00:10:00-06:00 INFO (6): checkControllerName name: user/index controllerName: Application\Controller\IndexController
+2017-03-01T00:10:00-06:00 INFO (6): Permission: user/message
+2017-03-01T00:10:00-06:00 INFO (6): checkControllerName name: user/message controllerName: Application\Controller\IndexController
+2017-03-01T00:10:00-06:00 INFO (6): Permission: index/about
+2017-03-01T00:10:00-06:00 INFO (6): checkControllerName name: index/about controllerName: Application\Controller\IndexController
+2017-03-01T00:10:00-06:00 INFO (6): Permission: index/index
+2017-03-01T00:10:00-06:00 INFO (6): checkControllerName name: index/index controllerName: Application\Controller\IndexController
+2017-03-01T00:10:14-06:00 INFO (6): Permission: user/add
+2017-03-01T00:10:14-06:00 INFO (6): checkControllerName name: user/add controllerName: User\Controller\UserController
+2017-03-01T00:10:14-06:00 INFO (6): Permission: user/changePassword
+2017-03-01T00:10:14-06:00 INFO (6): checkControllerName name: user/changePassword controllerName: User\Controller\UserController
+2017-03-01T00:10:14-06:00 INFO (6): Permission: user/resetPassword
+2017-03-01T00:10:14-06:00 INFO (6): checkControllerName name: user/resetPassword controllerName: User\Controller\UserController
+2017-03-01T00:10:14-06:00 INFO (6): Permission: user/setPassword
+2017-03-01T00:10:14-06:00 INFO (6): checkControllerName name: user/setPassword controllerName: User\Controller\UserController
+2017-03-01T00:10:14-06:00 INFO (6): Permission: user/view
+2017-03-01T00:10:14-06:00 INFO (6): checkControllerName name: user/view controllerName: User\Controller\UserController
+2017-03-01T00:10:14-06:00 INFO (6): Permission: user/edit
+2017-03-01T00:10:14-06:00 INFO (6): checkControllerName name: user/edit controllerName: User\Controller\UserController
+2017-03-01T00:10:14-06:00 INFO (6): Permission: user/index
+2017-03-01T00:10:14-06:00 INFO (6): checkControllerName name: user/index controllerName: User\Controller\UserController

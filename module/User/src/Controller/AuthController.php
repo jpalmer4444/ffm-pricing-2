@@ -2,12 +2,17 @@
 
 namespace User\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
-use Zend\Authentication\Result;
-use Zend\Uri\Uri;
-use User\Form\LoginForm;
+use Doctrine\ORM\EntityManager;
+use Exception;
 use User\Entity\User;
+use User\Form\LoginForm;
+use User\Service\UserManager;
+use User\Service\AuthManager;
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Result;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Uri\Uri;
+use Zend\View\Model\ViewModel;
 
 /**
  * This controller is responsible for letting the user to log in and log out.
@@ -16,7 +21,7 @@ class AuthController extends AbstractActionController
 {
     /**
      * Entity manager.
-     * @var Doctrine\ORM\EntityManager 
+     * @var EntityManager 
      */
     private $entityManager;
     
@@ -28,7 +33,7 @@ class AuthController extends AbstractActionController
     
     /**
      * Auth service.
-     * @var \Zend\Authentication\AuthenticationService
+     * @var AuthenticationService
      */
     private $authService;
     
@@ -41,7 +46,12 @@ class AuthController extends AbstractActionController
     /**
      * Constructor.
      */
-    public function __construct(\Doctrine\ORM\EntityManager $entityManager, \User\Service\AuthManager $authManager, \Zend\Authentication\AuthenticationService $authService, \User\Service\UserManager $userManager)
+    public function __construct(
+            EntityManager $entityManager, 
+            AuthManager $authManager, 
+            AuthenticationService $authService, 
+            UserManager $userManager
+            )
     {
         $this->entityManager = $entityManager;
         $this->authManager = $authManager;
@@ -58,7 +68,7 @@ class AuthController extends AbstractActionController
         // URL after successfull login.
         $redirectUrl = (string)$this->params()->fromQuery('redirectUrl', '');
         if (strlen($redirectUrl)>2048) {
-            throw new \Exception("Too long redirectUrl argument passed");
+            throw new Exception("Too long redirectUrl argument passed");
         }
         
         // Check if we do not have users in database at all. If so, create 
@@ -102,7 +112,7 @@ class AuthController extends AbstractActionController
                         // (if someone tries to redirect user to another domain).
                         $uri = new Uri($redirectUrl);
                         if (!$uri->isValid() || $uri->getHost()!=null)
-                            throw new \Exception('Incorrect redirect URL: ' . $redirectUrl);
+                            throw new Exception('Incorrect redirect URL: ' . $redirectUrl);
                     }
 
                     // If redirect URL is provided, redirect the user to that URL;

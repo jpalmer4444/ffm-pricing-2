@@ -10,7 +10,7 @@ namespace Application\Controller;
 
 use Application\Service\UserService;
 use DateTime;
-use FultonFishMarket\Entity\User;
+use User\Entity\User;
 use InvalidArgumentException;
 use Zend\Db\Adapter\Adapter;
 use Zend\Mvc\Controller\AbstractActionController;

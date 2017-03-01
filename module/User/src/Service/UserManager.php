@@ -1,4 +1,5 @@
 <?php
+
 namespace User\Service;
 
 use User\Entity\User;
