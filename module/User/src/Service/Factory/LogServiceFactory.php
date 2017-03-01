@@ -16,7 +16,7 @@ class LogServiceFactory {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {        
         $logger = new Logger;
-        $writer = new Stream(__DIR__ . '/../../../../../data/log/'.date('Y-m-d').'-error.log');
+        $writer = new Stream(__DIR__ . '/../../../../../data/log/error.log');
         $logger->addWriter($writer);
         return $logger;
     }

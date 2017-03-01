@@ -8,7 +8,6 @@ use ReflectionClass;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
 use Zend\Log\Logger;
-use Zend\Log\Writer\Stream;
 use Zend\Session\SessionManager;
 
 /**
@@ -48,11 +47,12 @@ class AuthManager {
     /**
      * Constructs the service.
      */
-    public function __construct(UserService $userService, AuthenticationService $authService, SessionManager $sessionManager, $config) {
+    public function __construct(UserService $userService, AuthenticationService $authService, SessionManager $sessionManager, Logger $logger, $config) {
         $this->authService = $authService;
         $this->sessionManager = $sessionManager;
         $this->userService = $userService;
         $this->config = $config;
+        $this->logger = $logger;
     }
 
     /**
@@ -156,8 +156,8 @@ class AuthManager {
      * @return boolean
      */
     private function checkControllerName($name, $controllerName) {
-        
-        if (strpos(ucwords(substr($name, 0, strpos($name, '/'))) . "Controller", (new ReflectionClass($controllerName))->getShortName()) !== FALSE) {
+        if (strpos(ucwords(substr($name, 0, strpos($name, '/'))) . "Controller", 
+                (new ReflectionClass($controllerName))->getShortName()) !== FALSE) {
             return true;
         }
         return false;
@@ -207,12 +207,6 @@ class AuthManager {
     }
     
     protected function logMessage($message, $level = Logger::INFO) {
-        
-        if (!$this->logger) {
-            $this->logger = new Logger;
-            $writer = new Stream(__DIR__ . '/../../../../data/log/error.out');
-            $this->logger->addWriter($writer);
-        }
         $this->logger->log($level, $message);
     }
 
