@@ -2,17 +2,21 @@
 
 namespace Application\Controller;
 
+use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Exception;
-use User\Entity\User;
+use Zend\Log\Logger;
 
 class IndexController extends BaseController
 {
     
     private $entityManager;
     
-    public function __construct(EntityManager $entityManager) {
+    private $logger;
+    
+    public function __construct(EntityManager $entityManager, Logger $logger) {
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
     }
     
     public function indexAction()

@@ -22,7 +22,7 @@ return [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
                 'paths' => [
-                    __DIR__ . '/../src/Entity'
+                    __DIR__ . '/../../Application/src/Entity'
                     ]
             ],
             'orm_default' => [

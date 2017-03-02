@@ -11,7 +11,9 @@ var vendorFiles = [
 		'js/vendor/bootstrap-datepicker.min.js',
 		'js/vendor/bootstrap-select.min.js',
 		'js/vendor/bootstrap-notify.min.js',
-		'js/zf-table.js'
+		'js/zf-table.js',
+        'js/ie/respond.min.js', 
+        'js/ie/html5shiv.min.js',
 	];
 
 gulp.task('vendor', function(){
@@ -21,22 +23,8 @@ gulp.task('vendor', function(){
 		.pipe(gulp.dest('js/dist/'));
 });
 
-gulp.task('just-ie', function(){
-	return gulp.src(['js/ie/respond.min.js', 'js/ie/html5shiv.min.js'])
-		.pipe(concat('just-ie.js'))
-		.pipe(uglify())
-		.pipe(gulp.dest('js/dist/'));
-});
-
-gulp.task('device', function(){
-	return gulp.src(['js/device/highcharts.js', 'js/device/moment.min.js', 'js/device/stats.js'])
-		.pipe(concat('device.js'))
-		.pipe(uglify())
-		.pipe(gulp.dest('js/dist/'));
-});
-
 gulp.task('watch-vendor', function(){
 	gulp.watch(vendorFiles, ['vendor'])
 });
 
-gulp.task('default', ['vendor', 'just-ie', 'device']);
+gulp.task('default', ['vendor']);

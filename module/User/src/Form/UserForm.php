@@ -3,7 +3,7 @@
 namespace User\Form;
 
 use Doctrine\ORM\EntityManager;
-use User\Entity\User;
+use Application\Entity\User;
 use User\Validator\UserExistsValidator;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;

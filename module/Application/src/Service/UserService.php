@@ -6,7 +6,12 @@
 
 namespace Application\Service;
 
-use User\Entity\User;
+use Application\Entity\User;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
+use Exception;
+use Zend\Log\Logger;
 
 /**
  * Class UserService
@@ -15,12 +20,12 @@ use User\Entity\User;
 class UserService extends BaseService
 {
     
-    public function __construct(\Doctrine\ORM\EntityManager $entityManager, array $config) {
-        parent::__construct($entityManager, $config, User::class);
+    public function __construct(EntityManager $entityManager, array $config, Logger $logger) {
+        parent::__construct($entityManager, $config, $logger, User::class);
     }
     
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getQueryBuilder()
     {
@@ -38,13 +43,13 @@ class UserService extends BaseService
     {
         if ($id == 0 && !is_null($id)) {
             $user->setLastLoginDate(null);
-            $user->setCreationDate((new \DateTime()));
+            $user->setCreationDate((new DateTime()));
         }
 
         try {
             $this->getEntityManager()->persist($user);
             $this->getEntityManager()->flush();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
 
@@ -72,7 +77,7 @@ class UserService extends BaseService
             }
 
             return false;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

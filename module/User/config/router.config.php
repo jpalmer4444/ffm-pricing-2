@@ -42,6 +42,16 @@ return [
                     ],
                 ],
             ],
+            'users-table' => [
+                'type' => 'Literal',
+                'options' => [
+                    'route'    => '/users-table',
+                    'defaults' => [
+                        'controller' => 'User\Controller\UserController',
+                        'action'     => 'usersTable',
+                    ],
+                ],
+            ],
             'users' => [
                 'type'    => 'Segment',
                 'options' => [

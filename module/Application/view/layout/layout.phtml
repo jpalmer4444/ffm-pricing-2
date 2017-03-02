@@ -19,14 +19,13 @@
                 ->prependStylesheet($this->basePath('css/jquery-ui.min.css'))
                 ->prependStylesheet($this->basePath('css/jquery-ui.structure.min.css'))
                 ->prependStylesheet($this->basePath('css/jquery-ui.theme.min.css'))
+        ->prependStylesheet($this->basePath() . 'css/zf-table.css')  
         ?>
 
         <!-- Scripts -->
         <?=
                 $this->headScript()
                 ->prependFile($this->basePath('js/dist/vendor.js'))
-                ->prependFile($this->basePath('js/dist/just-ie.js'))
-                ->prependFile($this->basePath('js/dist/device.js'))
         ?>
     </head>
     <body>

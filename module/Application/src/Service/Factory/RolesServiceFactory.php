@@ -22,7 +22,8 @@ class RolesServiceFactory implements FactoryInterface{
     public function __invoke(ContainerInterface $container, $requestedName, array $options = NULL) {
         $config = $container->get('Config');
         $entityManager = $container->get('Doctrine\ORM\EntityManager');
-        return new RolesService($entityManager, $config);
+        $logger = $container->get('Zend\Log\Logger');
+        return new RolesService($entityManager, $config, $logger);
     }
     
 }

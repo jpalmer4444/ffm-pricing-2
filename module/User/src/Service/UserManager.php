@@ -2,7 +2,7 @@
 
 namespace User\Service;
 
-use User\Entity\User;
+use Application\Entity\User;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Math\Rand;
 
@@ -113,6 +113,7 @@ class UserManager
      */
     public function generatePasswordResetToken($user)
     {
+        
         // Generate a token.
         $token = Rand::getString(32, '0123456789abcdefghijklmnopqrstuvwxyz', true);
         $user->setPasswordResetToken($token);
@@ -133,6 +134,8 @@ class UserManager
         
         // Send email to user.
         mail($user->getEmail(), $subject, $body);
+        
+        
     }
     
     /**

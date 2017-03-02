@@ -6,17 +6,21 @@
 
 namespace Application\Service;
 
-use User\Entity\Role;
+use Application\Entity\Role;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
+use Exception;
+use Zend\Log\Logger;
 
 class RolesService extends BaseService
 {
     
-    public function __construct(\Doctrine\ORM\EntityManager $entityManager, array $config) {
-        parent::__construct($entityManager, $config, Role::class);
+    public function __construct(EntityManager $entityManager, array $config, Logger $logger) {
+        parent::__construct($entityManager, $config, $logger, Role::class);
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getQueryBuilder()
     {
@@ -34,7 +38,7 @@ class RolesService extends BaseService
         try {
             $this->getEntityManager()->persist($role);
             $this->getEntityManager()->flush();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
 
@@ -60,7 +64,7 @@ class RolesService extends BaseService
 
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
 

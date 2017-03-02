@@ -1,21 +1,24 @@
 <?php
 namespace User\Controller;
 
+use Application\Controller\BaseController;
+use Application\Entity\User;
+use Application\Model\UsersTable;
 use Doctrine\ORM\EntityManager;
 use Exception;
-use User\Service\UserManager;
-use User\Entity\User;
 use User\Form\PasswordChangeForm;
 use User\Form\PasswordResetForm;
 use User\Form\UserForm;
-use Zend\Mvc\Controller\AbstractActionController;
+use User\Service\UserManager;
+use Zend\Db\Adapter\Adapter;
+use Zend\Log\Logger;
 use Zend\View\Model\ViewModel;
 
 /**
  * This controller is responsible for user management (adding, editing, 
  * viewing users and changing user's password).
  */
-class UserController extends AbstractActionController 
+class UserController extends BaseController 
 {
     /**
      * Entity manager.
@@ -29,13 +32,19 @@ class UserController extends AbstractActionController
      */
     private $userManager;
     
+    private $dbAdapter;
+    
+    private $logger;
+    
     /**
      * Constructor. 
      */
-    public function __construct(EntityManager $entityManager, UserManager $userManager)
+    public function __construct(EntityManager $entityManager, UserManager $userManager, Adapter $dbAdapter, Logger $logger)
     {
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
+        $this->dbAdapter = $dbAdapter;
+        $this->logger = $logger;
     }
     
     /**
@@ -340,6 +349,22 @@ class UserController extends AbstractActionController
             'form' => $form
         ]);
     }
+    
+    public function usersTableAction() {
+        
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+
+        $queryBuilder->add('select', 'u')
+                ->add('from', 'Application\Entity\User u');
+
+        $table = new UsersTable();
+        $table->setAdapter($this->dbAdapter)
+                ->setSource($queryBuilder)
+                ->setParamAdapter($this->getRequest()->getPost());
+
+        return $this->htmlResponse($table->render());
+    }
+    
 }
 
 

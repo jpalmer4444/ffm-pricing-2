@@ -36,10 +36,13 @@ class BaseService {
      */
     protected $config;
     
-    public function __construct(EntityManager $entityManager, array $config, $clazz) {
+    protected $logger;
+    
+    public function __construct(EntityManager $entityManager, array $config, Logger $logger, $clazz) {
         $this->config = $config;
         $this->entityManager = $entityManager;
         $this->repository = $this->entityManager->getRepository($clazz);
+        $this->logger = $logger;
     }
 
     /**
@@ -113,11 +116,6 @@ class BaseService {
      * @param type $level
      */
     protected function logMessage($message, $level = Zend\Log\Logger::INFO) {
-        if (!$this->logger) {
-            $this->logger = new Logger;
-            $writer = new Stream(__DIR__ . '/../../../../data/log/error.out');
-            $this->logger->addWriter($writer);
-        }
         $this->logger->log($level, $message);
     }
 

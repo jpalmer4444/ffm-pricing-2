@@ -3,7 +3,7 @@
 namespace Application\Navigation;
 
 use Application\Service\UserService;
-use User\Entity\Role;
+use Application\Entity\Role;
 use Zend\Authentication\AuthenticationService;
 use Zend\View\Helper\Url;
 

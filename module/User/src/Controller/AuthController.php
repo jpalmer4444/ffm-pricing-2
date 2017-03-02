@@ -2,14 +2,15 @@
 
 namespace User\Controller;
 
+use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Exception;
-use User\Entity\User;
 use User\Form\LoginForm;
-use User\Service\UserManager;
 use User\Service\AuthManager;
+use User\Service\UserManager;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
+use Zend\Log\Logger;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Uri\Uri;
 use Zend\View\Model\ViewModel;
@@ -43,6 +44,8 @@ class AuthController extends AbstractActionController
      */
     private $userManager;
     
+    private $logger;
+    
     /**
      * Constructor.
      */
@@ -50,13 +53,15 @@ class AuthController extends AbstractActionController
             EntityManager $entityManager, 
             AuthManager $authManager, 
             AuthenticationService $authService, 
-            UserManager $userManager
+            UserManager $userManager,
+            Logger $logger
             )
     {
         $this->entityManager = $entityManager;
         $this->authManager = $authManager;
         $this->authService = $authService;
         $this->userManager = $userManager;
+        $this->logger = $logger;
     }
     
     /**

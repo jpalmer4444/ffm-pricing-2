@@ -4,7 +4,7 @@
  * @author     Valentina <valentina@busteco.ro>
  */
 
-namespace User\Entity;
+namespace Application\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

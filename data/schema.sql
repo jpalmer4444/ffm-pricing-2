@@ -114,11 +114,12 @@ INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(5, 'user/view', 'View U
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(6, 'user/edit', 'Edit User');
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(7, 'user/index', 'List Users');
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(8, 'user/message', 'Message User');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(9, 'user/usersTable', 'Ajax Users Table');
 
 # IndexController
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(9, 'index/about', 'About Action');
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(10, 'index/index', 'Index Action');
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(11, 'index/settings', 'Settings Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(10, 'index/about', 'About Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(11, 'index/index', 'Index Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(12, 'index/settings', 'Settings Action');
 
 
 CREATE TABLE `role_permission` (
@@ -140,14 +141,16 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 5); # admin
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 6); # admin user/edit (Edit User)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 7); # admin user/index (List Users)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 8); # admin user/message (Message User)
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 9); # adminindex/about (About Action)
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 10); # admin index/index (Index Action)
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 11); # admin index/settings (Settings Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 9); # admin user/usersTable (Ajax Users Table Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 10); # adminindex/about (About Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 11); # admin index/index (Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 12); # admin index/settings (Settings Action)
 
 # User Permissions
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 9); # sales index/about (About Action)
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 10); # sales index/index (Index Action)
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 11); # sales index/settings (Settings Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 9); # sales user/usersTable (Ajax Users Table Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 10); # sales index/about (About Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 11); # sales index/index (Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 12); # sales index/settings (Settings Action)
 
 CREATE TABLE `products` (
     `id` INTEGER PRIMARY KEY,

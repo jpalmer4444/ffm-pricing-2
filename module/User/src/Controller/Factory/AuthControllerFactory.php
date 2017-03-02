@@ -20,7 +20,8 @@ class AuthControllerFactory implements FactoryInterface
         $authManager = $container->get(AuthManager::class);
         $authService = $container->get(\Zend\Authentication\AuthenticationService::class);
         $userManager = $container->get(UserManager::class);
+        $logger = $container->get('Zend\Log\Logger');
         
-        return new AuthController($entityManager, $authManager, $authService, $userManager);
+        return new AuthController($entityManager, $authManager, $authService, $userManager, $logger);
     }
 }
