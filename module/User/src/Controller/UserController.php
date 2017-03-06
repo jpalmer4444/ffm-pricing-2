@@ -39,7 +39,12 @@ class UserController extends BaseController
     /**
      * Constructor. 
      */
-    public function __construct(EntityManager $entityManager, UserManager $userManager, Adapter $dbAdapter, Logger $logger)
+    public function __construct(
+            EntityManager $entityManager, 
+            UserManager $userManager, 
+            Adapter $dbAdapter, 
+            Logger $logger
+            )
     {
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;

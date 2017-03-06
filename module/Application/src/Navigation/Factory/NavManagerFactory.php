@@ -17,12 +17,12 @@ class NavManagerFactory
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {        
         $authService = $container->get('Zend\Authentication\AuthenticationService');
-        $rolesService = $container->get('Application\Service\RolesService');
         $userService = $container->get('Application\Service\UserService');
-        
+        $config = $container->get('Config');
         $viewHelperManager = $container->get('ViewHelperManager');
         $urlHelper = $viewHelperManager->get('url');
+        $breadcrumbs = $viewHelperManager->get('pageBreadcrumbs');
         
-        return new NavManager($authService, $userService, $urlHelper);
+        return new NavManager($authService, $userService, $config, $breadcrumbs, $urlHelper);
     }
 }

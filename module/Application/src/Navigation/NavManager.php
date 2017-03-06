@@ -2,8 +2,9 @@
 
 namespace Application\Navigation;
 
-use Application\Service\UserService;
 use Application\Entity\Role;
+use Application\Service\UserService;
+use Application\View\Helper\Breadcrumbs;
 use Zend\Authentication\AuthenticationService;
 use Zend\View\Helper\Url;
 
@@ -30,14 +31,33 @@ class NavManager {
      * @var userService
      */
     private $userService;
+    
+    /**
+     *
+     * @var array
+     */
+    private $config;
+    
+    /**
+     * @var Application\View\Helper\Breadcrumbs
+     */
+    private $breadcrumbs;
 
     /**
      * Constructs the service.
      */
-    public function __construct(AuthenticationService $authService, UserService $userService, $urlHelper) {
+    public function __construct(
+            AuthenticationService $authService, 
+            UserService $userService, 
+            array $config, 
+            Breadcrumbs $breadcrumbs,
+            $urlHelper
+            ) {
         $this->authService = $authService;
         $this->urlHelper = $urlHelper;
         $this->userService = $userService;
+        $this->config = $config;
+        $this->breadcrumbs = $breadcrumbs;
     }
 
     /**
@@ -48,7 +68,9 @@ class NavManager {
         $url = $this->urlHelper;
         $items = [];
 
-        //default Home page - no login required.
+        //Links Visible always to everyone logged in or not.
+        //default Home page - no login required. 
+        
         $items[] = [
             'id' => 'home',
             'label' => 'Home',
@@ -65,9 +87,12 @@ class NavManager {
             'link' => $url('about')
         ];
          */
+        
+        //BEGIN Authentication/Rendering Logic
 
         // Display "Login" menu item for not authorized user only. On the other hand,
-        // display "Admin" and "Logout" menu items only for authorized users.
+        // display "Admin" and "Logout" menu items only for authorized users and any other links 
+        // that should be visible by logged-in users.
         if (!$this->authService->hasIdentity()) {
 
             $items[] = [
@@ -76,6 +101,7 @@ class NavManager {
                 'link' => $url('login'),
                 'float' => 'right'
             ];
+            
         } else {
 
             //only display admin drop down for admin users.
@@ -114,6 +140,11 @@ class NavManager {
                     ],
                 ]
             ];
+            
+            $loggedInItems = $this->getLoggedInItems();
+            
+            if($loggedInItems)
+                array_merge ($items, $loggedInItems);
 
             // add items to right of settings in top right corner only for logged-in users here
             //MUST set 'float' => 'static'
@@ -128,6 +159,12 @@ class NavManager {
         }
 
         return $items;
+    }
+    
+    
+    
+    function getLoggedInItems(){
+        return NULL;
     }
 
 }

@@ -13,13 +13,11 @@
 
         <!-- Le styles -->
         <?=
-                $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+                $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/pricing-logo.ico'])
                 ->prependStylesheet($this->basePath('css/dist/style.css'))
+                ->prependStylesheet($this->basePath() . 'css/zf-table.css')
                 ->prependStylesheet($this->basePath('css/style.css'))
-                ->prependStylesheet($this->basePath('css/jquery-ui.min.css'))
-                ->prependStylesheet($this->basePath('css/jquery-ui.structure.min.css'))
-                ->prependStylesheet($this->basePath('css/jquery-ui.theme.min.css'))
-        ->prependStylesheet($this->basePath() . 'css/zf-table.css')  
+                ->prependStylesheet($this->basePath() . 'css/zf-table.css')
         ?>
 
         <!-- Scripts -->
@@ -40,19 +38,19 @@
         // Render the navbar
         echo $this->mainMenu()->render();
         ?>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Breadcrumbs -->
-                    <?= $this->pageBreadcrumbs()->render(); ?>
-                </div>
-            </div>
-            <?= $this->content ?>
-            <hr>
-            <footer>
-                <p>&copy; 2005 - <?= date('Y') ?> by Zend Technologies Ltd. All rights reserved.</p>
-            </footer>
-        </div>
+        <div class="container main">
+
+            <?= $this->pageBreadcrumbs()->render(); ?>
+
+            <?php echo $this->content; ?>
+
+
+
+        </div> 
+        <footer>
+            <p> <?php echo $this->translate('Fulton Fish Market - Skeleton App') ?>&nbsp; <?php echo date('Y') ?> Meade Digital Enterprises </p>
+        </footer>
         <?= $this->inlineScript() ?>
     </body>
+
 </html>

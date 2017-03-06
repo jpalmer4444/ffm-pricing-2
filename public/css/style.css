@@ -1,6 +1,19 @@
+/**
+
+*/
+
+a{
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
 a:hover{
     text-decoration: none !important;
 }
+
 .ffm-svg-header{
     max-height:30px;
     position:relative;
@@ -15,16 +28,10 @@ a:hover{
     top:3px;
 }
 
-a{
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -ms-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-}
-
-.settings-logo{
+img.settings-logo{
     width: 18px;
+}
+.settings-logo, .spin-logo{
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
@@ -32,13 +39,60 @@ a{
     transition: all 0.3s ease;
 }
 
-a.dropdown-toggle:hover img.settings-logo{
+a.dropdown-toggle:hover img.settings-logo, a:hover .spin-logo{
     -webkit-transform: rotate(90deg);
     -o-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
 }
+
+a.btn-square.btn-transparent{
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+a.btn-square.btn-transparent:hover, a.btn-square.btn-transparent:hover i.spin-logo:before{
+    background: #669aa8 !important;
+    color:white;
+}
+
+a i.spin-logo::before{
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.around-table-actions{
+    position:relative;
+    left:95px;
+    top:0px;
+}
+
+.btn-square{
+    border-radius: 0 !important;
+}
+
+.btn-transparent{
+    background: transparent !important;
+}
+
+.key-logo{
+
+}
+
+
+/*
+
+*/
+
+
+
 
 .breadcrumb {
     padding: 8px 15px;
@@ -72,6 +126,10 @@ a.dropdown-toggle:hover img.settings-logo{
     color: #CCCCCC;
     font-weight: 700;
     text-transform: uppercase;
+}
+
+.ion-locked::before {
+    content: "\f200";
 }
 
 

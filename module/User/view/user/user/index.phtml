@@ -24,7 +24,23 @@ $this->pageBreadcrumbs()->setItems([
 
 <script>
 
-    $("#tableContainer").zfTable('/users-table');
+    $("#tableContainer").zfTable('/users-table', {
+      complete: function () {
+        console.log('complete');
+        $('#usersTable tr').each(function (index, element) {
+          var id = $(this).children('td').first().html();
+          if (id) {
+            var html = new Array();
+            html.push('<div class="around-table-actions"><a class="btn btn-default btn-square btn-transparent" title="Edit User" href="users/edit/' + id);
+            html.push('"><i class="ion ion-edit spin-logo"></i></a>');
+            //html.push('"><img src="/img/pencil-icon.svg" alt="" class="settings-logo"/></a>');
+            html.push('<a class="btn btn-default  btn-square btn-transparent" title="Change User Password" href=');
+            html.push('"users/change-password/' + id + '">');
+            html.push('<i class="ion ion-locked spin-logo"></i></a></div>');
+            $(this).children('td').last().html(html.join(''));
+          }
+        });
+      }
+    });
 
 </script>
-

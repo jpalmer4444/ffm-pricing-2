@@ -599,3 +599,322 @@ Table 'pricing_2.user' doesn't exist {"reference":"5379f4","type":"DISPATCH","fi
 2017-03-01T20:43:30-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
 2017-03-01T20:43:30-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
 2017-03-01T20:43:31-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T08:40:43-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T08:40:44-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T08:40:44-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T08:40:44-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T08:40:45-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T08:40:45-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T08:40:46-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:28:11-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:28:11-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:28:11-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:28:11-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:29:23-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:29:23-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:29:23-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:29:23-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:30:09-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:30:15-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:30:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:30:18-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:30:19-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:30:25-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:30:27-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:30:32-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:30:34-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:30:37-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:30:43-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:30:44-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:36:34-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:36:35-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:36:35-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:37:03-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:37:03-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:39:20-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:39:20-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:39:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:39:41-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:41:03-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:41:04-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:42:06-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:42:06-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:51:20-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:51:21-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:52:07-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:52:07-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:53:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:53:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:54:03-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:54:04-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:55:44-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:55:44-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:56:07-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:56:07-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:56:13-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:56:14-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:56:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:56:17-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-02T19:56:21-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-02T19:56:22-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:15:28-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:15:28-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:41:51-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:41:52-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:43:33-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:43:34-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:49:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:49:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:49:42-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:49:43-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:50:09-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:50:10-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:52:20-06:00 ERR (3): (User\Module.php): User not found by session id
+2017-03-03T06:58:15-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:58:51-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:59:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T06:59:41-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:00:31-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:00:32-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:02:57-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:02:58-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:04:24-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:04:25-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:05:05-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:05:06-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:05:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:05:19-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:05:31-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:05:31-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:09:36-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:09:37-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:10:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:10:41-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:12:30-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:12:35-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:17:27-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:17:28-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:19:11-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:19:12-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:21:54-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:21:55-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:22:52-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:22:53-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:23:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:23:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:23:51-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:23:53-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:26:42-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:26:43-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:26:46-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T07:26:47-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:14:16-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:14:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:24:20-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:24:21-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:24:29-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:24:34-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:25:23-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:25:24-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:25:29-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:25:29-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:26:04-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:26:05-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:27:15-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:27:16-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:29:20-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:29:21-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:32:38-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:32:39-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:33:25-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:33:26-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:34:15-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:34:15-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:34:39-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:34:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:34:56-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:35:02-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:35:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:35:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:35:53-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:35:53-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:36:38-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:36:39-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:39:19-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:39:20-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:39:50-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:39:51-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:40:19-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:40:20-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:41:44-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:41:46-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:42:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:42:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:42:31-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:42:32-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:45:37-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:45:38-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:46:01-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:46:01-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:47:16-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:47:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:48:13-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:48:14-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:48:24-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:48:25-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:50:49-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:50:50-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:51:16-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:51:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:54:14-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:54:15-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:56:33-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:56:34-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:56:59-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:57:00-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:57:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:57:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:58:46-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:58:47-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:59:34-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:59:35-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:59:53-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T09:59:54-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:00:16-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:00:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:00:37-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:00:38-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:00:51-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:00:52-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:02:09-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:02:11-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:03:59-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:04:00-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:04:01-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T10:07:45-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:07:46-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:07:47-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:07:48-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T10:08:12-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:08:13-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T10:08:32-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:08:32-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T10:08:50-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:08:51-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T10:09:14-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:09:14-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T10:11:30-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:11:31-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T10:12:04-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:12:04-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T10:12:14-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:12:15-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:12:28-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:12:29-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T10:12:32-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:12:33-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:12:36-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:12:37-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T10:12:43-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T10:12:43-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:14:53-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:14:54-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:15:35-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:15:36-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:15:53-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:15:54-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:18:55-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:18:56-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:37:23-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:37:23-06:00 ERR (3): Call to undefined function Application\View\Helper\wrapLettersInSpans() {"type":"FATAL","reference":"c74985","file":"/u/local/jasonpalmer/ffmpricing/module/Application/src/View/Helper/Menu.php","line":184,"uri":"http://ffmpricing.localhost/users","request":"GET http://ffmpricing.localhost/users HTTP/1.1\r\nCookie: PHPSESSID=607ad209425a72d19028feb6bee80906\r\nHost: ffmpricing.localhost\r\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://ffmpricing.localhost/users/change-password/6\r\nConnection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nCache-Control: max-age=0\r\n\r\n","ip":"::1","session_id":"607ad209425a72d19028feb6bee80906","trace":"\n\n"}
+2017-03-03T11:37:37-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:37:37-06:00 ERR (3): Call to undefined function Application\View\Helper\wrapLettersInSpans() {"type":"FATAL","reference":"697b14","file":"/u/local/jasonpalmer/ffmpricing/module/Application/src/View/Helper/Menu.php","line":185,"uri":"http://ffmpricing.localhost/users","request":"GET http://ffmpricing.localhost/users HTTP/1.1\r\nCookie: PHPSESSID=607ad209425a72d19028feb6bee80906\r\nHost: ffmpricing.localhost\r\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://ffmpricing.localhost/users/change-password/6\r\nConnection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nCache-Control: max-age=0\r\n\r\n","ip":"::1","session_id":"607ad209425a72d19028feb6bee80906","trace":"\n\n"}
+2017-03-03T11:38:29-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:38:30-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:42:07-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:42:08-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:43:06-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:43:07-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:43:44-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:43:45-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:47:56-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:47:57-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:48:29-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:48:30-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:49:25-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:49:26-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:50:24-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:50:25-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:51:35-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:51:36-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:55:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:55:41-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:56:32-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:58:47-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T11:58:48-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:00:05-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:00:10-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:07:32-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:07:33-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:09:10-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:09:11-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:10:10-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:10:11-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:12:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:12:41-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:17:39-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:17:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:18:42-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:18:43-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:19:27-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:19:28-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-03T12:19:32-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:22:58-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-03T12:22:58-06:00 ERR (3): Argument 4 passed to Application\Navigation\NavManager::__construct() must be an instance of Application\Navigation\Config, array given, called in /u/local/jasonpalmer/ffmpricing/module/Application/src/Navigation/Factory/NavManagerFactory.php on line 26 and defined {"type":"ERROR","file":"/u/local/jasonpalmer/ffmpricing/module/Application/src/Navigation/NavManager.php","line":43,"reference":"1d216e","uri":"http://ffmpricing.localhost/","request":"GET http://ffmpricing.localhost/ HTTP/1.1\r\nCookie: PHPSESSID=607ad209425a72d19028feb6bee80906\r\nHost: ffmpricing.localhost\r\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://ffmpricing.localhost/application/settings\r\nConnection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nCache-Control: max-age=0\r\n\r\n","ip":"::1","session_id":"607ad209425a72d19028feb6bee80906","trace":"\n\n"}
+2017-03-05T07:40:29-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T07:40:29-06:00 ERR (3): Argument 4 passed to Application\Navigation\NavManager::__construct() must be an instance of Application\Navigation\Config, array given, called in /u/local/jasonpalmer/ffmpricing/module/Application/src/Navigation/Factory/NavManagerFactory.php on line 26 and defined {"type":"ERROR","file":"/u/local/jasonpalmer/ffmpricing/module/Application/src/Navigation/NavManager.php","line":43,"reference":"396d00","uri":"http://ffmpricing.localhost/","request":"GET http://ffmpricing.localhost/ HTTP/1.1\r\nCookie: PHPSESSID=607ad209425a72d19028feb6bee80906\r\nHost: ffmpricing.localhost\r\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://ffmpricing.localhost/application/settings\r\nConnection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nCache-Control: max-age=0\r\n\r\n","ip":"::1","session_id":"607ad209425a72d19028feb6bee80906","trace":"\n\n"}
+2017-03-05T07:41:51-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T13:00:33-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:15:44-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:15:48-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:15:49-06:00 ERR (3): (User\Module.php): User not found by session id
+2017-03-05T15:15:58-06:00 ERR (3): (User\Module.php): User not found by session id
+2017-03-05T15:15:59-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:16:05-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:16:06-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:19:39-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:19:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:23:02-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:23:03-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:23:43-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:23:43-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-05T15:24:12-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:24:13-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-05T15:25:43-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T15:25:44-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T20:54:38-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T20:54:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-05T20:54:40-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-06T08:49:55-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:49:56-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:49:57-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-06T08:50:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:50:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:50:18-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-06T08:50:29-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:50:30-06:00 ERR (3): (User\Module.php): User not found by session id
+2017-03-06T08:50:32-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-06T08:51:14-06:00 ERR (3): (User\Module.php): User not found by session id
+2017-03-06T08:51:15-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:51:16-06:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-03-06T08:51:34-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:51:39-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:51:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:52:14-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:52:14-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:53:35-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:53:36-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:53:40-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:53:41-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:57:38-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-06T08:57:39-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.

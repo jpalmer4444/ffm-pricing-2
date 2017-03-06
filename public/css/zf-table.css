@@ -4,14 +4,14 @@
   color: #FFFFFF;
   display: block;
   float: left;
-  height: 15px;
+  height: 66px;
   left: 50%;
   margin-left: -50px;
   position: absolute;
   text-align: center;
   text-transform: uppercase;
-  top: 10%;
-  width: 128px;
+  top: 15%;
+  width: 66px;
 }
 
 td.editable , .table-hover>tbody>tr:hover>td.editable , .table-striped>tbody>tr:nth-child(odd)>td.editable {
