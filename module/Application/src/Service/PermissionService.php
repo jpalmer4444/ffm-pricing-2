@@ -20,7 +20,7 @@ class PermissionService extends BaseService
     
     public function getQueryBuilder()
     {
-        return $this->getRepository()->createQueryBuilder('p');
+        return $this->getRepository()->createQueryBuilder('permission');
     }
 
     /**

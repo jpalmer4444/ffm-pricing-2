@@ -1,10 +1,10 @@
 <?php
-
 namespace User\Service;
 
+use Application\Entity\UserSession;
 use Application\Service\UserService;
+use Application\Service\UserSessionService;
 use DateTime;
-use Exception;
 use ReflectionClass;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
@@ -18,7 +18,7 @@ use Zend\Session\SessionManager;
  * persisting sessionId to the DB for load-balanced session management.
  */
 class AuthManager {
-    
+
     /**
      * Logger service
      * @var Logger
@@ -44,6 +44,12 @@ class AuthManager {
     private $userService;
 
     /**
+     * UserSessionService.
+     * @var UserSessionService
+     */
+    private $userSessionService;
+
+    /**
      * Contents of the 'access_filter' config key.
      * @var array 
      */
@@ -52,10 +58,13 @@ class AuthManager {
     /**
      * Constructs the service.
      */
-    public function __construct(UserService $userService, AuthenticationService $authService, SessionManager $sessionManager, Logger $logger, $config) {
+    public function __construct(
+    UserService $userService, UserSessionService $userSessionService, AuthenticationService $authService, SessionManager $sessionManager, Logger $logger, $config
+    ) {
         $this->authService = $authService;
         $this->sessionManager = $sessionManager;
         $this->userService = $userService;
+        $this->userSessionService = $userSessionService;
         $this->config = $config;
         $this->logger = $logger;
     }
@@ -70,27 +79,22 @@ class AuthManager {
         if ($this->authService->getIdentity() != null) {
             $this->logMessage('The user is already logged in!', Logger::INFO);
         }
-
         // Authenticate with login/password.
         $authAdapter = $this->authService->getAdapter();
         $authAdapter->setEmail($email);
         $authAdapter->setPassword($password);
         $result = $this->authService->authenticate();
-
         // If user wants to "remember him", we will make session to expire in 
         // one month. By default session expires in 1 hour (as specified in our 
         // config/global.php file).
         if ($result->getCode() == Result::SUCCESS) {
-            
             //save sessionId in DB
             $this->setSessionId($email, $this->sessionManager->getId());
-            
-            if($rememberMe){
+            if ($rememberMe) {
                 // Session cookie will expire in 1 month (30 days).
                 $this->sessionManager->rememberMe(60 * 60 * 24 * 30);
             }
         }
-
         return $result;
     }
 
@@ -102,10 +106,8 @@ class AuthManager {
         if ($this->authService->getIdentity() == null) {
             $this->logMessage('The user is not logged in!', Logger::INFO);
         }
-        
         //pass email of logged-in user and NULL to clear sessionId in DB.
         $this->setSessionId($this->authService->getIdentity(), NULL);
-
         // Remove identity from session.
         $this->authService->clearIdentity();
     }
@@ -117,22 +119,16 @@ class AuthManager {
      * This method uses RBAC from DB.
      */
     public function filterAccess($controllerName, $actionName) {
-        
         if (!$this->authService->hasIdentity()) {
             return false;
         }
-
         $user = $this->userService->getRepository()->findOneByEmail($this->authService->getIdentity());
-        
         $roles = !empty($user) ? $user->getRoles() : [];
-        
         foreach ($roles as $role) {
             $permissions = $role->getPermissions();
             if (!empty($permissions)) {
                 foreach ($permissions as $permission) {
-                    
                     if ($this->checkControllerName($permission->getName(), $controllerName)) {
-                        
                         //check if action matches.
                         if ($this->checkActionName($permission->getName(), $actionName)) {
                             return true;
@@ -141,7 +137,6 @@ class AuthManager {
                 }
             }
         }
-
         // Do not permit access to this page.
         return false;
     }
@@ -156,12 +151,9 @@ class AuthManager {
      * @return boolean
      */
     private function checkControllerName($name, $controllerName) {
-        
-        if (strpos(ucwords(substr($name, 0, strpos($name, '/'))) . "Controller", 
-                (new ReflectionClass($controllerName))->getShortName()) !== FALSE) {
+        if (strpos(ucwords(substr($name, 0, strpos($name, '/'))) . "Controller", (new ReflectionClass($controllerName))->getShortName()) !== FALSE) {
             return true;
         }
-        
         return false;
     }
 
@@ -173,14 +165,12 @@ class AuthManager {
      * @return boolean
      */
     private function checkActionName($name, $actionName) {
-        
         if (strpos(substr($name, strrpos($name, '/')), $actionName) !== FALSE) {
             return true;
         }
-        
         return false;
     }
-    
+
     /**
      * Email must always be non-null, but sessionId should be null
      * when logging out the User.
@@ -188,29 +178,34 @@ class AuthManager {
      * @param type $sessionId
      */
     private function setSessionId($email, $sessionId) {
+        //get user agent string
+        $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null;
+        $user = $this->userService->findByEmail($email);
         //if email is not null
-        if(!empty($sessionId)){
-            
-            $user = $this->userService->findByEmail($email);
-            $user->setSessionId($sessionId);
+        if (!empty($sessionId)) {
+            //check if we already have a UserSession record for this User and this Browser.
+            $userSession = $this->userSessionService->getEntityManager()->getRepository(UserSession::class)
+                    ->findOneBy(['userId' => $user->getId(), 'userAgent' => $userAgent]);
+            if (empty($userSession)) {
+                $userSession = new UserSession();
+                $userSession->setUserAgent($userAgent);
+                $userSession->setUserId($user->getId());
+            }
+            $userSession->setSessionId($sessionId);
             $user->setLastLogin(new DateTime());
-            $this->userService->save($user);
-            
-        }else if (!empty($email)){
-            
-            $user = $this->userService->findByEmail($email);
-            $user->setSessionId($sessionId);
-            $this->userService->save($user);
-            
-        }else {
-            
+            $this->userSessionService->save($userSession);
+        } else if (!empty($email)) {
+            $userSession = $this->userSessionService->getEntityManager()->getRepository(UserSession::class)
+                    ->findOneBy(['userId' => $user->getId(), 'userAgent' => $userAgent]);
+            if (!empty($userSession)) {
+                $userSession->setSessionId($sessionId);
+                $this->userSessionService->save($userSession);
+            }
+        } else {
             $this->logMessage("SessionId and Email passed were empty! RuntimeError! Please Fix");
-            
         }
-        
-        
     }
-    
+
     protected function logMessage($message, $level = Logger::INFO) {
         $this->logger->log($level, $message);
     }

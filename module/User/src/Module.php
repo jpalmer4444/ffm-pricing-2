@@ -3,6 +3,7 @@
 namespace User;
 
 use Application\Controller\IndexController;
+use Application\Entity\UserSession;
 use User\Controller\AuthController;
 use User\Service\AuthManager;
 use Zend\Log\Logger;
@@ -70,6 +71,10 @@ class Module {
         // Get the instance of UserService.
         $userService = $event->getApplication()->
                         getServiceManager()->get('Application\Service\UserService');
+        
+        // Get the instance of UserSessionService.
+        $userSessionService = $event->getApplication()->
+                        getServiceManager()->get('Application\Service\UserSessionService');
 
         // Get the instance of SessionManager.
         $sessionManager = $event->getApplication()->
@@ -92,7 +97,7 @@ class Module {
         if (empty($authenticationService->getIdentity())) {
             //attempt to lookup User by sessionId.
             $sessionId = $sessionManager->getId();
-            $this->balanceLogin($sessionId, $userService, $authenticationService, $logger);
+            $this->balanceLogin($sessionId, $userService, $userSessionService, $authenticationService, $logger);
         } else {
             $this->log(Logger::INFO, "Authentication Service has logged-in user.", $logger);
         }
@@ -125,9 +130,15 @@ class Module {
         }
     }
 
-    private function balanceLogin($sessionId, $userService, $authenticationService, $logger) {
+    private function balanceLogin($sessionId, $userService, $userSessionService, $authenticationService, $logger) {
         if (!empty($sessionId)) {
-            $user = $userService->findBySessionId($sessionId);
+            $userSession = $userSessionService->getEntityManager()->getRepository(UserSession::class)
+                ->findOneBy(['sessionId' =>$sessionId]);
+            if(!empty($userSession)){
+                $user = $userService->find($userSession->getUserId());
+            }else{
+                $this->log(Logger::ERR, "UserSession not found by session id", $logger);
+            }
             if (!empty($user)) {
                 // Authenticate with login/password.
                 $authAdapter = $authenticationService->getAdapter();
@@ -135,8 +146,6 @@ class Module {
                 $authAdapter->setPassword($user->getPassword());
                 $authAdapter->setUseBcrypt(FALSE);
                 $authenticationService->authenticate();
-            } else {
-                $this->log(Logger::ERR, "User not found by session id", $logger);
             }
         } else {
             $this->log(Logger::ERR, "Session Id empty", $logger);

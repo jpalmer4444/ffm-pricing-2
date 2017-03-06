@@ -1,22 +1,17 @@
 <?php
-/**
- * @copyright  Copyright (c) 2017 Fulton Fish Market
- * @author     Jason Palmer <jpalmer@meadedigital.com>
- */
-
 namespace Application\Service;
 
-use Application\Entity\Role;
+use Application\Entity\UserSession;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Exception;
 use Zend\Log\Logger;
 
-class RolesService extends BaseService
+class UserSessionService extends BaseService
 {
     
     public function __construct(EntityManager $entityManager, array $config, Logger $logger) {
-        parent::__construct($entityManager, $config, $logger, Role::class);
+        parent::__construct($entityManager, $config, $logger, UserSession::class);
     }
 
     /**
@@ -24,19 +19,19 @@ class RolesService extends BaseService
      */
     public function getQueryBuilder()
     {
-        return $this->getRepository()->createQueryBuilder('role');
+        return $this->getRepository()->createQueryBuilder('userSession');
     }
 
     /**
-     * Update / Edit Role
+     * Update / Edit Application\Entity\UserSession
      *
-     * @param $role
+     * @param $userSession
      * @return bool
      */
-    public function save($role)
+    public function save($userSession)
     {
         try {
-            $this->getEntityManager()->persist($role);
+            $this->getEntityManager()->persist($userSession);
             $this->getEntityManager()->flush();
         } catch (Exception $e) {
             return false;
@@ -46,7 +41,7 @@ class RolesService extends BaseService
     }
 
     /**
-     * Delete Role
+     * Delete Application\Entity\UserSession
      *
      * @param $id
      * @return bool
@@ -54,12 +49,11 @@ class RolesService extends BaseService
     public function delete($id)
     {
         try {
-            /** @var Role $role */
-            $role = $this->getRepository()->find($id);
+            /** @var UserSession $role */
+            $userSession = $this->getRepository()->find($id);
 
-            if (!is_null($role) && empty($role->getUsers())) {
-                $role->clearPermissions();
-                $this->getEntityManager()->remove($role);
+            if (!is_null($userSession)) {
+                $this->getEntityManager()->remove($userSession);
                 $this->getEntityManager()->flush();
 
                 return true;
@@ -84,9 +78,9 @@ class RolesService extends BaseService
     {
         $data = $this->getRepository()->findAll();
         $result = [];
-        /** @var Role $item */
+        /** @var UserSession $item */
         foreach ($data as $item) {
-            $result[$item->getId()] = $item->getName();
+            $result[$item->getSessionId()] = $item->getSessionId();
         }
 
         return $result;

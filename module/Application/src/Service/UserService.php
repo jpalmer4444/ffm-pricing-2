@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright  Copyright (c) 2015 Busteco Global Brain
- * @author     Valentina <valentina@busteco.ro> / Ana-Maria Buliga <anamaria@busteco.ro>
+ * @copyright  Copyright (c) 2017 Fulton Fish Market
+ * @author     Jason Palmer <jpalmer@meadedigital.com>
  */
 
 namespace Application\Service;
@@ -29,7 +29,7 @@ class UserService extends BaseService
      */
     public function getQueryBuilder()
     {
-        return $this->getRepository()->createQueryBuilder('u');
+        return $this->getRepository()->createQueryBuilder('user');
     }
 
     /**

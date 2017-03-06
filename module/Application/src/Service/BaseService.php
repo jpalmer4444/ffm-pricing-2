@@ -1,7 +1,9 @@
 <?php
 
 /*
- * Base Service class
+ * @copyright  Copyright (c) 2017 Fulton Inc
+ * @author     Jason Palmer <jpalmer@meadedigital.com>
+ * BaseService class
  */
 
 namespace Application\Service;
@@ -9,7 +11,6 @@ namespace Application\Service;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Zend\Log\Logger;
-use Zend\Log\Writer\Stream;
 use Zend\ServiceManager\Config;
 use ZendPdf\Resource\Font\AbstractFont;
 use Doctrine\ORM\EntityManager;

@@ -16,7 +16,6 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `version` INTEGER DEFAULT 1,
-  `session_id` varchar(255) DEFAULT NULL,
   `email` varchar(128) NOT NULL,
   `full_name` varchar(512) NOT NULL,
   `password` varchar(256) NOT NULL,
@@ -62,6 +61,16 @@ INSERT INTO users (id, full_name, status, date_created, password, salespersonnam
 VALUES(8, 'Iris Derfler', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Iris Derfler', 181, 'iderfler@fultonfishmarket.com', '847-606-2555');
 INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
 VALUES(9, 'Jody Meade', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Jody Meade', 180, 'jody@fultonfishmarket.com', '570-335-6484');
+
+CREATE TABLE `pricing_2`.`user_sessions` (
+  `user_id` int(11) NOT NULL,
+  `session_id` varchar(255) NOT NULL,
+  `user_agent` varchar(255) NOT NULL,
+  PRIMARY KEY (`session_id`,`user_agent`),
+  KEY `IDX_1DE7C6A3A76ED395` (`session_id`),
+  KEY `IDX_1DE7C6A3D60322AC` (`user_agent`),
+  CONSTRAINT `FK_2DE8C6A2A76DD395` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

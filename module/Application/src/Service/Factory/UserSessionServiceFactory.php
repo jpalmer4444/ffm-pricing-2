@@ -1,8 +1,7 @@
 <?php
-
 namespace Application\Service\Factory;
 
-use Application\Service\UserService;
+use Application\Service\UserSessionService;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
@@ -13,17 +12,17 @@ use Zend\ServiceManager\Factory\FactoryInterface;
  */
 
 /**
- * Description of UserServiceFactory
+ * Description of UserSessionServiceFactory
  *
  * @author jasonpalmer
  */
-class UserServiceFactory implements FactoryInterface {
+class UserSessionServiceFactory implements FactoryInterface {
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = NULL) {
         $config = $container->get('Config');
         $entityManager = $container->get('Doctrine\ORM\EntityManager');
         $logger = $container->get('Zend\Log\Logger');
-        return new UserService($entityManager, $config, $logger);
+        return new UserSessionService($entityManager, $config, $logger);
     }
 
 }
