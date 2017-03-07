@@ -4172,6 +4172,7 @@ select.mobile-device {
   font-style: normal; }
 .ion, .ionicons,
 .ion-alert-circled:before,
+.ion-android-unlock:before,
 .ion-arrow-right-a:before,
 .ion-calendar:before,
 .ion-checkmark:before,
@@ -4200,6 +4201,9 @@ select.mobile-device {
 
 .ion-alert-circled:before {
   content: ""; }
+
+.ion-android-unlock:before {
+  content: ""; }
 
 .ion-arrow-right-a:before {
   content: ""; }
@@ -4361,7 +4365,7 @@ ul.navbar-nav > li.open > a {
 ul.navbar-nav > li.active > a {
   color: #fff;
   background-color: #669aa8;
-  border-bottom-color: #669aa8;
+  border-bottom-color: #00576e;
   background-image: none;
   background-repeat: no-repeat;
   box-shadow: none; }

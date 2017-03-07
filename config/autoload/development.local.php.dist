@@ -16,6 +16,56 @@
  */
 
 return [
+    'doctrine' => array(
+        'connection' => array(
+            // default connection name
+            'orm_default' => array(
+                'driverClass' => 'Doctrine\DBAL\Driver\Mysqli\Driver',
+                'params' => array(
+                    'dbname' => 'pricing_skeleton',
+                    'user' => 'jpalmer',
+                    'password' => 'goodbass',
+                    'host' => 'localhost',
+                    'port' => 3306,
+                    'driver' => 'pdo_mysql',
+                )
+            )
+        ),
+        'driver' => array(
+            // defines an annotation driver with two paths, and names it `my_annotation_driver`
+            'my_annotation_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/' . __NAMESPACE__
+                ),
+            ),
+            // default metadata driver, aggregates all other drivers into a single one.
+            // Override `orm_default` only if you know what you're doing
+            'orm_default' => array(
+                'drivers' => array(
+                    // register `my_annotation_driver` for any entity under namespace `My\Namespace`
+                    'Application\Entity' => 'my_annotation_driver',
+                    'User\Entity' => 'my_annotation_driver'
+                )
+            )
+        )
+    ),
+    'db' => array(
+        'driver'         => 'Pdo',
+        'dsn'            => 'mysql:dbname=pricing_skeleton;host=localhost',
+        'driver_options' => array(
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+        ),
+        'username'       => 'jpalmer',
+        'password'       => 'goodbass'
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter'
+                    => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ),
+    ),
     'view_manager' => [
         'display_exceptions' => true,
     ],

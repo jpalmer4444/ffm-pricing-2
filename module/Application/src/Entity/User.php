@@ -67,11 +67,6 @@ class User
     protected $roles;
     
     /**
-     * @ORM\Column(name="session_id", type="string", nullable=true)
-     */
-    protected $sessionId;
-    
-    /**
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     protected $lastlogin;
@@ -82,14 +77,6 @@ class User
     
     public function getLastlogin() {
         return $this->lastlogin;
-    }
-    
-    public function getSessionId() {
-        return $this->sessionId;
-    }
-    
-    public function setSessionId($sessionId) {
-        $this->sessionId = $sessionId;
     }
     
     /**

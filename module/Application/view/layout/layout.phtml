@@ -37,10 +37,13 @@
 
         // Render the navbar
         echo $this->mainMenu()->render();
+        
+        // Render the Breadcrumbs
+        echo $this->pageBreadcrumbs()->render();
+        
         ?>
+        
         <div class="container main">
-
-            <?= $this->pageBreadcrumbs()->render(); ?>
 
             <?php echo $this->content; ?>
 

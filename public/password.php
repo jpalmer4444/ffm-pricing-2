@@ -1,10 +1,12 @@
 <?php
 
-echo "bzakrinski starfish51: " . password_hash("starfish51", PASSWORD_BCRYPT)."\n";
-echo "cmetallo brooktrout79: " . password_hash("brooktrout79", PASSWORD_BCRYPT)."\n";
-echo "iderfler rainbow37: " . password_hash("rainbow37", PASSWORD_BCRYPT)."\n";
-echo "jdowns bluegill31: " . password_hash("bluegill31", PASSWORD_BCRYPT)."\n";
-echo "jmeade pinkwhale12: " . password_hash("pinkwhale12", PASSWORD_BCRYPT)."\n";
-echo "dtanzer Password1: " . password_hash("Password1", PASSWORD_BCRYPT)."\n";
+if (isset($argv[1])) {
+    $password = (string) $argv[1]; // use the command line argument for ID
+} else {
+    do {
+        print("Enter a Password: ");
+        $password = fgets(STDIN); // prompt the user for an ID
+    } while (empty($password) || $password == PHP_EOL);
+}
 
-
+echo "Password: " . $password . " Hashed: " . password_hash($password, PASSWORD_BCRYPT) . "\n";
