@@ -8,7 +8,6 @@ namespace Application\Service;
 
 use Application\Entity\Permission;
 use Doctrine\ORM\EntityManager;
-use Exception;
 use Zend\Log\Logger;
 
 class PermissionService extends BaseService
@@ -69,7 +68,7 @@ class PermissionService extends BaseService
             $this->getEntityManager()->flush();
 
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -93,7 +92,7 @@ class PermissionService extends BaseService
 
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 

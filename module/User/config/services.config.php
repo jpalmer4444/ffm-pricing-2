@@ -1,8 +1,5 @@
 <?php
 
-use Zend\Log\Logger;
-use Zend\Log\Writer\Stream;
-
 return [
     'abstract_factories' => [
         'Zend\Cache\Service\StorageCacheAbstractServiceFactory',

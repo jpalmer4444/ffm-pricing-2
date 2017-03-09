@@ -39,6 +39,7 @@ class UserManager
         // Create new User entity.
         $user = new User();
         $user->setEmail($data['email']);
+        $user->setUsername($data['username']);
         $user->setFullName($data['full_name']);        
 
         // Encrypt password and store the password in encrypted state.
@@ -70,7 +71,13 @@ class UserManager
             throw new \Exception("Another user with email address " . $data['email'] . " already exists");
         }
         
+        // Do not allow to change user username if another user with such username already exits.
+        if($user->getUsername()!=$data['username'] && $this->checkUserExistsUsername($data['username'])) {
+            throw new \Exception("Another user with username " . $data['username'] . " already exists");
+        }
+        
         $user->setEmail($data['email']);
+        $user->setUsername($data['username']);
         $user->setFullName($data['full_name']);        
         $user->setStatus($data['status']);        
         
@@ -87,6 +94,17 @@ class UserManager
         
         $user = $this->entityManager->getRepository(User::class)
                 ->findOneByEmail($email);
+        
+        return $user !== null;
+    }
+    
+    /**
+     * Checks whether an active user with given email address already exists in the database.     
+     */
+    public function checkUserExistsUsername($username) {
+        
+        $user = $this->entityManager->getRepository(User::class)
+                ->findOneByUsername($username);
         
         return $user !== null;
     }

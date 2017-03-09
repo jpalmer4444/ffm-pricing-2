@@ -3,6 +3,8 @@ $this->headTitle('Users');
 
 $this->mainMenu()->setActiveItemId('users');
 
+$this->mainMenu()->setSiteMapOverride('Manage Users');
+
 $this->pageBreadcrumbs()->setItems([
     'Home' => $this->url('home'),
     'Manage Users' => $this->url('users'),

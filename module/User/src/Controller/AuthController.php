@@ -65,7 +65,7 @@ class AuthController extends AbstractActionController
     }
     
     /**
-     * Authenticates user given email address and password credentials.     
+     * Authenticates user given username and password credentials.     
      */
     public function loginAction()
     {
@@ -99,7 +99,7 @@ class AuthController extends AbstractActionController
                 $data = $form->getData();
                 
                 // Perform login attempt.
-                $result = $this->authManager->login($data['email'], 
+                $result = $this->authManager->login($data['username'], 
                         $data['password'], $data['remember_me']);
                 
                 // Check result.

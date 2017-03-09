@@ -2,7 +2,6 @@
 
 namespace User;
 
-use Application\Controller\IndexController;
 use Application\Entity\UserSession;
 use User\Controller\AuthController;
 use User\Service\AuthManager;
@@ -34,6 +33,22 @@ class Module {
         $sharedEventManager = $eventManager->getSharedManager();
         // Register the event listener method. 
         $sharedEventManager->attach(AbstractActionController::class, MvcEvent::EVENT_DISPATCH, [$this, 'onDispatch'], 100);
+    
+        //setup error handler
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'handleError'));
+        $eventManager->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'handleError'));
+    }
+    
+    public function handleError(MvcEvent $event) {
+        $controller = $event->getController();
+        $error = $event->getParam('error');
+        $exception = $event->getParam('exception');
+        $message = sprintf(' Error dispatching controller "%s". Error was: "%s"', $controller, $error);
+        if ($exception instanceof \Exception) {
+            $message .= ', Exception(' . $exception->getMessage() . '): ' . $exception->getTraceAsString();
+        }
+        $logger = $event->getApplication()->getServiceManager()->get('Zend\Log\Logger');
+        $logger->log(Logger::ERR, $message);
     }
 
     /**
@@ -103,16 +118,13 @@ class Module {
         }
 
         // Execute the access filter on every controller except AuthController
-        // and IndexController/index and IndexController/about
         // (to avoid infinite redirect).
         // Check to see if we need to bypass this Request because it is not for a 
         // protected resource.
         // check if this request is for index/index
-        $bypass = ($controllerName == IndexController::class && ($actionName == 'index')) ||
-                // or this request is for AuthController.
-                strcmp($controllerName, AuthController::class) == 0;
+        $bypass = strcmp($controllerName, AuthController::class) == 0;
 
-        if (!$bypass && !$authManager->filterAccess($controllerName, $actionName)) {
+        if (!$bypass && !$authManager->isGranted($controllerName, $actionName)) {
 
             // Remember the URL of the page the user tried to access. We will
             // redirect the user to that URL after successful login.
@@ -142,7 +154,7 @@ class Module {
             if (!empty($user)) {
                 // Authenticate with login/password.
                 $authAdapter = $authenticationService->getAdapter();
-                $authAdapter->setEmail($user->getEmail());
+                $authAdapter->setUsername($user->getUsername());
                 $authAdapter->setPassword($user->getPassword());
                 $authAdapter->setUseBcrypt(FALSE);
                 $authenticationService->authenticate();

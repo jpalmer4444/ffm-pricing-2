@@ -3,6 +3,8 @@ $this->headTitle('View User');
 
 $this->mainMenu()->setActiveItemId('users');
 
+$this->mainMenu()->setSiteMapOverride('View User');
+
 $this->pageBreadcrumbs()->setItems([
             'Home'=>$this->url('home'),
             'Manage Users'=>$this->url('users'),
@@ -22,6 +24,10 @@ $this->pageBreadcrumbs()->setItems([
              <tr>
                 <th>ID:</th>
                 <td><?= $this->escapeHtml($user->getId()) ?></th>
+            </tr>
+            <tr>
+                <th>Username:</th>
+                <td><?= $this->escapeHtml($user->getUsername()) ?></th>
             </tr>
             <tr>
                 <th>E-mail:</th>

@@ -30,6 +30,11 @@ class User
     protected $email;
     
     /** 
+     * @ORM\Column(name="username")  
+     */
+    protected $username;
+    
+    /** 
      * @ORM\Column(name="full_name")  
      */
     protected $fullName;
@@ -131,6 +136,24 @@ class User
     public function setEmail($email) 
     {
         $this->email = $email;
+    }
+    
+    /**
+     * Returns username.     
+     * @return string
+     */
+    public function getUsername() 
+    {
+        return $this->username;
+    }
+
+    /**
+     * Sets username.     
+     * @param string $username
+     */
+    public function setUsername($username) 
+    {
+        $this->username = $username;
     }
     
     /**

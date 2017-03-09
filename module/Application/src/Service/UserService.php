@@ -10,7 +10,6 @@ use Application\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Exception;
 use Zend\Log\Logger;
 
 /**
@@ -49,7 +48,7 @@ class UserService extends BaseService
         try {
             $this->getEntityManager()->persist($user);
             $this->getEntityManager()->flush();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -77,7 +76,7 @@ class UserService extends BaseService
             }
 
             return false;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -111,6 +110,17 @@ class UserService extends BaseService
     public function findByEmail($email)
     {
         return $this->getRepository()->findOneBy(['email' => $email]);
+    }
+    
+    /**
+     * Get user by username
+     *
+     * @param $username
+     * @return null|object
+     */
+    public function findByUsername($username)
+    {
+        return $this->getRepository()->findOneBy(['username' => $username]);
     }
 
     /**

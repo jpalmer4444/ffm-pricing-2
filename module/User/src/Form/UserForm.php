@@ -2,9 +2,10 @@
 
 namespace User\Form;
 
-use Doctrine\ORM\EntityManager;
 use Application\Entity\User;
-use User\Validator\UserExistsValidator;
+use Doctrine\ORM\EntityManager;
+use User\Validator\UserEmailExistsValidator;
+use User\Validator\UserUsernameExistsValidator;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\Validator\Hostname;
@@ -60,6 +61,15 @@ class UserForm extends Form
      */
     protected function addElements() 
     {
+        // Add "username" field
+        $this->add([            
+            'type'  => 'text',
+            'name' => 'username',
+            'options' => [
+                'label' => 'Username',
+            ],
+        ]);
+        
         // Add "email" field
         $this->add([            
             'type'  => 'text',
@@ -130,6 +140,31 @@ class UserForm extends Form
         // Create main input filter
         $inputFilter = new InputFilter();        
         $this->setInputFilter($inputFilter);
+        
+        // Add input for "username" field
+        $inputFilter->add([
+                'name'     => 'username',
+                'required' => true,
+                'filters'  => [
+                    ['name' => 'StringTrim'],                    
+                ],                
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'min' => 1,
+                            'max' => 128
+                        ],
+                    ],
+                    [
+                        'name' => UserUsernameExistsValidator::class,
+                        'options' => [
+                            'entityManager' => $this->entityManager,
+                            'user' => $this->user
+                        ],
+                    ],                    
+                ],
+            ]);
                 
         // Add input for "email" field
         $inputFilter->add([
@@ -154,7 +189,7 @@ class UserForm extends Form
                         ],
                     ],
                     [
-                        'name' => UserExistsValidator::class,
+                        'name' => UserEmailExistsValidator::class,
                         'options' => [
                             'entityManager' => $this->entityManager,
                             'user' => $this->user

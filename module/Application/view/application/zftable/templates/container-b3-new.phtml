@@ -1,0 +1,116 @@
+<div class="zf-table-wrap form-inline ">
+        <div class="table-header">
+            <div class="pull-left">
+                <?php if ($this->name) : ?>
+                    <header>
+                        <h4 class="pull-left"><?= $this->name ?>
+                            <?php if ($this->showTotalNumber) : ?>
+                                (<?php echo $this->totalNumber; ?>)
+                            <?php endif; ?>
+                            <?php if ($this->showAddButton) : ?>
+                            <span data-toggle="modal" data-target="#<?php echo $this->name;?>Modal">
+                                &nbsp;<a class="ion-plus"
+                                         data-toggle="tooltip" data-placement="bottom" title=""
+                                         data-original-title="Add"></a>
+                                </span>
+                            <?php endif; ?>
+                        </h4>
+                    </header>
+                <?php endif;?>
+            </div>
+
+            <div class="pull-right">
+                <div class="table-header-text info addBarcode hidden">Adding</div>
+                <div class="table-header-text info subtractBarcode hidden">Subtracting</div>
+
+                <?php if ($this->showReloadItemsBtn) : ?>
+                    <a class="ion-refresh table-header-btn btn-accent" data-toggle="modal" data-target="#reloadItemsModal"
+                       data-href="/reloadItems"> Reload Order Items</a>
+                <?php endif;?>
+
+                <?php if ($this->futureItemsCount) : ?>
+                    <a href="<?php echo $this->futureItemsUrl; ?>" title="Future items"
+                       class="table-header-btn btn-accent">View Future items (<?php echo $this->futureItemsCount; ?>)</a>
+                <?php endif;?>
+
+                <?php if ($this->receivingUrl) : ?>
+                    <a href="<?php echo $this->receivingUrl; ?>" title="Back to Receiving"
+                       class="ion-chevron-left table-header-btn btn-accent"> Back to RECEIVING</a>
+                <?php endif;?>
+
+                <?php if ($this->showSearchBoxBtn) : ?>
+                    <a id="searchBox" title="Search Box" class="table-header-btn btn-default">Box lookup</a>
+                <?php endif;?>
+
+                <?php if ($this->showOpenMoreBtn) : ?>
+                    <a id="expandHide50" title="Open" class="table-header-btn blue-bg white-color border-transparent"></a>
+                    <a id="expandHide100" title="Open more" class="table-header-btn accent-bg white-color border-transparent"></a>
+                <?php endif;?>
+
+                <?php if ($this->isDayClosed) : ?>
+                    <a title="The Day is Closed" class="table-header-btn disabled btn-here">
+                        The Day is Closed <i class="ion-checkmark"></i></a>
+                    <input type="hidden" name="dayClosed" class="dayClosed" value="yes"/>
+                <?php else : ?>
+                    <?php if ($this->showEndOfDayBtn != false) : ?>
+                        <input type="hidden" name="dayClosed" class="dayClosed" value="no"/>
+                        <a id="lastFoo" title="Close Work Day"
+                           class="table-header-btn btn-accent">Close Work Day</a>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                <?php if ($this->showSendTrackingNrsBtn) : ?>
+                    <a id="sendTrackingNrs" title="Send Tracking Nos."
+                       class="table-header-btn btn-accent">Send Tracking Nos.</a>
+                <?php endif;?>
+
+                <?php if ($this->showDailyReportBtn) : ?>
+                    <a id="getDailyReport" title="Send UPS Daily Report"
+                       class="table-header-btn btn-accent">Send UPS Daily Report</a>
+                <?php endif;?>
+
+                <?php if ($this->showDeviceStatsBtn) : ?>
+                    <a id="deviceStats" title="Devices Stats" href="<?php echo $this->deviceStatsUrl; ?>"
+                       class="table-header-btn btn-accent">Devices Stats</a>
+                <?php endif;?>
+
+                <a title="Reset Filters" class="table-header-btn reset-filters-btn btn-default">
+                    Reset all filters<i class="ion-close"></i></a>
+
+                <?php if ($this->showDate != false) : ?>
+                    <div class="date-picker <?php echo ($this->showDate === 'hidden') ? 'hidden': '' ?>">
+                        <label class="cursor-pointer" for="ordersDatepicker">
+                            <input id="ordersDatepicker" class="form-control ion-calendar" size="8"
+                                   type="<?php echo ($this->showDate === 'hidden') ? 'hidden': 'text' ?>"
+                                   name="zff_DeliveryDate" value="<?php echo $this->date; ?>" readonly>
+                            <i class="ion-calendar"></i>
+                        </label>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($this->showItemPerPage) : ?>
+                    <select class="itemPerPage form-control selectpicker">
+                        <?php foreach ($this->itemCountPerPageValues as $item) : ?>
+                        <?php $selected = ($item == $this->itemCountPerPage) ? 'selected="selected"' : '""'; ?>
+                            <option <?php echo $selected ?>>
+                                <?php echo $item ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div class="table-header-text"><?php echo $this->typeForPagination; ?></div>
+                <?php endif; ?>
+
+                <?php if ($this->showPagination) : ?>
+                    <div class="dataTables_paginate paging_bootstrap pagination pull-right">
+                        <?php echo $this->paginator; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <div class="tbody-wrap">
+            <?php echo $this->table; ?>
+            <?php echo $this->paramsWrap; ?>
+        </div>
+
+</div>

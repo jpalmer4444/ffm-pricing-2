@@ -1,18 +1,179 @@
 
-2017-03-07T09:17:36-06:00 ERR (3): (User\Module.php): UserSession not found by session id
-2017-03-07T09:17:37-06:00 ERR (3): (User\Module.php): UserSession not found by session id
-2017-03-07T09:17:40-06:00 ERR (3): (User\Module.php): UserSession not found by session id
-2017-03-07T09:17:41-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:17:42-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:17:44-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:20:48-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:20:51-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:20:53-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:21:00-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:21:01-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:22:20-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:22:25-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:22:27-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:24:07-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:24:17-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
-2017-03-07T09:24:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:04:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:04:18-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:04:18-06:00 INFO (6): Rendering Now!
+2017-03-08T18:07:22-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:07:22-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:07:22-06:00 INFO (6): Rendering Now!
+2017-03-08T18:09:33-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:09:34-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:09:34-06:00 INFO (6): Rendering Now!
+2017-03-08T18:20:04-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:20:05-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:20:05-06:00 INFO (6): Rendering Now!
+2017-03-08T18:23:04-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:23:04-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:23:04-06:00 INFO (6): Rendering Now!
+2017-03-08T18:23:35-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:23:35-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:23:35-06:00 INFO (6): Rendering Now!
+2017-03-08T18:23:42-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:23:47-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:23:47-06:00 INFO (6): Rendering Now!
+2017-03-08T18:24:15-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:26:44-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:27:55-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:27:55-06:00 INFO (6): Rendering Now!
+2017-03-08T18:30:35-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:31:36-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:31:36-06:00 INFO (6): Rendering Now!
+2017-03-08T18:38:52-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:39:08-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:39:09-06:00 INFO (6): Rendering Now!
+2017-03-08T18:47:07-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:47:09-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:47:09-06:00 INFO (6): Rendering Now!
+2017-03-08T18:51:27-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:51:29-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:51:29-06:00 INFO (6): Rendering Now!
+2017-03-08T18:53:20-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:53:21-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:53:21-06:00 INFO (6): Rendering Now!
+2017-03-08T18:53:21-06:00 INFO (6):
+2017-03-08T18:54:26-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:54:26-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:54:26-06:00 INFO (6): Rendering Now!
+2017-03-08T18:54:26-06:00 INFO (6):
+2017-03-08T18:56:38-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:56:39-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:56:39-06:00 INFO (6): Rendering Now!
+2017-03-08T18:56:39-06:00 INFO (6):
+2017-03-08T18:57:12-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:57:13-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T18:57:13-06:00 INFO (6): Rendering Now!
+2017-03-08T18:57:13-06:00 INFO (6):
+2017-03-08T19:02:05-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T19:02:06-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T19:02:06-06:00 INFO (6): Rendering Now!
+2017-03-08T19:02:06-06:00 INFO (6):
+2017-03-08T19:02:34-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T19:02:34-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T19:02:34-06:00 INFO (6): Rendering Now!
+2017-03-08T19:02:34-06:00 INFO (6): <div class="zf-table-wrap  form-inline">
+    <div class="table-header">
+    </div>
+    <div class="row ">
+        <div class="col-sm-6 pull-left">
+                            <header>
+                    <h4>Users</h4>
+                </header>
+                    </div>
+            </div>
+    <table  id="usersTable" class="table table-bordered table-condensed table-hover table-striped dataTable display"><thead><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="zf-title"><th  data-order="asc" data-column="id" width="50" class="sorting sortable" >Id</th><th  data-order="asc" data-column="email" class="sorting sortable" >Email</th><th  data-order="asc" data-column="fullName" class="sorting sortable" >Full Name</th><th  data-order="asc" data-column="dateCreated" class="sorting sortable" >Date Created</th><th  data-order="asc" data-column="status" class="sorting sortable" >Active</th><th  data-order="asc" data-column="username" class="sorting sortable" >Actions</th></tr></thead><tr  class="zf-data-row"><td  >1</td><td  >jpalmer@meadedigital.com</td><td  >Jason Palmer</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >jpalmer</td></tr><tr  class="zf-data-row"><td  >2</td><td  >foobar@fultonfishmarket.com</td><td  >Foo Bar</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >foobarx</td></tr><tr  class="zf-data-row"><td  >3</td><td  >dtanzer@fultonfishmarket.com</td><td  >David Tanzer</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >dtanzer</td></tr><tr  class="zf-data-row"><td  >4</td><td  >jdowns@fultonfishmarket.com</td><td  >Jeff Downs</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >jdowns</td></tr><tr  class="zf-data-row"><td  >5</td><td  >cmetallo@fultonfishmarket.com</td><td  >Cyndi Metallo</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >cmetallo</td></tr><tr  class="zf-data-row"><td  >6</td><td  >mspindler@fultonfishmarket.com</td><td  >Mike Spindler</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >mspindler</td></tr><tr  class="zf-data-row"><td  >7</td><td  >bzak@fultonfishmarket.com</td><td  >Bill Zakrinski</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >bzakrinski</td></tr><tr  class="zf-data-row"><td  >8</td><td  >iderfler@fultonfishmarket.com</td><td  >Iris Derfler</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >iderfler</td></tr><tr  class="zf-data-row"><td  >9</td><td  >jody@fultonfishmarket.com</td><td  >Jody Meade</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >jmeade</td></tr></table>    <div class="row">
+        <div class="col-sm-6 text-left">
+                            <label class="pull-left">
+                    <select class="itemPerPage form-control">
+                                                                                <option "">5</option>
+                                                                                <option selected="selected">10</option>
+                                                                                <option "">20</option>
+                                                                                <option "">50</option>
+                                                                                <option "">100</option>
+                                            </select> 
+                </label> 
+                              </div>
+        <div class="col-sm-6 text-right">
+                            <div class="dataTables_paginate paging_bootstrap pagination">
+                            <ul class="pagination">
+            <li class="disabled">
+                <a data-page="1" href="">&laquo;</a></li>
+            <li class="disabled">
+                <a data-page="" href="">&lsaquo;</a></li>
+
+            <!-- Numbered page links -->
+                            <li class="active">
+                    <a data-page="1" href="">
+                        1                    </a>
+                </li>
+                        <!-- Next page link -->
+            <li class="disabled">
+                <a data-page="" href="">&rsaquo;</a></li>
+            <!-- Last page link -->
+            <li class="disabled">
+                <a data-page="1" href="">&raquo;</a></li>
+        </ul>
+                </div>
+                    </div>
+        <div class="processing">
+        </div>
+    </div>
+    <div class="params-wrap">
+    <input type="hidden"  name="zfTablePage" value="1" />
+    <input type="hidden"  name="zfTableColumn" value="" />
+    <input type="hidden"  name="zfTableOrder" value="asc" />
+    <input type="hidden"  name="zfTableQuickSearch" value="" />
+    <input type="hidden"  name="zfTableItemPerPage" value="10" />
+    </div>
+</div>
+
+2017-03-08T19:03:21-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T19:03:21-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T19:03:22-06:00 INFO (6): Rendering Now!
+2017-03-08T19:04:27-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T19:04:27-06:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-03-08T19:04:27-06:00 INFO (6): Rendering Now!
+2017-03-08T19:04:27-06:00 INFO (6): <div class="zf-table-wrap  form-inline">
+    <div class="table-header">
+    </div>
+    <div class="row ">
+        <div class="col-sm-6 pull-left">
+                            <header>
+                    <h4>Users</h4>
+                </header>
+                    </div>
+            </div>
+    <table  id="usersTable" class="table table-bordered table-condensed table-hover table-striped dataTable display"><thead><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="zf-title"><th  data-order="asc" data-column="id" width="50" class="sorting sortable" >Id</th><th  data-order="asc" data-column="email" class="sorting sortable" >Email</th><th  data-order="asc" data-column="fullName" class="sorting sortable" >Full Name</th><th  data-order="asc" data-column="dateCreated" class="sorting sortable" >Date Created</th><th  data-order="asc" data-column="status" class="sorting sortable" >Active</th><th  data-order="asc" data-column="username" class="sorting sortable" >Actions</th></tr></thead><tr  class="zf-data-row"><td  >1</td><td  >jpalmer@meadedigital.com</td><td  >Jason Palmer</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >jpalmer</td></tr><tr  class="zf-data-row"><td  >2</td><td  >foobar@fultonfishmarket.com</td><td  >Foo Bar</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >foobarx</td></tr><tr  class="zf-data-row"><td  >3</td><td  >dtanzer@fultonfishmarket.com</td><td  >David Tanzer</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >dtanzer</td></tr><tr  class="zf-data-row"><td  >4</td><td  >jdowns@fultonfishmarket.com</td><td  >Jeff Downs</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >jdowns</td></tr><tr  class="zf-data-row"><td  >5</td><td  >cmetallo@fultonfishmarket.com</td><td  >Cyndi Metallo</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >cmetallo</td></tr><tr  class="zf-data-row"><td  >6</td><td  >mspindler@fultonfishmarket.com</td><td  >Mike Spindler</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >mspindler</td></tr><tr  class="zf-data-row"><td  >7</td><td  >bzak@fultonfishmarket.com</td><td  >Bill Zakrinski</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >bzakrinski</td></tr><tr  class="zf-data-row"><td  >8</td><td  >iderfler@fultonfishmarket.com</td><td  >Iris Derfler</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >iderfler</td></tr><tr  class="zf-data-row"><td  >9</td><td  >jody@fultonfishmarket.com</td><td  >Jody Meade</td><td  >2017-03-07 09:41:36</td><td  >1</td><td  >jmeade</td></tr></table>    <div class="row">
+        <div class="col-sm-6 text-left">
+                            <label class="pull-left">
+                    <select class="itemPerPage form-control">
+                                                                                <option "">5</option>
+                                                                                <option selected="selected">10</option>
+                                                                                <option "">20</option>
+                                                                                <option "">50</option>
+                                                                                <option "">100</option>
+                                            </select> 
+                </label> 
+                              </div>
+        <div class="col-sm-6 text-right">
+                            <div class="dataTables_paginate paging_bootstrap pagination">
+                            <ul class="pagination">
+            <li class="disabled">
+                <a data-page="1" href="">&laquo;</a></li>
+            <li class="disabled">
+                <a data-page="" href="">&lsaquo;</a></li>
+
+            <!-- Numbered page links -->
+                            <li class="active">
+                    <a data-page="1" href="">
+                        1                    </a>
+                </li>
+                        <!-- Next page link -->
+            <li class="disabled">
+                <a data-page="" href="">&rsaquo;</a></li>
+            <!-- Last page link -->
+            <li class="disabled">
+                <a data-page="1" href="">&raquo;</a></li>
+        </ul>
+                </div>
+                    </div>
+        <div class="processing">
+        </div>
+    </div>
+    <div class="params-wrap">
+    <input type="hidden"  name="zfTablePage" value="1" />
+    <input type="hidden"  name="zfTableColumn" value="" />
+    <input type="hidden"  name="zfTableOrder" value="asc" />
+    <input type="hidden"  name="zfTableQuickSearch" value="" />
+    <input type="hidden"  name="zfTableItemPerPage" value="10" />
+    </div>
+</div>
+

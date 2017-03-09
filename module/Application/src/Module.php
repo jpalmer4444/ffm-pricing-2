@@ -40,6 +40,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface {
         
         //setup error handler
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'handleError'));
+        
+        $eventManager->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'handleError'));
     }
     
     public function handleError(MvcEvent $event) {

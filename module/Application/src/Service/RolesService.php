@@ -9,7 +9,6 @@ namespace Application\Service;
 use Application\Entity\Role;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Exception;
 use Zend\Log\Logger;
 
 class RolesService extends BaseService
@@ -38,7 +37,7 @@ class RolesService extends BaseService
         try {
             $this->getEntityManager()->persist($role);
             $this->getEntityManager()->flush();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -64,7 +63,7 @@ class RolesService extends BaseService
 
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 

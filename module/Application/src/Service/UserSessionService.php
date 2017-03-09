@@ -4,7 +4,6 @@ namespace Application\Service;
 use Application\Entity\UserSession;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Exception;
 use Zend\Log\Logger;
 
 class UserSessionService extends BaseService
@@ -33,7 +32,7 @@ class UserSessionService extends BaseService
         try {
             $this->getEntityManager()->persist($userSession);
             $this->getEntityManager()->flush();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -58,7 +57,7 @@ class UserSessionService extends BaseService
 
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 

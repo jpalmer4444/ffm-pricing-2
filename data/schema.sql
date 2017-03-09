@@ -17,6 +17,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `version` INTEGER DEFAULT 1,
   `email` varchar(128) NOT NULL,
+  `username` varchar(128) NOT NULL,
   `full_name` varchar(512) NOT NULL,
   `password` varchar(256) NOT NULL,
   `status` int(11) NOT NULL,
@@ -28,7 +29,8 @@ CREATE TABLE `users` (
   `sales_attr_id` integer NOT NULL,
   `last_login` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email_idx` (`email`)
+  UNIQUE KEY `email_idx` (`email`),
+  UNIQUE KEY `username_idx` (`username`)
 );
 
 CREATE INDEX index_users_salespersonname
@@ -43,26 +45,26 @@ ON users (salespersonname, sales_attr_id);
 CREATE INDEX cmp_index_users_username_salespersonname_sales_attr_id
 ON users (email, salespersonname, sales_attr_id);
 
-INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
-VALUES(1, 'Jason Palmer', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', 'Jason Palmer', 183, 'jpalmer@meadedigital.com', '630-999-0139');
-INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
-VALUES(2, 'Foo Bar', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', 'Foo Bar X', 247, 'foobar@fultonfishmarket.com', '802-233-9957');
-INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
-VALUES(3, 'David Tanzer', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'dtanzer@fultonfishmarket.com', '802-233-9957');
-INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1)
-VALUES(4, 'Jeff Downs', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'jdowns@fultonfishmarket.com', '802-238-1452');
-INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
-VALUES(5, 'Cyndi Metallo', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'cmetallo@fultonfishmarket.com', '847-809-6512');
-INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
-VALUES(6, 'Mike Spindler', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'mspindler@fultonfishmarket.com', '847-809-6512');
-INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
-VALUES(7, 'Bill Zakrinski', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Bill Zakrinski', 206, 'bzak@fultonfishmarket.com', '347-680-2772');
-INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
-VALUES(8, 'Iris Derfler', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Iris Derfler', 181, 'iderfler@fultonfishmarket.com', '847-606-2555');
-INSERT INTO users (id, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
-VALUES(9, 'Jody Meade', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Jody Meade', 180, 'jody@fultonfishmarket.com', '570-335-6484');
+INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(1, 'jpalmer', 'Jason Palmer', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', 'Jason Palmer', 183, 'jpalmer@meadedigital.com', '630-999-0139');
+INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(2, 'foobarx', 'Foo Bar', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', 'Foo Bar X', 247, 'foobar@fultonfishmarket.com', '802-233-9957');
+INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(3, 'dtanzer', 'David Tanzer', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'dtanzer@fultonfishmarket.com', '802-233-9957');
+INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1)
+VALUES(4, 'jdowns', 'Jeff Downs', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'jdowns@fultonfishmarket.com', '802-238-1452');
+INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(5, 'cmetallo', 'Cyndi Metallo', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'cmetallo@fultonfishmarket.com', '847-809-6512');
+INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(6, 'mspindler', 'Mike Spindler', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'mspindler@fultonfishmarket.com', '847-809-6512');
+INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(7, 'bzakrinski', 'Bill Zakrinski', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Bill Zakrinski', 206, 'bzak@fultonfishmarket.com', '347-680-2772');
+INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(8, 'iderfler', 'Iris Derfler', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Iris Derfler', 181, 'iderfler@fultonfishmarket.com', '847-606-2555');
+INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) 
+VALUES(9, 'jmeade', 'Jody Meade', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Jody Meade', 180, 'jody@fultonfishmarket.com', '570-335-6484');
 
-CREATE TABLE `pricing_2`.`user_sessions` (
+CREATE TABLE `user_sessions` (
   `user_id` int(11) NOT NULL,
   `session_id` varchar(255) NOT NULL,
   `user_agent` varchar(255) NOT NULL,
@@ -160,3 +162,4 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 9); # sales
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 10); # sales index/about (About Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 11); # sales index/index (Index Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 12); # sales index/settings (Settings Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 6); # sales user/edit (Edit User)

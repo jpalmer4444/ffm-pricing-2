@@ -4172,6 +4172,7 @@ select.mobile-device {
   font-style: normal; }
 .ion, .ionicons,
 .ion-alert-circled:before,
+.ion-android-restaurant:before,
 .ion-android-unlock:before,
 .ion-arrow-right-a:before,
 .ion-calendar:before,
@@ -4201,6 +4202,9 @@ select.mobile-device {
 
 .ion-alert-circled:before {
   content: ""; }
+
+.ion-android-restaurant:before {
+  content: ""; }
 
 .ion-android-unlock:before {
   content: ""; }
@@ -5850,7 +5854,7 @@ ul {
   .container.main {
     width: 100%;
     min-width: 1036px;
-    padding: 0 15px;
+    padding: 0;
     background: #efefef; }
 
 .overlay {

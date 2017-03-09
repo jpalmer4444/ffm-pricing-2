@@ -1,8 +1,6 @@
 <?php
 
-namespace Application\Model;
-
-use ZfTable\AbstractTable;
+namespace Application\Grid;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,10 +13,18 @@ use ZfTable\AbstractTable;
  *
  * @author jasonpalmer
  */
-class UsersTable extends AbstractTable {
+class UsersGrid extends AbstractGrid {
 
+    /**
+     * @var bool
+     */
+    protected $canDelete;
+
+    /**
+     * @var array
+     */
     protected $config = array(
-        'name' => 'Users Table',
+        'name' => 'Users',
         'showPagination' => true,
         'showQuickSearch' => false,
         'showItemPerPage' => true,
@@ -47,9 +53,10 @@ class UsersTable extends AbstractTable {
             'tableAlias' => 'u',
             'title' => 'Active'
         ),
-        'actions' => array(
-            'title' => 'Actions'
-        ),
+        'username' => [
+            'tableAlias' => 'u',
+            'title' => 'Actions',
+        ],
     );
 
     public function init() {
@@ -58,11 +65,13 @@ class UsersTable extends AbstractTable {
          * Render a hrefs for button clicks in table.
          */
         $this->addAttr('id', 'usersTable');
+        
         $this->addClass('display');
+        
+        
     }
 
     protected function initFilters($query) {
-
         
     }
 

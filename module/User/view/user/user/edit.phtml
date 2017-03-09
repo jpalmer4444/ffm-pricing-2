@@ -3,60 +3,90 @@ $this->headTitle('Edit User');
 
 $this->mainMenu()->setActiveItemId('users');
 
+$this->mainMenu()->setSiteMapOverride('Edit User');
+
 $this->pageBreadcrumbs()->setItems([
-            'Home'=>$this->url('home'),
-            'Manage Users'=>$this->url('users'),
-            'Edit User'=>$this->url('users', ['action'=>'edit', 'id'=>$user->getId()])
-            ]);
+    'Home' => $this->url('home'),
+    'Manage Users' => $this->url('users'),
+    'Edit User' => $this->url('users', ['action' => 'edit', 'id' => $this->user->getId()])
+]);
+
+$form->get('username')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'jdoe'
+]);
 
 $form->get('email')->setAttributes([
-    'class'=>'form-control', 
-    'placeholder'=>'name@example.com'
-    ]);
+    'class' => 'form-control',
+    'placeholder' => 'name@example.com'
+]);
 
 $form->get('full_name')->setAttributes([
-    'class'=>'form-control', 
-    'placeholder'=>'John Doe'
-    ]);
+    'class' => 'form-control',
+    'placeholder' => 'John Doe'
+]);
 
 $form->get('status')->setAttributes([
-    'class'=>'form-control'
-    ]);
+    'class' => 'form-control'
+]);
 
 $form->get('submit')
-        ->setAttributes(['class'=>'btn btn-primary'])
+        ->setAttributes(['class' => 'btn btn-primary'])
         ->setValue('Save');
 
 $form->prepare();
 ?>
 
-<h1>Edit User <?= $this->escapeHtml($user->getEmail()) ?></h1>
+<div id='edit-account-page' class='form-page'>
 
-<div class="row">
-    <div class="col-md-6">
+    <div class='content-box'>
+        <div class='row'>
+            <div class='col-md-4 col-md-offset-4 no-left'>
+                <h4>Account Information</h4>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
         <?= $this->form()->openTag($form); ?>
-        
-        <div class="form-group">
-            <?= $this->formLabel($form->get('email')); ?>
-            <?= $this->formElement($form->get('email')); ?>
-            <?= $this->formElementErrors($form->get('email')); ?>                  
+        <div class="col-md-4 col-md-offset-4 form-content-box">
+
+
+            <div class="form-group">
+                <?= $this->formLabel($form->get('username')); ?>
+                <?= $this->formElement($form->get('username')); ?>
+                <?= $this->formElementErrors($form->get('username')); ?>                  
+            </div>
+
+            <div class="form-group">
+                <?= $this->formLabel($form->get('email')); ?>
+                <?= $this->formElement($form->get('email')); ?>
+                <?= $this->formElementErrors($form->get('email')); ?>                  
+            </div>
+
+            <div class="form-group">
+                <?= $this->formLabel($form->get('full_name')); ?>
+                <?= $this->formElement($form->get('full_name')); ?>
+                <?= $this->formElementErrors($form->get('full_name')); ?>                  
+            </div>
+
+            <div class="form-group">
+                <?= $this->formLabel($form->get('status')); ?>
+                <?= $this->formElement($form->get('status')); ?>
+                <?= $this->formElementErrors($form->get('status')); ?>                  
+            </div>
+
+
+        </div>  
+        <div class="col-md-4 col-md-offset-4 form-content-submit text-right">
+            <input name="reset" id="resetbutton" class="btn reset-btn" value="Reset" type="reset">
+            <?= $this->formElement($form->get('submit')); ?>
         </div>
         
-        <div class="form-group">
-            <?= $this->formLabel($form->get('full_name')); ?>
-            <?= $this->formElement($form->get('full_name')); ?>
-            <?= $this->formElementErrors($form->get('full_name')); ?>                  
-        </div>
-        
-        <div class="form-group">
-            <?= $this->formLabel($form->get('status')); ?>
-            <?= $this->formElement($form->get('status')); ?>
-            <?= $this->formElementErrors($form->get('status')); ?>                  
-        </div>
-        
-        <?= $this->formElement($form->get('submit')); ?>
-        
+
         <?= $this->form()->closeTag(); ?>
-    </div>    
-</div>   
+    </div> 
+</div> 
 

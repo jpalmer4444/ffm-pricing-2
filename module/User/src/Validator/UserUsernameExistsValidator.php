@@ -7,7 +7,7 @@ use Application\Entity\User;
  * This validator class is designed for checking if there is an existing user 
  * with such an email.
  */
-class UserExistsValidator extends AbstractValidator 
+class UserUsernameExistsValidator extends AbstractValidator 
 {
     /**
      * Available validator options.
@@ -27,8 +27,8 @@ class UserExistsValidator extends AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_SCALAR  => "The email must be a scalar value",
-        self::USER_EXISTS  => "Another user with such an email already exists"        
+        self::NOT_SCALAR  => "The username must be a scalar value",
+        self::USER_EXISTS  => "Another user with such username already exists"        
     );
     
     /**
@@ -62,12 +62,12 @@ class UserExistsValidator extends AbstractValidator
         $entityManager = $this->options['entityManager'];
         
         $user = $entityManager->getRepository(User::class)
-                ->findOneByEmail($value);
+                ->findOneByUsername($value);
         
         if($this->options['user']==null) {
             $isValid = ($user==null);
         } else {
-            if($this->options['user']->getEmail()!=$value && $user!=null) 
+            if($this->options['user']->getUsername()!=$value && $user!=null) 
                 $isValid = false;
             else 
                 $isValid = true;

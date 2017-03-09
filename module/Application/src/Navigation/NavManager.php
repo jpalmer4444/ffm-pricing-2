@@ -71,11 +71,11 @@ class NavManager {
         //Links Visible always to everyone logged in or not.
         //default Home page - no login required. 
         
-        $items[] = [
+        /*$items[] = [
             'id' => 'home',
             'label' => 'Home',
             'link' => $url('home')
-        ];
+        ];*/
         
         //add links here for pages that will be visible for all users logged-in or not.
         //you must adjust User\Module.php (~line 85) onDispatch method to ignore calls for 
@@ -103,15 +103,26 @@ class NavManager {
             ];
             
         } else {
+            
+            //home page for all users.
+            $items[] = [
+            'id' => 'home',
+            'label' => 'Home',
+            'float' => 'static',
+            'link' => $url('home')
+        ];
 
             //only display admin drop down for admin users.
-            $user = $this->userService->getRepository()->findOneByEmail($this->authService->getIdentity());
+            $isAdmin = FALSE;
+            $user = $this->userService->getRepository()->findOneByUsername($this->authService->getIdentity());
             $roles = !empty($user) ? $user->getRoles() : [];
             foreach ($roles as $role) {
                 if (strcmp($role->getName(), Role::ROLE_ADMIN) == 0) {
+                    $isAdmin = TRUE;
                     $items[] = [
                         'id' => 'admin',
-                        'label' => 'Admin',
+                        'label' => '<i class="ion-gear-a"></i>',
+                        'float' => 'right',
                         'dropdown' => [
                             [
                                 'id' => 'users',
@@ -122,23 +133,41 @@ class NavManager {
                     ];
                 }
             }
+            
+            $settingsDropDownManageAccount = [
+                        'id' => 'manage_account',
+                        'label' => 'Manage Account',
+                        'link' => $url('users', ['action' => 'edit', 'id' => $user->getId()])
+                    ];
+            
+            $settingsDropDownViewAccount = [
+                        'id' => 'view_account',
+                        'label' => 'View Account',
+                        'link' => $url('application', ['action' => 'settings'])
+                    ];
+            
+            $settingsDropDownLogout = [
+                        'id' => 'logout',
+                        'label' => 'Logout',
+                        'link' => $url('logout')
+                    ];
+            
+            $settingsDropDown = [];
+            
+            //only add the Manage Account link for Admins.
+            if($isAdmin){
+                $settingsDropDown[] = $settingsDropDownManageAccount;
+            }
+            
+            $settingsDropDown[] = $settingsDropDownViewAccount;
+            
+            $settingsDropDown[] = $settingsDropDownLogout;
 
             $items[] = [
-                'id' => 'logout',
-                'label' => '<img src="/img/settings.svg' . '" alt="Pricing Logo" class="settings-logo"/>',
+                'id' => 'settings',
+                'label' => '<i class="ion-person"></i>' . $user->getUsername(),
                 'float' => 'right',
-                'dropdown' => [
-                    [
-                        'id' => 'settings',
-                        'label' => 'Settings',
-                        'link' => $url('application', ['action' => 'settings'])
-                    ],
-                    [
-                        'id' => 'logout',
-                        'label' => 'Sign out',
-                        'link' => $url('logout')
-                    ],
-                ]
+                'dropdown' => $settingsDropDown
             ];
             
             $loggedInItems = $this->getLoggedInItems();

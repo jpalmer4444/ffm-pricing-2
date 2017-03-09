@@ -31,10 +31,10 @@ class IndexController extends BaseController
     public function settingsAction()
     {
         $user = $this->entityManager->getRepository(User::class)
-                ->findOneByEmail($this->identity());
+                ->findOneByUsername($this->identity());
         
         if ($user==null) {
-            throw new Exception('Not found user with such email');
+            throw new Exception('Not found user with such username');
         }
         
         return $this->getView([

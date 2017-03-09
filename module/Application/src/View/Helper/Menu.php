@@ -8,6 +8,8 @@ use Zend\View\Helper\AbstractHelper;
  * This view helper class displays a menu bar.
  */
 class Menu extends AbstractHelper {
+    
+    protected $siteMapOverride;
 
     /**
      * Menu items array.
@@ -36,6 +38,14 @@ class Menu extends AbstractHelper {
     public function setItems($items) {
         $this->items = $items;
     }
+    
+    /**
+     * Sets siteMapOverride.
+     * @param string siteMapOverride.
+     */
+    public function setSiteMapOverride($siteMapOverride) {
+        $this->siteMapOverride = $siteMapOverride;
+    }
 
     /**
      * Sets ID of the active items.
@@ -53,7 +63,7 @@ class Menu extends AbstractHelper {
         if (count($this->items) == 0)
         {
             //render none if there are no items.
-            return '';
+            //return '';
         }
 
         $urlHelper = $this->getView()->plugin('url');
@@ -67,8 +77,10 @@ class Menu extends AbstractHelper {
         $result .= '            </button>';
         $result .= '            <a class="navbar-brand" href="' . $urlHelper('home') . '">';
         $result .= '                <img src="/img/pricing-logo.svg' . '" alt="Pricing Logo" class="logo ffm-svg-header"/>';
+        //$result .= '                <i class="ion-android-restaurant ffm-svg-header"></i>';
         $result .= '                <span class="text-primary ffm-text-header">FFM</span>';
         $result .= '            </a>';
+        $result .= '            <h1 class="page-title">' . $this->siteMapOverride . '</h1>';
         $result .= '        </div>';
         $result .= '        <div class="collapse navbar-collapse">';
         $result .= '            <ul class="nav navbar-nav">';
@@ -87,14 +99,20 @@ class Menu extends AbstractHelper {
         //print out any static Links that should render left of Settings Dropdown in right corner of navbar.
         //pass these items in with property float="static"
         foreach ($this->items as $item) {
-            if (isset($item['float']) && $item['float'] == 'static')
+            if (isset($item['float']) && $item['float'] == 'static'){
                 $result .= '        '.$this->renderItem($item);
+            }
         }
 
         // Render Settings link (top-right corner).
         foreach ($this->items as $item) {
-            if (isset($item['float']) && $item['float'] == 'right')
-                $result .= '        '.$this->renderItem($item);
+            if (isset($item['float']) && $item['float'] == 'right'){
+                if ($item['id'] == 'login' && $this->activeItemId == 'login'){
+                    //do nothing so we do not render the Sign-In Link in upper - right - corner.
+                }else{
+                    $result .= '        '.$this->renderItem($item);
+                }
+            }
         }
 
         $result .= '            </ul>';
@@ -118,9 +136,14 @@ class Menu extends AbstractHelper {
         $dropdownToggleToolTip = FALSE;
 
         //hack for settings SVG icon in top right corner.
-        if (strpos($label, 'settings.svg')) {
+        if (strpos($label, 'ion-person')) {
             $sanitizeLabel = FALSE;
-            $dropdownToggleToolTip = "Settings.";
+            $dropdownToggleToolTip = "";
+        }
+        
+        if (strpos($label, 'ion-gear-a')) {
+            $sanitizeLabel = FALSE;
+            $dropdownToggleToolTip = "";
         }
 
         $result = '';

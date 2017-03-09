@@ -37,10 +37,10 @@ class AuthAdapter implements AdapterInterface
     private $useBcrypt = TRUE;
     
     /**
-     * User email.
+     * User username.
      * @var string 
      */
-    private $email;
+    private $username;
     
     /**
      * Password
@@ -72,11 +72,11 @@ class AuthAdapter implements AdapterInterface
     }
     
     /**
-     * Sets user email.     
+     * Sets user username.     
      */
-    public function setEmail($email) 
+    public function setUsername($username) 
     {
-        $this->email = $email;        
+        $this->username = $username;        
     }
     
     /**
@@ -100,9 +100,9 @@ class AuthAdapter implements AdapterInterface
      */
     public function authenticate()
     {                
-        // Check the database if there is a user with such email.
+        // Check the database if there is a user with such username.
         $user = $this->entityManager->getRepository(User::class)
-                ->findOneByEmail($this->email);
+                ->findOneByUsername($this->username);
         
         // If there is no such user, return 'Identity Not Found' status.
         if ($user == null) {
@@ -112,13 +112,13 @@ class AuthAdapter implements AdapterInterface
                 ['Invalid credentials.']);        
         }   
         
-        // If the user with such email exists, we need to check if it is active or retired.
+        // If the user with such username exists, we need to check if it is active or retired.
         // Do not allow retired users to log in.
         if ($user->getStatus()==User::STATUS_DISABLED) {
             return new Result(
                 Result::FAILURE, 
                 null, 
-                ['User is retired.']);        
+                ['User is disabled.']);        
         }
         
         // Now we need to calculate hash based on user-entered password and compare
@@ -127,11 +127,11 @@ class AuthAdapter implements AdapterInterface
         $passwordHash = $user->getPassword();
         
         if (!empty($this->useBcrypt) && $bcrypt->verify($this->password, $passwordHash)) {
-            // Great! The password hash matches. Return user identity (email) to be
+            // Great! The password hash matches. Return user identity (username) to be
             // saved in session for later use.
             return new Result(
                     Result::SUCCESS, 
-                    $this->email, 
+                    $this->username, 
                     ['Authenticated successfully.']);     
             
             // 2nd case used for auto-login across servers.
@@ -139,7 +139,7 @@ class AuthAdapter implements AdapterInterface
             
             return new Result(
                     Result::SUCCESS, 
-                    $this->email, 
+                    $this->username, 
                     ['Authenticated successfully.']); 
         }           
         

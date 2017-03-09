@@ -3,48 +3,73 @@ $this->headTitle('Sign in');
 
 $this->mainMenu()->setActiveItemId('login');
 
-$form->get('email')->setAttributes([
-    'class'=>'form-control', 
-    'placeholder'=>'Email address',
-    'required' => true,
-    'autofocus' => true
-    ])
-    ->setLabelAttributes([
-        'class' => 'sr-only'
-    ]);
+$this->mainMenu()->setSiteMapOverride('Sign In');
+
+$form->get('username')->setAttributes([
+            'class' => 'form-control',
+            'placeholder' => 'jdoe',
+            'required' => true,
+            'autofocus' => true
+        ])
+        ->setLabelAttributes([
+            'class' => 'sr-only'
+        ]);
 
 $form->get('password')->setAttributes([
-    'class'=>'form-control', 
-    'placeholder'=>'Password',
-    'required' => true,
-    ])
-    ->setLabelAttributes([
-        'class' => 'sr-only'
-    ]);
+            'class' => 'form-control',
+            'placeholder' => 'Password',
+            'required' => true,
+        ])
+        ->setLabelAttributes([
+            'class' => 'sr-only'
+        ]);
+
+$form->get('remember_me')->setAttributes([
+    'class' => 'my_remember_me'
+]);
 ?>
 
-<div class="row">
-    <div class="col-md-offset-4 col-md-3">
-        <form class="form-signin" method="post">
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <?php if ($isLoginError): ?>
-            <div class="alert alert-warning" role="alert">
-                Incorrect login and/or password. 
-                <a href="<?= $this->url('reset-password') ?>">Forgot password?</a>
-            </div>
-            <?php endif; ?>
-            <?= $this->formLabel($form->get('email')); ?>
-            <?= $this->formElement($form->get('email')); ?>
-            <?= $this->formLabel($form->get('password')); ?>
-            <?= $this->formElement($form->get('password')); ?>
-            <div class="checkbox">
-                <label>
-                    <?= $this->formElement($form->get('remember_me')); ?> Remember me
-                </label>
-            </div>
-            <?= $this->formElement($form->get('redirect_url')); ?>
-            <?= $this->formElement($form->get('csrf')) ?>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        </form>
+
+
+
+<div class="login">
+    <div class="page-header">
+        <h1><?php echo $this->translate('Sign in'); ?></h1>
     </div>
+
+    <?php echo $this->form()->openTag($form) ?>
+    <?php foreach ($form as $element) : ?>
+
+        <div class="form-group <?php if ($this->formElementErrors($element)) echo "has-error" ?>">
+            <?php if ('checkbox' == $element->getAttribute('type')) {
+                /*
+                 * Do not render remember_me checkbox
+                 * <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Remember me
+                    </label>
+                   </div>
+                 */
+            } else if ('submit' != $element->getAttribute('type')) {
+                $element->setAttribute('class', 'form-control')
+                        ->setAttribute('placeholder', $element->getLabel());
+                echo $this->formElement($element);
+            } else {
+                $element->setAttribute('class', 'btn btn-primary');
+                echo $this->formElement($element);
+            }
+            if ($this->formElementErrors($element)) :
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<p class="help-block">')
+                        ->setMessageSeparatorString('</p><p class="help-block">')
+                        ->setMessageCloseString('</p>')
+                        ->render($element);
+                endif; ?>
+        </div>
+
+        <?php
+    endforeach;
+
+    echo $this->form()->closeTag()
+    ?>
 </div>

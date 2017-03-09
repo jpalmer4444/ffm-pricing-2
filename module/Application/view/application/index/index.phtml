@@ -3,26 +3,35 @@ $this->headTitle('Welcome');
 
 $this->mainMenu()->setActiveItemId('home');
 
+$this->mainMenu()->setSiteMapOverride('Home');
+
 $this->pageBreadcrumbs()->setItems([
     'Home' => $this->url('home')
 ]);
 ?>
 
-<h1>Welcome</h1>
-
-<p>
-    Hi, <?php echo $this->identity() ?>. This is the Fulton Skeleton Application.
-</p>
-
-
-<?php if (empty($this->identity())):?>
-    <div>
-
-    Click the <em>Sign in</em> button at the top right. To sign in. You must have an account. If you 
-    do not have an account, you must have an administrator create one for you.
-
+<div id='home-page' class='form-page'>
+    <div class='content-box'>
+        <div class='row'>
+            <div class='col-md-4 col-md-offset-4 no-left'>
+                <h4>Welcome</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4 form-content-box">
+            <p>
+                Hi, <?php echo $this->identity() ?>. This is the Fulton Skeleton Application.
+            </p>
+            <?php if (empty($this->identity())): ?>
+                <p>
+                    Click the <em>Sign in</em> button at the top right. To sign in. You must have an account. If you 
+                    do not have an account, you must have an administrator create one for you.
+                </p>
+            <?php endif; ?>
+        </div>
+    </div> 
 </div>
-<?php endif;?>
 
 
 
