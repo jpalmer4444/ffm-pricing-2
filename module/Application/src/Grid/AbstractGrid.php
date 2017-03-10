@@ -1,8 +1,8 @@
 <?php
 namespace Application\Grid;
 
+use Application\View\Grid\ModuleOptions;
 use ZfTable\AbstractTable;
-use ZfTable\Options\ModuleOptions;
 use ZfTable\Render;
 /**
  * @copyright  Copyright (c) 2015 Busteco Global Brain
@@ -28,7 +28,7 @@ class AbstractGrid extends AbstractTable
     {
         if (is_array($this->config)) {
             $this->config = new ModuleOptions($this->config);
-        } elseif (!$this->config instanceof  ModuleOptions) {
+        } elseif (!$this->config instanceof ModuleOptions) {
             throw new Exception('Config class problem');
         }
         return $this->config;

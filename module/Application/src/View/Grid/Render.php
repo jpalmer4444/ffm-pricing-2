@@ -1,17 +1,18 @@
 <?php
 namespace Application\View\Grid;
 
-/**
- * @copyright Copyright (c) 2017 Jason Palmer jpalmer@meadedigital.com
- */
-
-use DateTime;
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
+use ZfTable\Options\ModuleOptions;
+use ZfTable\Render;
 
-class Render extends \ZfTable\Render
+/**
+ * @copyright Copyright (c) 2017 Jason Palmer jpalmer@meadedigital.com
+ */
+
+class Render extends Render
 {
     /**
      * @var int
@@ -25,6 +26,7 @@ class Render extends \ZfTable\Render
      */
     public function renderFilters()
     {
+        
         $headers = $this->getTable()->getHeaders();
         $render = '';
 
@@ -81,6 +83,7 @@ class Render extends \ZfTable\Render
      */
     public function renderTableAsHtml()
     {
+        
         $render = '';
         /** @var ModuleOptions $tableConfig */
         $tableConfig = $this->getTable()->getOptions();

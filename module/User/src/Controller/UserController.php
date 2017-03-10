@@ -5,6 +5,8 @@ namespace User\Controller;
 use Application\Controller\BaseController;
 use Application\Entity\User;
 use Application\Grid\UsersGrid;
+use Application\View\Grid\ParamAdapter;
+use ArrayObject;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use User\Assert\UserIdMustMatchAssertion;
@@ -379,13 +381,13 @@ class UserController extends BaseController {
         $table = new UsersGrid();
         $table->setAdapter($this->dbAdapter)
                 ->setSource($queryBuilder)
-                ->setParamAdapter($this->getRequest()->getPost());
+                ->setParamAdapter(new ParamAdapter(new ArrayObject()));
         
         $this->logger->log(Logger::INFO, "Rendering Now!");
         
-        $html = $table->render();
+        $html = $table->render();//fails every time
         
-        $this->logger->log(Logger::INFO, $html);
+        //$this->logger->log(Logger::INFO, $html);
 
         return $this->htmlResponse($html);
     }

@@ -71,12 +71,14 @@ class Module {
 
         // Convert dash-style action name to camel-case.
         $actionName = str_replace('-', '', lcfirst(ucwords($actionNameDashed, '-')));
-
+        
         // Get the instance of AuthManager service.
         $authManager = $event->getApplication()->getServiceManager()->get(AuthManager::class);
 
         // Get the instance of logger.
         $logger = $event->getApplication()->getServiceManager()->get('Zend\Log\Logger');
+        
+        $this->log(Logger::INFO, "Checking controllerName: ".$controllerName." and actionName: ".$actionName, $logger);
 
         // need to login user by sessionId when AuthService has no identity. Which happens
         // in a load-balanced environment when subsequent requests go to a different server.

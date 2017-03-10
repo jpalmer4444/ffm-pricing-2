@@ -21,6 +21,7 @@ class Breadcrumbs extends AbstractHelper
     public function __construct($items=[]) 
     {                
         $this->items = $items;
+        
     }
     
     /**
