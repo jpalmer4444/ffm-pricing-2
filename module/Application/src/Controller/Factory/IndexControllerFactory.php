@@ -22,7 +22,9 @@ class IndexControllerFactory implements FactoryInterface {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = NULL) {
         $logger = $container->get('Zend\Log\Logger');
         $entityManager = $container->get('Doctrine\ORM\EntityManager');
-        return new IndexController($entityManager, $logger);
+        $authenticationService = $container->get('Zend\Authentication\AuthenticationService');
+        $config = $container->get('Config');
+        return new IndexController($entityManager, $logger, $config, $authenticationService);
     }
 
 }

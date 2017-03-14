@@ -52,6 +52,16 @@ return [
                     ],
                 ],
             ],
+            'users-table-update-status' => [
+                'type' => 'Literal',
+                'options' => [
+                    'route'    => '/users-table-update-status',
+                    'defaults' => [
+                        'controller' => 'User\Controller\UserController',
+                        'action'     => 'usersTableUpdateStatus',
+                    ],
+                ],
+            ],
             'users' => [
                 'type'    => 'Segment',
                 'options' => [

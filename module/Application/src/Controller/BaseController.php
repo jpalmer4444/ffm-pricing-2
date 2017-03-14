@@ -8,15 +8,10 @@
 
 namespace Application\Controller;
 
-use Application\Service\UserService;
-use DateTime;
-use Application\Entity\User;
 use InvalidArgumentException;
-use Zend\Db\Adapter\Adapter;
+use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\MvcEvent;
 use Zend\View\Model\ViewModel;
-use ZfcRbac\Exception\UnauthorizedException;
 
 /**
  * Description of BaseController
@@ -24,6 +19,15 @@ use ZfcRbac\Exception\UnauthorizedException;
  * @author jasonpalmer
  */
 abstract class BaseController extends AbstractActionController{
+    
+    protected $config;
+    
+    protected $authenticationService;
+    
+    public function __construct(AuthenticationService $authenticationService, array $config){
+        $this->config = $config;
+        $this->authenticationService = $authenticationService;
+    }
 
     protected function getBasePath()
     {
@@ -36,6 +40,14 @@ abstract class BaseController extends AbstractActionController{
         $uri = $this->getRequest()->getUri();
 
         return sprintf('%s://%s', $uri->getScheme(), $uri->getHost());
+    }
+    
+    public function serveNgPage($isNgPage = TRUE) {
+        $this->layout()->setVariable('ngPage', $isNgPage);
+        $this->layout()->setVariable('username', $this->authenticationService->getIdentity());
+        $this->layout()->setVariable('loginUrl', $this->config['ngSettings']['loginUrl']);
+        $this->layout()->setVariable('usersTableAjax', $this->config['ngSettings']['usersTableAjax']);
+        $this->layout()->setVariable('usersTableUpdateStatusAjax', $this->config['ngSettings']['usersTableUpdateStatusAjax']);
     }
 
     /**

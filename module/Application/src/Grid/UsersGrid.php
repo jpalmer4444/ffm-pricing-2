@@ -40,7 +40,7 @@ class UsersGrid extends AbstractGrid {
         ),
         'email' => array(
             'tableAlias' => 'u',
-            'title' => 'Email'
+            'title' => 'Email', 'filters'=> 'text'
         ),
         'fullName' => array(
             'tableAlias' => 'u',
@@ -48,7 +48,7 @@ class UsersGrid extends AbstractGrid {
         ),
         'dateCreated' => array(
             'tableAlias' => 'u',
-            'title' => 'Date Created'
+            'title' => 'Date Created', 'filters'  => 'date'
         ),
         'status' => array(
             'tableAlias' => 'u',
@@ -75,25 +75,6 @@ class UsersGrid extends AbstractGrid {
             $this->setHeaders($this->headers);
         }
 
-        /*
-        $this->getHeader('username')->getCell()->addDecorator('closure', array(
-            'closure' => function($context, $record) {
-                if (is_object($record)) {
-                    $html = '   <div class="around-table-actions">';
-                    $html .= '       <a class="btn btn-default btn-square btn-transparent" title="Edit User" href="users/edit/%s">';
-                    $html .= '           <i class="ion ion-edit spin-logo"></i>';
-                    $html .= '       </a>';
-                    $html .= '       <a class="btn btn-default  btn-square btn-transparent" title="Change User Password" href="users/change-password/%s">';
-                    $html .= '           <i class="ion ion-locked spin-logo"></i>';
-                    $html .= '       </a>';
-                    $html .= '   </div>';
-                    return sprintf($html, $record->getId(), $record->getId());
-                } else {
-                    return '';
-                }
-            }
-        ));
-
         $actionsTDHtml = '   <div class="around-table-actions">';
         $actionsTDHtml .= '       <a class="btn btn-default btn-square btn-transparent" title="Edit User" href="users/edit/%s">';
         $actionsTDHtml .= '           <i class="ion ion-edit spin-logo"></i>';
@@ -103,14 +84,23 @@ class UsersGrid extends AbstractGrid {
         $actionsTDHtml .= '       </a>';
         $actionsTDHtml .= '   </div>';
 
-        $this->getHeader('username')->getCell()->addDecorator('template', array(
-            'template' => $actionsTDHtml,
-            'vars' => array('id')
-        ));
-         */
+        
     }
 
     protected function initFilters($query) {
+        
+        if ($value = $this->getParamAdapter()->getValueOfFilter('email')) {
+            $query->where("u.email like '%".$value."%' ");
+        }
+        
+         $creationDate = $this->getParamAdapter()->getValueOfFilter('dateCreated');
+        if ($creationDate != '') {
+            $creationDate = \DateTime::createFromFormat('m/d/Y', $creationDate);
+            if ($creationDate) {
+                $query->andWhere($query->expr()->like('u.dateCreated', '?6'))
+                ->setParameter('6', '%'.$creationDate->format('Y-m-d').'%');
+            }
+        }
         
     }
 

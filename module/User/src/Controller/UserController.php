@@ -3,10 +3,9 @@
 namespace User\Controller;
 
 use Application\Controller\BaseController;
+use Application\Datatables\Server;
+use Application\Datatables\SSP;
 use Application\Entity\User;
-use Application\Grid\UsersGrid;
-use Application\View\Grid\ParamAdapter;
-use ArrayObject;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use User\Assert\UserIdMustMatchAssertion;
@@ -15,6 +14,7 @@ use User\Form\PasswordResetForm;
 use User\Form\UserForm;
 use User\Service\AuthManager;
 use User\Service\UserManager;
+use Zend\Authentication\AuthenticationService;
 use Zend\Db\Adapter\Adapter;
 use Zend\Log\Logger;
 use Zend\View\Model\ViewModel;
@@ -49,8 +49,9 @@ class UserController extends BaseController {
      * Constructor. 
      */
     public function __construct(
-    EntityManager $entityManager, UserManager $userManager, AuthManager $authManager, Adapter $dbAdapter, Logger $logger
+    EntityManager $entityManager, UserManager $userManager, AuthManager $authManager, Adapter $dbAdapter, Logger $logger, array $config, AuthenticationService $authenticationService
     ) {
+        parent::__construct($authenticationService, $config);
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
         $this->authManager = $authManager;
@@ -63,12 +64,8 @@ class UserController extends BaseController {
      * list of users.
      */
     public function indexAction() {
-        $users = $this->entityManager->getRepository(User::class)
-                ->findBy([], ['id' => 'ASC']);
 
-        return new ViewModel([
-            'users' => $users
-        ]);
+        $this->serveNgPage();
     }
 
     /**
@@ -109,18 +106,18 @@ class UserController extends BaseController {
      * The "view" action displays a page allowing to view user's details.
      */
     public function viewAction() {
-        
+
         $id = (int) $this->params()->fromRoute('id', -1);
         if ($id < 1) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
-        
+
         //only allow users that are admins or are otherwise the current user
         $assertion = $this->getUserIdMustMatchAssertion($id);
-        
+
         //restrict access if DynamicAssertion fails.
-        if(!$this->authManager->isGranted(UserController::class, "view", $assertion)){
+        if (!$this->authManager->isGranted(UserController::class, "view", $assertion)) {
             //do not render the page.
             $this->getResponse()->setStatusCode(404);
             return;
@@ -144,7 +141,7 @@ class UserController extends BaseController {
      * The "edit" action displays a page allowing to edit user.
      */
     public function editAction() {
-        
+
         //first, check if there is an ID parameter and it is a positive number
         $id = (int) $this->params()->fromRoute('id', -1);
         if ($id < 1) {
@@ -152,12 +149,12 @@ class UserController extends BaseController {
             $this->getResponse()->setStatusCode(404);
             return;
         }
-        
+
         //only allow users that are admins or are otherwise the current user
         $assertion = $this->getUserIdMustMatchAssertion($id);
-        
+
         //restrict access if DynamicAssertion fails.
-        if(!$this->authManager->isGranted(UserController::class, "edit", $assertion)){
+        if (!$this->authManager->isGranted(UserController::class, "edit", $assertion)) {
             //do not render the page.
             $this->getResponse()->setStatusCode(404);
             return;
@@ -370,39 +367,167 @@ class UserController extends BaseController {
             'form' => $form
         ]);
     }
+    
+    public function usersTableUpdateStatusAction(){
+        
+        $id = $this->params()->fromQuery('user_id');
+        
+        //only allow users that are admins or are otherwise the current user
+        $assertion = $this->getUserIdMustMatchAssertion($id);
+
+        //restrict access if DynamicAssertion fails.
+        if (!$this->authManager->isGranted(UserController::class, "edit", $assertion)) {
+            //do not render the page.
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+        
+        $status = $this->params()->fromQuery('status');
+        
+        //update user here
+        $user = $this->entityManager->getRepository(User::class)
+                        ->find($id);
+        
+        $user->setStatus($status);
+        
+        $this->entityManager->persist($user);
+        
+        $this->entityManager->flush();
+        
+        return $this->jsonResponse([
+            'success' => true
+        ]);
+        
+    }
 
     public function usersTableAction() {
 
-        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $jsonData = json_decode($this->params()->fromPost('jsonData'));
 
-        $queryBuilder->add('select', 'u')
-                ->add('from', 'Application\Entity\User u');
+        $table = 'users';
 
-        $table = new UsersGrid();
-        $table->setAdapter($this->dbAdapter)
-                ->setSource($queryBuilder)
-                ->setParamAdapter(new ParamAdapter(new ArrayObject()));
-        
-        $this->logger->log(Logger::INFO, "Rendering Now!");
-        
-        $html = $table->render();//fails every time
-        
-        //$this->logger->log(Logger::INFO, $html);
+        $primaryKey = 'id';
 
-        return $this->htmlResponse($html);
+        $columns = array(
+            array('db' => 'id', 'dt' => 0),
+            array('db' => 'username', 'dt' => 1),
+            array('db' => 'email', 'dt' => 2),
+            array('db' => 'status', 'dt' => 3),
+            array('db' => 'full_name', 'dt' => 4),
+            array(
+                'db' => 'date_created',
+                'dt' => 5,
+                'formatter' => function( $d, $row ) {
+                    return date('m/d/Y', strtotime($d));
+                }
+            ),
+            array(
+                'db' => 'last_login',
+                'dt' => 6,
+                'formatter' => function( $d, $row ) {
+                    return date('m/d/Y', strtotime($d));
+                }
+            ),
+            array('db' => 'id', 'dt' => 7),
+        );
+        // SQL server connection information
+        $sql_details = array(
+            'user' => $this->config['doctrine']['connection']['orm_default']['params']['user'],
+            'pass' => $this->config['doctrine']['connection']['orm_default']['params']['password'],
+            'db' => $this->config['doctrine']['connection']['orm_default']['params']['dbname'],
+            'host' => $this->config['doctrine']['connection']['orm_default']['params']['host']
+        );
+
+        $jsonArgs = Server::buildArrayFromJson($jsonData);
+        $this->logger->log(Logger::INFO, "jsonArgs: " . print_r($jsonArgs, TRUE));
+
+        //add column filters passed as query params - hack.
+        $zff_username = $this->params()->fromQuery('zff_username');
+
+        if (!empty($zff_username)) {
+
+            $jsonArgs['columns'][1]['search']['value'] = $zff_username;
+        }
+
+        $zff_email = $this->params()->fromQuery('zff_email');
+
+        if (!empty($zff_email)) {
+
+            $jsonArgs['columns'][2]['search']['value'] = $zff_email;
+        }
+
+        $zff_status = $this->params()->fromQuery('zff_status');
+
+        if (!empty($zff_status)) {
+
+            $jsonArgs['columns'][3]['search']['value'] = $zff_status;
+        }
+
+        $zff_fullname = $this->params()->fromQuery('zff_fullname');
+
+        if (!empty($zff_fullname)) {
+
+            $jsonArgs['columns'][4]['search']['value'] = $zff_fullname;
+        }
+
+        $zff_createddate = $this->params()->fromQuery('zff_createddate');
+
+        if (!empty($zff_createddate)) {
+
+            $jsonArgs['columns'][5]['search']['value'] = $zff_createddate;
+        }
+
+        $zff_lastlogindate = $this->params()->fromQuery('zff_lastlogindate');
+
+        if (!empty($zff_lastlogindate)) {
+
+            $jsonArgs['columns'][6]['search']['value'] = $zff_lastlogindate;
+        }
+        
+        $zff_status = $this->params()->fromQuery('zff_status');
+
+        if ($zff_status == 0 || $zff_status == '0' || 
+                $zff_status == 1 || $zff_status == '1') {
+
+            $jsonArgs['columns'][3]['search']['value'] = $zff_status;
+        }
+
+        $zff_length = $this->params()->fromQuery('zff_length');
+
+        if (!empty($zff_length)) {
+
+            $jsonArgs['length'] = $zff_length;
+
+            //check page now
+            $zff_page = $this->params()->fromQuery('zff_page');
+            
+            if(empty($zff_page)){
+                $zff_page = 1;
+            }
+            
+            $zff_page--;//make zero based
+
+            $jsonArgs['start'] = $zff_page ? ($zff_page * $zff_length) : ($zff_page);
+        }
+
+        $this->logger->log(Logger::INFO, "jsonArgs: " . print_r($jsonArgs, TRUE));
+
+        return $this->jsonResponse(
+                        SSP::simple($jsonArgs, $sql_details, $table, $primaryKey, $columns)
+        );
     }
-    
-    private function getUserIdMustMatchAssertion($id){
-        
+
+    private function getUserIdMustMatchAssertion($id) {
+
         //retrieve the User
         $loggedInUser = $this->authManager->getLoggedInUser();
-        
+
         //Guarantees that User is either an Admin or is indeed the User they are requesting.
         $assertion = new UserIdMustMatchAssertion($loggedInUser);
-        
+
         //set the id parameter as pageId
         $assertion->setPageId($id);
-        
+
         return $assertion;
     }
 

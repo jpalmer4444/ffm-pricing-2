@@ -43,4 +43,9 @@ return [
     'session_storage' => [
         'type' => SessionArrayStorage::class
     ],
+    'ngSettings' => [
+        'loginUrl' => '/login',
+        'usersTableAjax' => '/users-table',
+        'usersTableUpdateStatusAjax' => '/users-table-update-status',
+    ],
 ];

@@ -35,10 +35,12 @@ return [
         'factories' => [
             'Application\View\Helper\Menu' => 'Application\View\Helper\Factory\MenuFactory',
             'Application\View\Helper\Breadcrumbs' => 'Zend\ServiceManager\Factory\InvokableFactory',
+            'Application\View\Helper\Permissions' => 'Application\View\Helper\Factory\PermissionsFactory',
         ],
         'aliases' => [
             'mainMenu' => 'Application\View\Helper\Menu',
             'pageBreadcrumbs' => 'Application\View\Helper\Breadcrumbs',
+            'permissions' => 'Application\View\Helper\Permissions',
         ],
         'invokables' => [
             'translate' => 'Zend\I18n\View\Helper\Translate'
@@ -51,11 +53,12 @@ return [
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => [
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
-            'error/403'               => __DIR__ . '/../view/error/403.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'layout/layout'                             => __DIR__ . '/../view/layout/layout.phtml',
+            'application/index/index'                   => __DIR__ . '/../view/application/index/index.phtml',
+            'error/403'                                 => __DIR__ . '/../view/error/403.phtml',
+            'error/404'                                 => __DIR__ . '/../view/error/404.phtml',
+            'error/index'                               => __DIR__ . '/../view/error/index.phtml',
+            'partial/users-table-header-tplt'           => __DIR__ . '/../../User/view/user/partial/users-table-header-tplt.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',

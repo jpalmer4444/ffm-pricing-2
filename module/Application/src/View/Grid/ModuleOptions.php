@@ -1,10 +1,12 @@
 <?php
-namespace Application\View\Grid;
 /**
  * ZfTable ( Module for Zend Framework 2)
  *
- * @copyright Copyright (c) 2017 Jason Palmer jpalmer@meadedigital.com
+ * @copyright Copyright (c) 2013 Piotr Duda dudapiotrek@gmail.com
+ * @license   MIT License
  */
+
+namespace Application\View\Grid;
 
 use ZfTable\Options\ModuleOptions as ZfModuleOptions;
 
@@ -38,6 +40,16 @@ class ModuleOptions extends ZfModuleOptions
     /**
      * @var bool
      */
+    protected $showEndOfDayBtn = false;
+
+    /**
+     * @var bool
+     */
+    protected $isDayClosed = false;
+
+    /**
+     * @var bool
+     */
     protected $showOpenMoreBtn = false;
 
     /**
@@ -49,6 +61,41 @@ class ModuleOptions extends ZfModuleOptions
      * @var bool
      */
     protected $date = false;
+
+    /**
+     * @var bool|int
+     */
+    protected $futureItemsCount = false;
+
+    /**
+     * @var bool|string
+     */
+    protected $futureItemsUrl = false;
+
+    /**
+     * @var bool|string
+     */
+    protected $receivingUrl = false;
+
+    /**
+     * @var bool
+     */
+    protected $showSendTrackingNrsBtn = false;
+
+    /**
+     * @var bool
+     */
+    protected $showDeviceStatsBtn = false;
+
+    /**
+     * @var bool|string
+     */
+    protected $deviceStatsUrl = false;
+
+    /**
+     * @var bool
+     */
+    protected $showDailyReportBtn = false;
 
     /**
      * @var bool
@@ -154,7 +201,53 @@ class ModuleOptions extends ZfModuleOptions
         $this->date = $date;
     }
 
-    
+    /**
+     * @return boolean
+     */
+    public function getShowEndOfDayBtn()
+    {
+        return $this->showEndOfDayBtn;
+    }
+
+    /**
+     * @param boolean $showEndOfDayBtn
+     */
+    public function setShowEndOfDayBtn($showEndOfDayBtn)
+    {
+        $this->showEndOfDayBtn = $showEndOfDayBtn;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsDayClosed()
+    {
+        return $this->isDayClosed;
+    }
+
+    /**
+     * @param boolean $isDayClosed
+     */
+    public function setIsDayClosed($isDayClosed)
+    {
+        $this->isDayClosed = $isDayClosed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShowOpenMoreBtn()
+    {
+        return $this->showOpenMoreBtn;
+    }
+
+    /**
+     * @param boolean $showOpenMoreBtn
+     */
+    public function setShowOpenMoreBtn($showOpenMoreBtn)
+    {
+        $this->showOpenMoreBtn = $showOpenMoreBtn;
+    }
 
     /**
      * @return boolean
@@ -170,6 +263,118 @@ class ModuleOptions extends ZfModuleOptions
     public function setShowSearchBoxBtn($showSearchBoxBtn)
     {
         $this->showSearchBoxBtn = $showSearchBoxBtn;
+    }
+
+    /**
+     * @return bool|int
+     */
+    public function getFutureItemsCount()
+    {
+        return $this->futureItemsCount;
+    }
+
+    /**
+     * @param bool|int $futureItemsCount
+     */
+    public function setFutureItemsCount($futureItemsCount)
+    {
+        $this->futureItemsCount = $futureItemsCount;
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getFutureItemsUrl()
+    {
+        return $this->futureItemsUrl;
+    }
+
+    /**
+     * @param bool|string $futureItemsUrl
+     */
+    public function setFutureItemsUrl($futureItemsUrl)
+    {
+        $this->futureItemsUrl = $futureItemsUrl;
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getReceivingUrl()
+    {
+        return $this->receivingUrl;
+    }
+
+    /**
+     * @param bool|string $receivingUrl
+     */
+    public function setReceivingUrl($receivingUrl)
+    {
+        $this->receivingUrl = $receivingUrl;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShowSendTrackingNrsBtn()
+    {
+        return $this->showSendTrackingNrsBtn;
+    }
+
+    /**
+     * @param boolean $showSendTrackingNrsBtn
+     */
+    public function setShowSendTrackingNrsBtn($showSendTrackingNrsBtn)
+    {
+        $this->showSendTrackingNrsBtn = $showSendTrackingNrsBtn;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShowDeviceStatsBtn()
+    {
+        return $this->showDeviceStatsBtn;
+    }
+
+    /**
+     * @param boolean $showDeviceStatsBtn
+     */
+    public function setShowDeviceStatsBtn($showDeviceStatsBtn)
+    {
+        $this->showDeviceStatsBtn = $showDeviceStatsBtn;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDeviceStatsUrl()
+    {
+        return $this->deviceStatsUrl;
+    }
+
+    /**
+     * @param boolean $deviceStatsUrl
+     */
+    public function setDeviceStatsUrl($deviceStatsUrl)
+    {
+        $this->deviceStatsUrl = $deviceStatsUrl;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShowDailyReportBtn()
+    {
+        return $this->showDailyReportBtn;
+    }
+
+    /**
+     * @param boolean $showDailyReportBtn
+     */
+    public function setShowDailyReportBtn($showDailyReportBtn)
+    {
+        $this->showDailyReportBtn = $showDailyReportBtn;
     }
 
     /**

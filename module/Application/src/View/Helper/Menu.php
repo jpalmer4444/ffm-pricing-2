@@ -154,12 +154,12 @@ class Menu extends AbstractHelper {
 
             $dropdownItems = $item['dropdown'];
 
-            $result .= '<li class="dropdown ' . ($isActive ? 'active' : '') . '">';
-            $result .= '<a href="#" class="dropdown-toggle" ' . (!empty($dropdownToggleToolTip) ? 'title="' . $dropdownToggleToolTip . '"' : '') . ' data-toggle="dropdown">';
+            $result .= '<li uib-dropdown class="dropdown ' . ($isActive ? 'active' : '') . '">';
+            $result .= '<a uib-dropdown-toggle href="#" class="dropdown-toggle" ' . (!empty($dropdownToggleToolTip) ? 'title="' . $dropdownToggleToolTip . '"' : '') . ' data-toggle="dropdown">';
             $result .= ($sanitizeLabel ? $escapeHtml($label) : $label) . ' <b class="caret"></b>';
             $result .= '</a>';
 
-            $result .= '<ul class="dropdown-menu">';
+            $result .= '<ul uib-dropdown-menu class="dropdown-menu">';
             foreach ($dropdownItems as $item) {
                 $link = isset($item['link']) ? $item['link'] : '#';
                 $label = isset($item['label']) ? $item['label'] : '';

@@ -1,18 +1,11 @@
 <?php
+
 namespace Application\View\Grid;
 
-use Zend\Form\Element\Select;
-use Zend\Form\Element\Text;
 use Zend\Paginator\Paginator;
-use Zend\View\Model\ViewModel;
-use ZfTable\Options\ModuleOptions;
-use ZfTable\Render;
+use Zend\View\Resolver;
 
-/**
- * @copyright Copyright (c) 2017 Jason Palmer jpalmer@meadedigital.com
- */
-
-class Render extends Render
+class Render extends \ZfTable\Render
 {
     /**
      * @var int
@@ -26,7 +19,6 @@ class Render extends Render
      */
     public function renderFilters()
     {
-        
         $headers = $this->getTable()->getHeaders();
         $render = '';
 
@@ -38,11 +30,11 @@ class Render extends Render
 
                 if (is_string($params['filters'])) {
 
-                    $element = new Text($id);
+                    $element = new \Zend\Form\Element\Text($id);
 
                     if ($params['filters'] == 'date') {
 
-                        $element = new Text($id);
+                        $element = new \Zend\Form\Element\Text($id);
                         $element->setAttribute('class', 'form_datetime filter form-control');
                         $element->setAttribute('readonly', true);
 
@@ -50,7 +42,7 @@ class Render extends Render
                         $element->setAttribute('class', 'filter form-control');
                     }
                 } else {
-                    $element = new Select($id);
+                    $element = new \Zend\Form\Element\Select($id);
                     $element->setValueOptions($params['filters']);
                     $element->setAttribute('class', 'selectpicker filter form-control');
                     $element->setAttribute('data-container', 'body');
@@ -83,7 +75,6 @@ class Render extends Render
      */
     public function renderTableAsHtml()
     {
-        
         $render = '';
         /** @var ModuleOptions $tableConfig */
         $tableConfig = $this->getTable()->getOptions();
@@ -97,7 +88,7 @@ class Render extends Render
         $render .= $this->getTable()->getRow()->renderRows();
         $table = sprintf('<table %s>%s</table>', $this->getTable()->getAttributes(), $render);
 
-        $view = new ViewModel();
+        $view = new \Zend\View\Model\ViewModel();
         $view->setTemplate('container');
         $view->setVariable('table', $table);
         $view->setVariable('totalNumber', $this->getTotalItemCount());
@@ -127,7 +118,7 @@ class Render extends Render
         $view->setVariable('showDeviceStatsBtn', $tableConfig->getShowDeviceStatsBtn());
         $view->setVariable('deviceStatsUrl', $tableConfig->getDeviceStatsUrl());
         $view->setVariable('showReloadItemsBtn', $tableConfig->getShowReloadItemsBtn());
-        $today = (new DateTime())->format('m/d/Y');
+        $today = (new \DateTime())->format('m/d/Y');
         $showSendTrackingNrsBtn = false;
         if ($tableConfig->getShowSendTrackingNrsBtn()) {
             if (getenv('IS_PROD')) {

@@ -24,6 +24,12 @@ class UserSession
      */
     protected $userAgent;
     
+    /** 
+     * @ORM\Column(type="integer") 
+     * @ORM\Version 
+     */
+    protected $version;
+    
     /**
      * @ORM\Column(name="user_id")
      * @ORM\ManyToOne(targetEntity="User", cascade={"all"}, fetch="LAZY")

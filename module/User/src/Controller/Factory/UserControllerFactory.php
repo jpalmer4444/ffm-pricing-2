@@ -18,8 +18,11 @@ class UserControllerFactory implements FactoryInterface
         $authManager = $container->get('User\Service\AuthManager');
         $dbAdapter = $container->get('Zend\Db\Adapter\Adapter');
         $logger = $container->get('Zend\Log\Logger');
+        $authenticationService = $container->get('Zend\Authentication\AuthenticationService');
+        $config = $container->get('Config');
+        //$ssp = $container->get('Application\Datatables\SSP');
         
         // Instantiate the controller and inject dependencies
-        return new UserController($entityManager, $userManager, $authManager, $dbAdapter, $logger);
+        return new UserController($entityManager, $userManager, $authManager, $dbAdapter, $logger, $config, $authenticationService);
     }
 }

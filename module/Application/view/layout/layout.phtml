@@ -1,6 +1,6 @@
 <?= $this->doctype() ?>
 
-<html lang="en">
+<html lang="en" data-ng-app="app" >
     <head>
         <meta charset="utf-8">
         <?= $this->headTitle('ZF Skeleton Application')->setSeparator(' - ')->setAutoEscape(false) ?>
@@ -15,22 +15,25 @@
         <?=
                 $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/pricing-logo.ico'])
                 ->prependStylesheet($this->basePath('css/dist/style.css'))
-                
-        ->prependStylesheet($this->basePath() . 'css/zf-table.css')
-                
-                ->prependStylesheet($this->basePath('css/style.css'))
-                
+                ->prependStylesheet($this->basePath('css/style.css'));
+
+        if ($this->ngPage) {
+
+            $this->headLink()->prependStylesheet($this->basePath() . 'css/jquery.dataTables.css');
+            $this->headLink()->prependStylesheet($this->basePath() . 'css/angular-datables.min.css');
+            //ng variables
+        }
         ?>
 
-        <!-- Scripts -->
-        <?=
-                $this->headScript()
-                ->prependFile($this->basePath('js/dist/vendor.js'))
-                ->prependFile($this->basePath('js/DT_bootstrap_3.js'))
-                ->prependFile($this->basePath('js/zf-table.js'))
-        ?>
+        <script>
+            var username = '<?php echo $this->username; ?>',
+                    loginUrl = '<?php echo $this->loginUrl; ?>',
+                    usersTableAjax = '<?php echo $this->usersTableAjax; ?>';
+            usersTableUpdateStatusAjax = '<?php echo $this->usersTableUpdateStatusAjax; ?>';
+        </script>
+
     </head>
-    <body>
+    <body >
         <!-- Navigation bar -->
         <?php
         // Check if the activeMenuItemId passed to layout view model
@@ -41,20 +44,75 @@
 
         // Render the navbar
         echo $this->mainMenu()->render();
-        
+
         // Render the Breadcrumbs
         echo $this->pageBreadcrumbs()->render();
-        
         ?>
-        
+
+        <div id="loadingOverlay" style='display: none;' class="overlay">
+            <div class="processing-message">
+                <p>Please wait while the system is processing your request...</p>
+                <span class="loader"> </span>
+                <span class="loader2"> </span>
+            </div>
+        </div>
         <div class="container main">
 
             <?php echo $this->content; ?>
-            
+
         </div> 
         <footer>
             <p> <?php echo $this->translate('Fulton Fish Market - Skeleton App') ?>&nbsp; <?php echo date('Y') ?> Meade Digital Enterprises </p>
         </footer>
+
+        <?php
+//add angular files for appropriate pages.
+        if ($this->ngPage) {
+
+            //$this->inlineScript()->appendFile($this->basePath('js/dist/angular-app-files.js?v='.
+            //1));
+
+            $this->inlineScript()->appendFile($this->basePath('js/jquery.min.js'))
+                    ->appendFile($this->basePath('js/jquery.dataTables.min.js'))
+                    ->appendFile($this->basePath('js/vendor/dataTables.fixedHeader.min.js'))
+                    ///u/local/jasonpalmer/ffmpricing/public/js/vendor/dataTables.fixedHeader.min.js
+                    ->appendFile($this->basePath('js/ng/vendor/angular.min.js'))
+                    ->appendFile($this->basePath('js/ng/vendor/angular-datatables/plugins/fixedheader/angular-datatables.fixedheader.min.js'))
+                    ->appendFile($this->basePath('js/ng/vendor/angular-datatables/angular-datatables.js'))
+                    
+                    ->appendFile($this->basePath('js/ng/vendor/select.min.js'))
+                    ->appendFile($this->basePath('js/ng/vendor/ui-bootstrap-tpls.min.js'))
+                    ->appendFile($this->basePath('js/ng/vendor/angular-sanitize.min.js'))
+
+                    //app
+                    ->appendFile($this->basePath('js/ng/app.js'))
+
+                    //header module
+                    ->appendFile($this->basePath('js/ng/header/header.module.js'))
+                    ->appendFile($this->basePath('js/ng/header/header.controller.js'))
+
+                    //users module
+                    ->appendFile($this->basePath('js/ng/users/users.module.js'))
+                    ->appendFile($this->basePath('js/ng/users/usersTable.controller.js'))
+                    
+                    //ffm module
+                    ->appendFile($this->basePath('js/ng/ffm/ffm.module.js'))
+                    ->appendFile($this->basePath('js/ng/ffm/ffm-enter.directive.js'))
+
+                    //screen module
+                    ->appendFile($this->basePath('js/ng/screen/screen.module.js'))
+                    ->appendFile($this->basePath('js/ng/screen/screen.service.js'))
+                    ->appendFile($this->basePath('js/ng/screen/confirmationModal.controller.js'))
+                    ->appendFile($this->basePath('js/ng/screen/datepicker.directive.js'))
+                    ->appendFile($this->basePath('js/ng/screen/opened.directive.js'))
+                    ->appendFile($this->basePath('js/ng/screen/select-on-focus.directive.js'))
+                    ->appendFile($this->basePath('js/ng/screen/warningModal.controller.js'));
+        } else {
+
+            $this->inlineScript()->appendFile($this->basePath('js/dist/vendor.js'));
+        }
+        ?>
+
         <?= $this->inlineScript() ?>
     </body>
 
