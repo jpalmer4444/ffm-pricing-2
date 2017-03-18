@@ -6,7 +6,6 @@
 
 namespace Application\Entity;
 
-use DataAccess\FFM\Entity\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="item_table_checkbox")
  */
-class ItemTableCheckbox extends PostFormBinder {
+class ItemTableCheckbox {
     
     public function __construct()
     {

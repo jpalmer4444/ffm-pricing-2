@@ -207,3 +207,39 @@ label.date-picker-table input.form_datetime{
 .table-condensed > tbody > tr > td{
     padding: 0 !important;
 }
+
+.salespeopleTable tbody tr{
+    cursor: pointer;
+}
+
+/*Needed so the status dropdown button has no border-radius*/
+.input-group.dropdown .btn{
+    border-radius: 0 !important;
+}
+
+.modal .modal-header h3 {
+    padding-bottom: 0;
+    padding-top: 8px;
+    padding-left: 15px;
+    margin: 0;
+    font-weight: 200;
+    text-transform: none;
+}
+
+.bool-drop-btn{
+    width: 100%;
+    text-align: left !important;
+}
+
+.bool-drop-btn-caret{
+    float: right;
+    position: relative;
+    top: -10px;
+}
+
+/*Class added to rows in Salespeople table with no row returned from the Web Service*/
+.missing-from-web-service{
+    background: #ccc !important;
+    cursor: auto !important;
+    opacity: .5;
+}

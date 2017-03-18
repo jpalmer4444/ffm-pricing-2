@@ -8,7 +8,7 @@
 
 namespace Application\Datatables\Factory;
 
-use Application\Datatables\SSP;
+use Application\Datatables\SSPJoin;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
@@ -17,11 +17,11 @@ use Zend\ServiceManager\Factory\FactoryInterface;
  *
  * @author jasonpalmer
  */
-class SSPFactory implements FactoryInterface {
+class SSPJoinFactory implements FactoryInterface {
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = NULL) {
         $logger = $container->get('Zend\Log\Logger');
-        return new SSP($logger);
+        return new SSPJoin($logger);
     }
 
 }

@@ -14,6 +14,9 @@ namespace Application\Datatables;
  * @author jasonpalmer
  */
 class Server {
+    
+    const JSON_DATA = 'jsonData';
+    const DATE_FORMAT = 'm/d/Y';
 
     public static function buildArrayFromJson($jsonData) {
         $arr = [];

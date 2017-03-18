@@ -1,0 +1,60 @@
+---
+  - name: Deploy Pricing V2 (localhost)
+    hosts: local
+    connection: local
+    gather_facts: False
+    tags: deployment
+
+    tasks:
+        
+      #- name: Test pricing V2
+       # shell: |
+       #     cd {{ lookup('env','PROJECT_HOME_DIR') }}/pricing/module/Sales/test
+       #     APPLICATION_ENV=staging phpunit
+        
+      - name: Zip pricing V2
+        shell: |
+            cd {{ lookup('env','PROJECT_HOME_DIR') }}/
+            zip -r pricingv2.zip ffmpricing/
+            
+      - name: SCP pricing V2
+        shell: |
+            cd /u/local/jasonpalmer/
+            scp -i /Users/jasonpalmer/jpalmer.pem pricingv2.zip root@10.0.5.243:.
+            scp -i /Users/jasonpalmer/jpalmer.pem pricingv2.zip root@10.0.4.172:.
+        
+# REMOTE
+        
+  - name: Deploy Pricing V2 (WebServer)
+    hosts: webserver
+    vars_files:
+    - ./vars/pricing_vars.yml
+    remote_user: root
+
+    tasks:
+        
+      - name: Deploy pricing on remote
+        shell: |
+            cd ~/;sudo unzip pricingv2.zip
+            rm -rf pricingv2.zip
+            cd /vol01/
+            sudo rm -rf pricingv2_archive
+            sudo mv pricingv2 pricingv2_archive
+            sudo mv ~/ffmpricing/ /vol01/pricingv2/
+            sudo chown apache:apache -R pricingv2/*
+            sudo chmod a+r,a+w,a+x -R pricingv2/* 
+            sudo rm -rf /vol01/pricingv2/data/cache/*
+            
+      - name: insert/update Apache Config
+        blockinfile:
+          dest: /etc/httpd/conf/httpd.conf
+          state: present
+          marker: "# {mark} ANSIBLE MANAGED BLOCK PRICINGV2"
+          block: "{{ pricingv2_vhost_block }}"
+          
+      - name: Restart Apache
+        shell: |
+            service httpd restart
+            
+      
+

@@ -54,6 +54,10 @@ class BaseService {
     public function getRepository() {
         return $this->repository;
     }
+    
+    protected function isDebug(){
+        return $this->config['pricing_config']['debug'];
+    }
 
     /**
      * Set entity repository instance
@@ -119,6 +123,7 @@ class BaseService {
     protected function logMessage($message, $level = Zend\Log\Logger::INFO) {
         $this->logger->log($level, $message);
     }
+    
 
     /**
      * Get formatted datetime for now

@@ -117,7 +117,7 @@ class UserForm extends Form
                 'label' => 'Status',
                 'value_options' => [
                     1 => 'Active',
-                    0 => 'Disabled',                    
+                    0 => 'Inactive',                    
                 ]
             ],
         ]);

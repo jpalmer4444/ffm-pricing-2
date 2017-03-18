@@ -6,8 +6,6 @@
 
 namespace Application\Entity;
 
-use DataAccess\FFM\Entity\PostFormBinder;
-use DataAccess\FFM\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
@@ -15,7 +13,7 @@ use DateTime;
  * @ORM\Entity()
  * @ORM\Table(name="row_plus_items_page")
  */
-class RowPlusItemsPage extends PostFormBinder {
+class RowPlusItemsPage {
     
     public function __construct()
     {

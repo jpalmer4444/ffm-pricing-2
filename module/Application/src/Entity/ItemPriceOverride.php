@@ -6,16 +6,14 @@
 
 namespace Application\Entity;
 
-use DataAccess\FFM\Entity\PostFormBinder;
-use DataAccess\FFM\Entity\User;
-use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="item_price_override")
  */
-class ItemPriceOverride extends PostFormBinder {
+class ItemPriceOverride {
     
     public function __construct()
     {

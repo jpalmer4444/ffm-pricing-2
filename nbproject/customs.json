@@ -1,6 +1,8 @@
 {
     "elements": {},
     "attributes": {
-        "uib-dropdown-menu": {}
+        "uib-dropdown-menu": {},
+        "uib-dropdown": {},
+        "uib-dropdown-toggle": {}
     }
 }

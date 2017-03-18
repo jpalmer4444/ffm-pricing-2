@@ -6,17 +6,16 @@ $this->mainMenu()->setActiveItemId('users');
 $this->mainMenu()->setSiteMapOverride('Manage Users');
 
 $this->pageBreadcrumbs()->setItems([
-    'Home' => $this->url('home'),
     'Manage Users' => $this->url('users'),
 ]);
 ?>
 
-<div class="around_datatables" ng-controller="UsersTableController as user">
+<div class="around_datatables" ng-controller="UsersTableController as userCtrl">
 
     <?= $this->partial('partial/users-table-header-tplt') ?>
 
     <div >
-        <table datatable="usersTable" dt-instance="user.dtInstanceCallback" dt-options="user.dtOptions" dt-columns="user.dtColumns" style="width: 100%;" class="table-bordered table-condensed table-hover table-striped">
+        <table datatable="usersTable" dt-instance="userCtrl.dtInstanceCallback" dt-options="userCtrl.dtOptions" dt-columns="userCtrl.dtColumns" style="width: 100%;" class="table-bordered table-condensed table-hover table-striped">
             <thead>
                 <tr class="no-padding">
                     <th>
@@ -24,25 +23,25 @@ $this->pageBreadcrumbs()->setItems([
                     </th>
                     <th>
                         <!-- USERNAME -->
-                        <input name="zff_username" ffm-enter="user.reloadData()" ng-model="user.zff_username" class="filter form-control" value="" type="text">
+                        <input name="zff_username" ffm-enter="userCtrl.reloadData()" ng-model="userCtrl.zff_username" class="filter form-control" value="" type="text">
                     </th>
                     <th>
                         <!-- EMAIL -->
-                        <input name="zff_email" ffm-enter="user.reloadData()" ng-model="user.zff_email" class="filter form-control" value="" type="text">
+                        <input name="zff_email" ffm-enter="userCtrl.reloadData()" ng-model="userCtrl.zff_email" class="filter form-control" value="" type="text">
                     </th>
                     <th>
                         <div class="btn-group bootstrap-select filter form-control" uib-dropdown dropdown-append-to-body="true">
                             <ul class="dropdown-menu table-head" uib-dropdown-menu >
                                 <li >
-                                    <a href="#" ng-click="user.selectStatus('Active')">Active</a>
+                                    <a href="#" ng-click="userCtrl.selectStatus('Active')">Active</a>
                                 </li>
                                 <li >
-                                    <a href="#" ng-click="user.selectStatus('Inactive')">Inactive</a>
+                                    <a href="#" ng-click="userCtrl.selectStatus('Inactive')">Inactive</a>
                                 </li>
                             </ul>
                             <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle >
-                                <span ng-if="!user.status" class="filter-option pull-left">- Select -</span>
-                                <span ng-if="user.status" class="filter-option pull-left">{{user.status}}</span>
+                                <span ng-if="!userCtrl.status" class="filter-option pull-left">- Select -</span>
+                                <span ng-if="userCtrl.status" class="filter-option pull-left">{{userCtrl.status}}</span>
                                 &nbsp;
                                 <span class="caret"></span>
                             </button>
@@ -53,19 +52,19 @@ $this->pageBreadcrumbs()->setItems([
                     </th>
                     <th>
                         <!-- FULL NAME -->
-                        <input name="zff_fullname" ffm-enter="user.reloadData()" ng-model="user.zff_fullname" class="filter form-control" value="" type="text">
+                        <input name="zff_fullname" ffm-enter="userCtrl.reloadData()" ng-model="userCtrl.zff_fullname" class="filter form-control" value="" type="text">
                     </th>
                     <th>
                         <!-- CREATED -->
-                        <label ng-click="user.zff_createddate_open = true" class="cursor-pointer date-picker-table">
-                            <input name="zff_createdDate" ng-change="user.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{user.dateformat}}" ng-model="user.zff_createddate" is-open="user.zff_createddate_open" datepicker-options="user.dateOptions" alt-input-formats="user.altInputFormats" />
+                        <label ng-click="userCtrl.zff_createddate_open = true" class="cursor-pointer date-picker-table">
+                            <input name="zff_createdDate" ng-change="userCtrl.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{userCtrl.dateformat}}" ng-model="userCtrl.zff_createddate" is-open="userCtrl.zff_createddate_open" datepicker-options="userCtrl.dateOptions" alt-input-formats="userCtrl.altInputFormats" />
                             <i class="ion-calendar" ></i>
                         </label>
                     </th>
                     <th>
                         <!-- LAST LOGIN -->
-                        <label ng-click="user.zff_lastlogindate_open = true" class="cursor-pointer date-picker-table">
-                            <input name="zff_lastLogin" ng-change="user.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{user.dateformat}}" ng-model="user.zff_lastlogindate" is-open="user.zff_lastlogindate_open" datepicker-options="user.dateOptions" alt-input-formats="user.altInputFormats" />
+                        <label ng-click="userCtrl.zff_lastlogindate_open = true" class="cursor-pointer date-picker-table">
+                            <input name="zff_lastLogin" ng-change="userCtrl.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{userCtrl.dateformat}}" ng-model="userCtrl.zff_lastlogindate" is-open="userCtrl.zff_lastlogindate_open" datepicker-options="userCtrl.dateOptions" alt-input-formats="userCtrl.altInputFormats" />
                             <i class="ion-calendar" ></i>
                         </label>
                     </th>

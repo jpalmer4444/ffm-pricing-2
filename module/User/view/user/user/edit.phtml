@@ -6,7 +6,6 @@ $this->mainMenu()->setActiveItemId('users');
 $this->mainMenu()->setSiteMapOverride('Edit User');
 
 $this->pageBreadcrumbs()->setItems([
-    'Home' => $this->url('home'),
     'Manage Users' => $this->url('users'),
     'Edit User' => $this->url('users', ['action' => 'edit', 'id' => $this->user->getId()])
 ]);

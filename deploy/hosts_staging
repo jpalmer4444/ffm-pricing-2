@@ -1,0 +1,6 @@
+[local]
+localhost
+
+[webserver]
+10.0.5.243
+10.0.4.172

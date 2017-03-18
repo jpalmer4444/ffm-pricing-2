@@ -1,13 +1,13 @@
 <?php
+
+use DateTime;
+use Doctrine\ORM\Version;
 /**
  * @copyright  Copyright (c) 2017 Fulton Inc.
  * @author     Jason Palmer <jpalmer@meadedigital.com>
  */
 
 namespace Application\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
-use DateTime;
 
 /** 
  * @ORM\Entity()
@@ -30,7 +30,7 @@ class Customer
     /** 
      * Used internally by Doctrine - Do not touch or manipulate.
      * @ORM\Column(type="integer") 
-     * @ORM\Version 
+     * @Version 
      */
     private $version;
     

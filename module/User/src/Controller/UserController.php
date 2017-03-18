@@ -4,7 +4,7 @@ namespace User\Controller;
 
 use Application\Controller\BaseController;
 use Application\Datatables\Server;
-use Application\Datatables\SSP;
+use Application\Datatables\SSPJoin;
 use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Exception;
@@ -44,12 +44,20 @@ class UserController extends BaseController {
     private $authManager;
     private $dbAdapter;
     private $logger;
+    private $sspJoin;
 
     /**
      * Constructor. 
      */
     public function __construct(
-    EntityManager $entityManager, UserManager $userManager, AuthManager $authManager, Adapter $dbAdapter, Logger $logger, array $config, AuthenticationService $authenticationService
+    EntityManager $entityManager, 
+            UserManager $userManager, 
+            AuthManager $authManager, 
+            Adapter $dbAdapter, 
+            Logger $logger, 
+            array $config, 
+            AuthenticationService $authenticationService,
+            SSPJoin $sspJoin
     ) {
         parent::__construct($authenticationService, $config);
         $this->entityManager = $entityManager;
@@ -57,11 +65,11 @@ class UserController extends BaseController {
         $this->authManager = $authManager;
         $this->dbAdapter = $dbAdapter;
         $this->logger = $logger;
+        $this->sspJoin = $sspJoin;
     }
 
     /**
-     * This is the default "index" action of the controller. It displays the 
-     * list of users.
+     * This is the default "index" action of the controller. serveNgPage for Angular pages.
      */
     public function indexAction() {
 
@@ -367,11 +375,11 @@ class UserController extends BaseController {
             'form' => $form
         ]);
     }
-    
-    public function usersTableUpdateStatusAction(){
-        
+
+    public function usersTableUpdateStatusAction() {
+
         $id = $this->params()->fromQuery('user_id');
-        
+
         //only allow users that are admins or are otherwise the current user
         $assertion = $this->getUserIdMustMatchAssertion($id);
 
@@ -381,23 +389,22 @@ class UserController extends BaseController {
             $this->getResponse()->setStatusCode(404);
             return;
         }
-        
+
         $status = $this->params()->fromQuery('status');
-        
+
         //update user here
         $user = $this->entityManager->getRepository(User::class)
-                        ->find($id);
-        
+                ->find($id);
+
         $user->setStatus($status);
-        
+
         $this->entityManager->persist($user);
-        
+
         $this->entityManager->flush();
-        
+
         return $this->jsonResponse([
-            'success' => true
+                    'success' => true
         ]);
-        
     }
 
     public function usersTableAction() {
@@ -430,6 +437,7 @@ class UserController extends BaseController {
             ),
             array('db' => 'id', 'dt' => 7),
         );
+
         // SQL server connection information
         $sql_details = array(
             'user' => $this->config['doctrine']['connection']['orm_default']['params']['user'],
@@ -439,57 +447,35 @@ class UserController extends BaseController {
         );
 
         $jsonArgs = Server::buildArrayFromJson($jsonData);
-        $this->logger->log(Logger::INFO, "jsonArgs: " . print_r($jsonArgs, TRUE));
 
-        //add column filters passed as query params - hack.
-        $zff_username = $this->params()->fromQuery('zff_username');
+        //merge username
+        $this->sspJoin->setColumnSearchValue(
+                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'username'), $this->params()->fromQuery('zff_username')
+        );
 
-        if (!empty($zff_username)) {
+        $this->sspJoin->setColumnSearchValue(
+                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'email'), $this->params()->fromQuery('zff_email')
+        );
 
-            $jsonArgs['columns'][1]['search']['value'] = $zff_username;
-        }
+        $this->sspJoin->setColumnSearchValue(
+                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'full_name'), $this->params()->fromQuery('zff_fullname')
+        );
 
-        $zff_email = $this->params()->fromQuery('zff_email');
+        $this->sspJoin->setColumnSearchValue(
+                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'date_created'), $this->params()->fromQuery('zff_createddate')
+        );
 
-        if (!empty($zff_email)) {
-
-            $jsonArgs['columns'][2]['search']['value'] = $zff_email;
-        }
+        $this->sspJoin->setColumnSearchValue(
+                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'last_login'), $this->params()->fromQuery('zff_lastlogindate')
+        );
 
         $zff_status = $this->params()->fromQuery('zff_status');
 
-        if (!empty($zff_status)) {
+        if ($zff_status == 1 || $zff_status == 0 || $zff_status == '1' || $zff_status == '0') {
 
-            $jsonArgs['columns'][3]['search']['value'] = $zff_status;
-        }
-
-        $zff_fullname = $this->params()->fromQuery('zff_fullname');
-
-        if (!empty($zff_fullname)) {
-
-            $jsonArgs['columns'][4]['search']['value'] = $zff_fullname;
-        }
-
-        $zff_createddate = $this->params()->fromQuery('zff_createddate');
-
-        if (!empty($zff_createddate)) {
-
-            $jsonArgs['columns'][5]['search']['value'] = $zff_createddate;
-        }
-
-        $zff_lastlogindate = $this->params()->fromQuery('zff_lastlogindate');
-
-        if (!empty($zff_lastlogindate)) {
-
-            $jsonArgs['columns'][6]['search']['value'] = $zff_lastlogindate;
-        }
-        
-        $zff_status = $this->params()->fromQuery('zff_status');
-
-        if ($zff_status == 0 || $zff_status == '0' || 
-                $zff_status == 1 || $zff_status == '1') {
-
-            $jsonArgs['columns'][3]['search']['value'] = $zff_status;
+            $this->sspJoin->setColumnSearchValue(
+                    $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'status'), $zff_status
+            );
         }
 
         $zff_length = $this->params()->fromQuery('zff_length');
@@ -500,20 +486,23 @@ class UserController extends BaseController {
 
             //check page now
             $zff_page = $this->params()->fromQuery('zff_page');
-            
-            if(empty($zff_page)){
+
+            if (empty($zff_page)) {
                 $zff_page = 1;
             }
-            
-            $zff_page--;//make zero based
+
+            $zff_page--; //make zero based
 
             $jsonArgs['start'] = $zff_page ? ($zff_page * $zff_length) : ($zff_page);
         }
 
-        $this->logger->log(Logger::INFO, "jsonArgs: " . print_r($jsonArgs, TRUE));
-
+        $this->sspJoin->reset();
+        $this->sspJoin->setLogger($this->logger);
+        
+        $response = $this->sspJoin->simple($jsonArgs, $sql_details, $table, $primaryKey, $columns);
+        
         return $this->jsonResponse(
-                        SSP::simple($jsonArgs, $sql_details, $table, $primaryKey, $columns)
+                        $response
         );
     }
 

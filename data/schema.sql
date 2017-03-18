@@ -133,9 +133,23 @@ INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(9, 'user/usersTable', '
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(13, 'user/usersTableUpdateStatus', 'Users Table Update Status');
 
 # IndexController
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(10, 'index/about', 'About Action');
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(11, 'index/index', 'Index Action');
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(12, 'index/settings', 'Settings Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(10, 'index/about', 'Index About Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(11, 'index/index', 'Index Index Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(12, 'index/settings', 'Index Settings Action');
+
+# CustomerController
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(14, 'customer/index', 'Customer Index Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(20, 'customer/view', 'Customer View Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(15, 'customer/customerTable', 'Customer Customer Table');
+
+# SalespeopleController
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(16, 'salespeople/index', 'Salespeople Index Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(21, 'salespeople/add', 'Salespeople Add Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(17, 'salespeople/salespeopleTable', 'Salespeople Salespeople Table');
+
+# ProductController
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(18, 'product/index', 'Product Index Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(19, 'product/productTable', 'Product Product Table');
 
 
 CREATE TABLE `role_permission` (
@@ -163,12 +177,26 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 11); # admi
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 12); # admin index/settings (Settings Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 13); # admin user/usersTableUpdateStatus (Users Table Update Status)
 
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 14); # admin customer/index (Customer Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 20); # admin customer/view (Customer View Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 15); # admin customer/customerTable (Customer Customer Table)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 16); # admin salespeople/index (Salespeople Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 21); # admin salespeople/add (Salespeople Add Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 17); # admin salespeople/salespeopleTable (Salespeople Salespeople Table)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 18); # admin product/index (Product Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 19); # admin product/productTable (Product Product Table)
+
 # User Permissions
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 9); # sales user/usersTable (Ajax Users Table Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 10); # sales index/about (About Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 11); # sales index/index (Index Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 12); # sales index/settings (Settings Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 6); # sales user/edit (Edit User)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 14); # sales customer/index (Customer Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 20); # admin customer/view (Customer View Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 15); # sales customer/customerTable (Customer Customer Table)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 18); # sales product/index (Product Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 19); # sales product/productTable (Product Product Table)
 
 # dhError table
 CREATE TABLE `error_log` (

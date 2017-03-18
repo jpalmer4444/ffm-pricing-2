@@ -1,0 +1,104 @@
+<?php
+$this->headTitle('Welcome');
+
+$this->mainMenu()->setActiveItemId('salespeople');
+
+$this->mainMenu()->setSiteMapOverride('Salespeople');
+
+$this->pageBreadcrumbs()->setItems([
+    'Salespeople' => $this->url('salespeople', ['action' => 'index']),
+]);
+
+?>
+
+<div class="around_datatables" ng-controller="SalespeopleTableController as salespeopleCtrl">
+    
+    <?= $this->partial('partial/add-salesperson-modal-tplt') ?>
+    <?= $this->partial('partial/salespeople-table-header-tplt') ?>
+    
+    <div >
+        <table datatable="salespeopleTable" dt-instance="salespeopleCtrl.dtInstanceCallback" dt-options="salespeopleCtrl.dtOptions" dt-columns="salespeopleCtrl.dtColumns" style="width: 100%;" class="table-bordered table-condensed table-hover table-striped salespeopleTable">
+            <thead>
+                <tr class="no-padding">
+                    <th>
+                        <!-- ID -->
+                    </th>
+                    <th>
+                        <!-- USERNAME -->
+                        <input name="zff_username" ffm-enter="salespeopleCtrl.reloadData()" ng-model="salespeopleCtrl.zff_username" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- EMAIL -->
+                        <input name="zff_email" ffm-enter="salespeopleCtrl.reloadData()" ng-model="salespeopleCtrl.zff_email" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <div class="btn-group bootstrap-select filter form-control" uib-dropdown dropdown-append-to-body="true">
+                            <ul class="dropdown-menu table-head" uib-dropdown-menu >
+                                <li >
+                                    <a href="#" ng-click="salespeopleCtrl.selectStatus('Active')">Active</a>
+                                </li>
+                                <li >
+                                    <a href="#" ng-click="salespeopleCtrl.selectStatus('Inactive')">Inactive</a>
+                                </li>
+                            </ul>
+                            <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle >
+                                <span ng-if="!salespeopleCtrl.status" class="filter-option pull-left">- Select -</span>
+                                <span ng-if="salespeopleCtrl.status" class="filter-option pull-left">{{salespeopleCtrl.status}}</span>
+                                &nbsp;
+                                <span class="caret"></span>
+                            </button>
+
+                        </div>
+                        <!-- STATUS -->
+
+                    </th>
+                    <th>
+                        <!-- FULL NAME -->
+                        <input name="zff_fullname" ffm-enter="salespeopleCtrl.reloadData()" ng-model="salespeopleCtrl.zff_fullname" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- CREATED -->
+                        <label ng-click="salespeopleCtrl.zff_createddate_open = true" class="cursor-pointer date-picker-table">
+                            <input name="zff_createdDate" ng-change="salespeopleCtrl.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{salespeopleCtrl.dateformat}}" ng-model="salespeopleCtrl.zff_createddate" is-open="salespeopleCtrl.zff_createddate_open" datepicker-options="salespeopleCtrl.dateOptions" alt-input-formats="salespeopleCtrl.altInputFormats" />
+                            <i class="ion-calendar" ></i>
+                        </label>
+                    </th>
+                    <th>
+                        <!-- LAST LOGIN -->
+                        <label ng-click="salespeopleCtrl.zff_lastlogindate_open = true" class="cursor-pointer date-picker-table">
+                            <input name="zff_lastLogin" ng-change="salespeopleCtrl.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{salespeopleCtrl.dateformat}}" ng-model="salespeopleCtrl.zff_lastlogindate" is-open="salespeopleCtrl.zff_lastlogindate_open" datepicker-options="salespeopleCtrl.dateOptions" alt-input-formats="salespeopleCtrl.altInputFormats" />
+                            <i class="ion-calendar" ></i>
+                        </label>
+                    </th>
+                    <th>
+                        <!-- ACTIONS -->
+                    </th>
+                </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Fullname</th>
+                    <th>Created</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Fullname</th>
+                    <th>Created</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+</div>

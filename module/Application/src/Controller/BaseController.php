@@ -33,6 +33,10 @@ abstract class BaseController extends AbstractActionController{
     {
         return BASE_PATH.'/';
     }
+    
+    protected function isDebug(){
+        return $this->config['pricing_config']['debug'];
+    }
 
     protected function getBaseUrl()
     {
@@ -42,12 +46,13 @@ abstract class BaseController extends AbstractActionController{
         return sprintf('%s://%s', $uri->getScheme(), $uri->getHost());
     }
     
+    function getConfig() {
+        return $this->config;
+    }
+
     public function serveNgPage($isNgPage = TRUE) {
         $this->layout()->setVariable('ngPage', $isNgPage);
         $this->layout()->setVariable('username', $this->authenticationService->getIdentity());
-        $this->layout()->setVariable('loginUrl', $this->config['ngSettings']['loginUrl']);
-        $this->layout()->setVariable('usersTableAjax', $this->config['ngSettings']['usersTableAjax']);
-        $this->layout()->setVariable('usersTableUpdateStatusAjax', $this->config['ngSettings']['usersTableUpdateStatusAjax']);
     }
 
     /**

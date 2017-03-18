@@ -1,0 +1,90 @@
+<div class="table-header" >
+    <div class="pull-left">
+        <header>
+            <h4 class="pull-left">
+                Salespeople (<span ng-bind="salespeopleCtrl.recordsFiltered"></span>)
+
+                <?php if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleController', 'add'))): ?>
+
+                    <span >
+                        <a class="ion-plus" title="Add Salesperson" href="salespeople/add"></a>
+                    </span>
+
+                <?php endif; ?>
+            </h4>
+        </header>
+    </div>
+
+    <div class="pull-right">
+
+        <a ng-if="salespeopleCtrl.missingFromWebServiceSalespeople.length > 0" ng-repeat="salesperson in salespeopleCtrl.missingFromWebServiceSalespeople track by $index" 
+           class="table-header-btn reset-filters-btn btn-accent" title="{{salesperson['full_name']}} not found in Web Service!" ng-click="salespeopleCtrl.addSalesperson('missingFromWebServiceSalespeople', $index)">
+            {{salesperson['full_name']}}
+            <i class="ion-edit"></i>
+        </a>
+        
+        <a ng-if="salespeopleCtrl.missingFromDBSalespeople.length > 0" ng-repeat="salesperson in salespeopleCtrl.missingFromDBSalespeople track by $index" 
+           class="table-header-btn reset-filters-btn btn-accent" title="{{salesperson['full_name']}} not found in DB!" ng-click="salespeopleCtrl.addSalesperson('missingFromDBSalespeople', $index)">
+            {{salesperson['full_name']}}
+            <i class="ion-plus"></i>
+        </a>
+
+        <a class="table-header-btn reset-filters-btn btn-default" title="Reset Filters" ng-click="salespeopleCtrl.resetFilters()"> 
+            Reset all filters
+            <i class="ion-close"></i>
+        </a>
+
+        <div class="btn-group bootstrap-select itemPerPage form-control" uib-dropdown>
+
+            <button class="btn dropdown-toggle btn-default" type="button" 
+                    uib-dropdown-toggle ng-title="salespeopleCtrl.pageSize" >
+
+                <span class="filter-option pull-left"> 
+                    {{salespeopleCtrl.pageSize}}
+                </span>
+
+                <span class="caret"></span>
+
+            </button>
+
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" >
+                <li >
+                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(2)">2</a>
+                </li>
+                <li >
+                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(10)">10</a>
+                </li>
+                <li >
+                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(25)">25</a>
+                </li>
+                <li >
+                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(50)">50</a>
+                </li>
+                <li >
+                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(100)">100</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="table-header-text">Salespeople</div>
+
+        <div class="dataTables_paginate paging_bootstrap pull-right">
+
+            <ul uib-pagination direction-links="true" boundary-links="false" 
+                total-items="salespeopleCtrl.recordsTotal" 
+                ng-model="salespeopleCtrl.page" 
+                previous-text="‹" next-text="›" 
+                items-per-page="salespeopleCtrl.pageSize" ng-change="salespeopleCtrl.reloadData()"
+                rotate="true" 
+                max-size="5" boundary-link-numbers="true" 
+                class="pagination">
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+

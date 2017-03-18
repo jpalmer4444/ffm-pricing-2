@@ -3,7 +3,7 @@
 <html lang="en" data-ng-app="app" >
     <head>
         <meta charset="utf-8">
-        <?= $this->headTitle('ZF Skeleton Application')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?= $this->headTitle('Pricing V2')->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?=
                 $this->headMeta()
@@ -27,9 +27,12 @@
 
         <script>
             var username = '<?php echo $this->username; ?>',
-                    loginUrl = '<?php echo $this->loginUrl; ?>',
-                    usersTableAjax = '<?php echo $this->usersTableAjax; ?>';
-            usersTableUpdateStatusAjax = '<?php echo $this->usersTableUpdateStatusAjax; ?>';
+            loginUrl = '<?= $this->url('login'); ?>',
+            usersTableAjax = '<?= $this->url('users', ['action' => 'users-table']); ?>';
+            productsTableAjax = '<?= $this->url('product', ['action' => 'product-table']); ?>';
+            salespeopleTableAjax = '<?= $this->url('salespeople', ['action' => 'salespeople-table']); ?>';
+            addSalespersonUrl = '<?= $this->url('salespeople', ['action' => 'add']); ?>';
+            usersTableUpdateStatusAjax = '<?= $this->url('users', ['action' => 'users-table-update-status']); ?>';
         </script>
 
     </head>
@@ -95,9 +98,23 @@
                     ->appendFile($this->basePath('js/ng/users/users.module.js'))
                     ->appendFile($this->basePath('js/ng/users/usersTable.controller.js'))
                     
+                    //product module
+                    ->appendFile($this->basePath('js/ng/product/product.module.js'))
+                    ->appendFile($this->basePath('js/ng/product/productTable.controller.js'))
+                    
+                    //salespeople module
+                    ->appendFile($this->basePath('js/ng/salespeople/salespeople.module.js'))
+                    ->appendFile($this->basePath('js/ng/salespeople/salespeopleTable.controller.js'))
+                    ->appendFile($this->basePath('js/ng/salespeople/addSalespersonModal.controller.js'))
+                    
+                    //customer module
+                    ->appendFile($this->basePath('js/ng/customer/customer.module.js'))
+                    ->appendFile($this->basePath('js/ng/customer/customerTable.controller.js'))
+                    
                     //ffm module
                     ->appendFile($this->basePath('js/ng/ffm/ffm.module.js'))
                     ->appendFile($this->basePath('js/ng/ffm/ffm-enter.directive.js'))
+                    ->appendFile($this->basePath('js/ng/ffm/ffm-pw-check.directive.js'))
 
                     //screen module
                     ->appendFile($this->basePath('js/ng/screen/screen.module.js'))
@@ -107,11 +124,19 @@
                     ->appendFile($this->basePath('js/ng/screen/opened.directive.js'))
                     ->appendFile($this->basePath('js/ng/screen/select-on-focus.directive.js'))
                     ->appendFile($this->basePath('js/ng/screen/warningModal.controller.js'));
+            
+            
+                    //global angular modals.
+                    
         } else {
 
             $this->inlineScript()->appendFile($this->basePath('js/dist/vendor.js'));
         }
         ?>
+        
+        <!--Angular Global Modals-->
+        <?= $this->partial('partial/warning-modal-tplt') ?>
+        <?= $this->partial('partial/confirmation-modal-tplt') ?>
 
         <?= $this->inlineScript() ?>
     </body>

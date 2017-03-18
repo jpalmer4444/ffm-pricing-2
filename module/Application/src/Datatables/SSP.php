@@ -9,7 +9,6 @@
 namespace Application\Datatables;
 
 use \PDO;
-use Zend\Log\Logger;
 
 /**
  * Description of Ssp
@@ -17,6 +16,7 @@ use Zend\Log\Logger;
  * @author jasonpalmer
  */
 class SSP {
+    
 
     static function data_output($columns, $data) {
         $out = array();
@@ -180,7 +180,7 @@ class SSP {
      *  @param  array $columns Column information array
      *  @return array          Server-side processing response array
      */
-    static function simple($request, $conn, $table, $primaryKey, $columns) {
+    static function simple($request, $conn, $table, $primaryKey, $columns, $logger) {
         $bindings = array();
         $db = self::db($conn);
         // Build the SQL query string from the request
@@ -242,7 +242,7 @@ class SSP {
      *  @param  string $whereAll WHERE condition to apply to all queries
      *  @return array          Server-side processing response array
      */
-    static function complex($request, $conn, $table, $primaryKey, $columns, $whereResult = null, $whereAll = null) {
+    static function complex($request, $conn, $table, $primaryKey, $columns, $logger, $whereResult = null, $whereAll = null) {
         $bindings = array();
         $db = self::db($conn);
         $localWhereResult = array();
@@ -348,9 +348,6 @@ class SSP {
         }
         // Execute
         try {
-            $data = $sql . PHP_EOL;
-            $fp = fopen('/u/local/jasonpalmer/ffmpricing/data/log/error.log', 'a');
-            fwrite($fp, $data);
             $stmt->execute();
         } catch (PDOException $e) {
             self::fatal("An SQL error occurred: " . $e->getMessage());
@@ -375,7 +372,6 @@ class SSP {
         echo json_encode(array(
             "error" => $msg
         ));
-        exit(0);
     }
 
     /**
@@ -413,6 +409,31 @@ class SSP {
         }
         return $out;
     }
+    
+    /**
+     * 
+     * @param array Flat array of POST data sent from datatables
+     * @param int $index Index of [search][value] in [columns][$index] array
+     * @param string $value Value to set in columns array.
+     */
+    static function setColumnSearchValue(& $datablesPostArgs, $index, $value){
+        $datablesPostArgs['columns'][$index]['search']['value'] = $value;
+    }
+    
+    /**
+     * 
+     * @param array $columns Array to get data from
+     * @param string $columnName Column Name for Index lookup
+     * @return int Index of Column Name in $column array.
+     */
+    static function pluckColumnIndex($columns, $columnName) {
+            for ($i = 0, $len = count($columns); $i < $len; $i++) {
+                $mapping = $columns[$i];
+                if(strcmp($mapping['db'], $columnName) == 0){
+                    return $mapping['dt'];
+                }
+            }
+        }
 
     /**
      * Return a string from an array or a string

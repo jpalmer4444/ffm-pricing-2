@@ -114,11 +114,11 @@ class AuthAdapter implements AdapterInterface
         
         // If the user with such username exists, we need to check if it is active or retired.
         // Do not allow retired users to log in.
-        if ($user->getStatus()==User::STATUS_DISABLED) {
+        if ($user->getStatus()==User::STATUS_INACTIVE) {
             return new Result(
                 Result::FAILURE, 
                 null, 
-                ['User is disabled.']);        
+                ['User is inactive.']);        
         }
         
         // Now we need to calculate hash based on user-entered password and compare

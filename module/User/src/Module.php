@@ -33,12 +33,12 @@ class Module {
         $sharedEventManager = $eventManager->getSharedManager();
         // Register the event listener method. 
         $sharedEventManager->attach(AbstractActionController::class, MvcEvent::EVENT_DISPATCH, [$this, 'onDispatch'], 100);
-    
+
         //setup error handler
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'handleError'));
         $eventManager->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'handleError'));
     }
-    
+
     public function handleError(MvcEvent $event) {
         $controller = $event->getController();
         $error = $event->getParam('error');
@@ -71,14 +71,14 @@ class Module {
 
         // Convert dash-style action name to camel-case.
         $actionName = str_replace('-', '', lcfirst(ucwords($actionNameDashed, '-')));
-        
+
         // Get the instance of AuthManager service.
         $authManager = $event->getApplication()->getServiceManager()->get(AuthManager::class);
 
         // Get the instance of logger.
         $logger = $event->getApplication()->getServiceManager()->get('Zend\Log\Logger');
-        
-        $this->log(Logger::INFO, "Checking controllerName: ".$controllerName." and actionName: ".$actionName, $logger);
+
+        $this->log(Logger::INFO, "Checking controllerName: " . $controllerName . " and actionName: " . $actionName, $logger);
 
         // need to login user by sessionId when AuthService has no identity. Which happens
         // in a load-balanced environment when subsequent requests go to a different server.
@@ -88,7 +88,7 @@ class Module {
         // Get the instance of UserService.
         $userService = $event->getApplication()->
                         getServiceManager()->get('Application\Service\UserService');
-        
+
         // Get the instance of UserSessionService.
         $userSessionService = $event->getApplication()->
                         getServiceManager()->get('Application\Service\UserSessionService');
@@ -96,6 +96,7 @@ class Module {
         // Get the instance of SessionManager.
         $sessionManager = $event->getApplication()->
                         getServiceManager()->get('Zend\Session\SessionManager');
+
 
         // check if $authenticationService has a logged-in user.
         // this is where we handle authentication across requests
@@ -113,8 +114,18 @@ class Module {
         // complete.
         if (empty($authenticationService->getIdentity())) {
             //attempt to lookup User by sessionId.
-            $sessionId = $sessionManager->getId();
-            $this->balanceLogin($sessionId, $userService, $userSessionService, $authenticationService, $logger);
+            try {
+                if (!$sessionManager->isValid()) {
+                    $sessionManager->destroy();
+                    $sessionManager->regenerateId();
+                }
+                $sessionId = $sessionManager->getId();
+                $this->balanceLogin($sessionId, $userService, $userSessionService, $authenticationService, $logger);
+            } catch (\Exception $exc) {
+                $this->log(Logger::INFO, PHP_EOL . "User/src/Module.php:Exception! stacktrace follows.(Redirecting to login page.)" . PHP_EOL . $exc->getTraceAsString(), $logger);
+                //echo $exc->getTraceAsString();
+                return $this->redirectToLogin($event, $controller);
+            }
         } else {
             $this->log(Logger::INFO, "Authentication Service has logged-in user.", $logger);
         }
@@ -128,29 +139,33 @@ class Module {
 
         if (!$bypass && !$authManager->isGranted($controllerName, $actionName)) {
 
-            // Remember the URL of the page the user tried to access. We will
-            // redirect the user to that URL after successful login.
-            $uri = $event->getApplication()->getRequest()->getUri();
-            // Make the URL relative (remove scheme, user info, host name and port)
-            // to avoid redirecting to other domain by a malicious user.
-            $uri->setScheme(null)
-                    ->setHost(null)
-                    ->setPort(null)
-                    ->setUserInfo(null);
-            $redirectUrl = $uri->toString();
-
-            // Redirect the user to the "Login" page.
-            return $controller->redirect()->toRoute('login', [], ['query' => ['redirectUrl' => $redirectUrl]]);
+            return $this->redirectToLogin($event, $controller);
         }
+    }
+
+    private function redirectToLogin($event, $controller) {
+        // Remember the URL of the page the user tried to access. We will
+        // redirect the user to that URL after successful login.
+        $uri = $event->getApplication()->getRequest()->getUri();
+        // Make the URL relative (remove scheme, user info, host name and port)
+        // to avoid redirecting to other domain by a malicious user.
+        $uri->setScheme(null)
+                ->setHost(null)
+                ->setPort(null)
+                ->setUserInfo(null);
+        $redirectUrl = $uri->toString();
+
+        // Redirect the user to the "Login" page.
+        return $controller->redirect()->toRoute('login', [], ['query' => ['redirectUrl' => $redirectUrl]]);
     }
 
     private function balanceLogin($sessionId, $userService, $userSessionService, $authenticationService, $logger) {
         if (!empty($sessionId)) {
             $userSession = $userSessionService->getEntityManager()->getRepository(UserSession::class)
-                ->findOneBy(['sessionId' =>$sessionId]);
-            if(!empty($userSession)){
+                    ->findOneBy(['sessionId' => $sessionId]);
+            if (!empty($userSession)) {
                 $user = $userService->find($userSession->getUserId());
-            }else{
+            } else {
                 $this->log(Logger::ERR, "UserSession not found by session id", $logger);
             }
             if (!empty($user)) {

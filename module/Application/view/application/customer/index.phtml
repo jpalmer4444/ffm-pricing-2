@@ -1,0 +1,24 @@
+<?php
+$this->headTitle('Welcome');
+
+$this->mainMenu()->setActiveItemId('customers');
+
+$this->mainMenu()->setSiteMapOverride('Customers');
+
+if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleController', 'index'))) {
+    $this->pageBreadcrumbs()->setItems([
+        'Salespeople' => $this->url('salespeople', ['action' => 'index']),
+        'Customers' => $this->url('customer', ['action' => 'index']),
+    ]);
+} else {
+    $this->pageBreadcrumbs()->setItems([
+        'Customers' => $this->url('customer', ['action' => 'index']),
+    ]);
+}
+?>
+
+<div class="around_datatables" ng-controller="CustomerTableController as customerCtrl">
+    
+    <?= $this->partial('partial/customer-table-header-tplt') ?>
+    
+</div>

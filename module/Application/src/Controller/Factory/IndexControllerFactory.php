@@ -17,12 +17,12 @@ use Zend\ServiceManager\Factory\FactoryInterface;
  *
  * @author jasonpalmer
  */
-class IndexControllerFactory implements FactoryInterface {
+class IndexControllerFactory extends BaseFactory implements FactoryInterface {
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = NULL) {
         $logger = $container->get('Zend\Log\Logger');
         $entityManager = $container->get('Doctrine\ORM\EntityManager');
-        $authenticationService = $container->get('Zend\Authentication\AuthenticationService');
+        $authenticationService = static::getAuthenticationService($container);
         $config = $container->get('Config');
         return new IndexController($entityManager, $logger, $config, $authenticationService);
     }

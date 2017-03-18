@@ -2,20 +2,27 @@
   "use strict";
 
   angular
-    .module("app", ["header", "users", "screen", "ffm", "ngSanitize"])
+    .module("app", ["header", "users", "screen", "ffm", "customer", "product", "salespeople", "ngSanitize"])
     .config(["$httpProvider", "$provide", "$compileProvider", configApp])
     .constant("config", (function() {
       //console.log('Init config');
       //add constants here.
       var loginUrl = (typeof window.loginUrl !== "undefined" ? window.loginUrl : '');
       var usersTableAjax = (typeof window.usersTableAjax !== "undefined" ? window.usersTableAjax : '');
+      var productsTableAjax = (typeof window.productsTableAjax !== "undefined" ? window.productsTableAjax : '');
+      var salespeopleTableAjax = (typeof window.salespeopleTableAjax !== "undefined" ? window.salespeopleTableAjax : '');
       var usersTableUpdateStatusAjax = (typeof window.usersTableUpdateStatusAjax !== "undefined" ? window.usersTableUpdateStatusAjax : '');
+      var addSalespersonUrl = (typeof window.addSalespersonUrl !== "undefined" ? window.addSalespersonUrl : '');
       //console.log('loginUrl: '+loginUrl);
-      //console.log('usersTableAjax: '+usersTableAjax);
+      //addSalespersonUrl
+      console.log('salespeopleTableAjax: '+salespeopleTableAjax);
       return {
         urls: {
           login : loginUrl,
+          addSalespersonUrl : addSalespersonUrl,
           usersTableAjax : usersTableAjax,
+          productsTableAjax : productsTableAjax,
+          salespeopleTableAjax : salespeopleTableAjax,
           usersTableUpdateStatusAjax : usersTableUpdateStatusAjax
         }
       };

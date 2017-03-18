@@ -31,13 +31,13 @@ class NavManager {
      * @var userService
      */
     private $userService;
-    
+
     /**
      *
      * @var array
      */
     private $config;
-    
+
     /**
      * @var Application\View\Helper\Breadcrumbs
      */
@@ -47,12 +47,8 @@ class NavManager {
      * Constructs the service.
      */
     public function __construct(
-            AuthenticationService $authService, 
-            UserService $userService, 
-            array $config, 
-            Breadcrumbs $breadcrumbs,
-            $urlHelper
-            ) {
+    AuthenticationService $authService, UserService $userService, array $config, Breadcrumbs $breadcrumbs, $urlHelper
+    ) {
         $this->authService = $authService;
         $this->urlHelper = $urlHelper;
         $this->userService = $userService;
@@ -70,26 +66,25 @@ class NavManager {
 
         //Links Visible always to everyone logged in or not.
         //default Home page - no login required. 
-        
-        /*$items[] = [
-            'id' => 'home',
-            'label' => 'Home',
-            'link' => $url('home')
-        ];*/
-        
+
+        /* $items[] = [
+          'id' => 'home',
+          'label' => 'Home',
+          'link' => $url('home')
+          ]; */
+
         //add links here for pages that will be visible for all users logged-in or not.
         //you must adjust User\Module.php (~line 85) onDispatch method to ignore calls for 
         //the associated Controller and action or you will end up with an infinite loop.
         /*
-         $items[] = [
-            'id' => 'about',
-            'label' => 'About',
-            'link' => $url('about')
-        ];
+          $items[] = [
+          'id' => 'about',
+          'label' => 'About',
+          'link' => $url('about')
+          ];
          */
-        
-        //BEGIN Authentication/Rendering Logic
 
+        //BEGIN Authentication/Rendering Logic
         // Display "Login" menu item for not authorized user only. On the other hand,
         // display "Admin" and "Logout" menu items only for authorized users and any other links 
         // that should be visible by logged-in users.
@@ -101,16 +96,15 @@ class NavManager {
                 'link' => $url('login'),
                 'float' => 'right'
             ];
-            
         } else {
-            
+
             //home page for all users.
             $items[] = [
-            'id' => 'home',
-            'label' => 'Home',
-            'float' => 'static',
-            'link' => $url('home')
-        ];
+                'id' => 'customers',
+                'label' => 'Customers',
+                'float' => 'static',
+                'link' => $url('customer', ['action' => 'index'])
+            ];
 
             //only display admin drop down for admin users.
             $isAdmin = FALSE;
@@ -133,34 +127,34 @@ class NavManager {
                     ];
                 }
             }
-            
+
             $settingsDropDownManageAccount = [
-                        'id' => 'manage_account',
-                        'label' => 'Manage Account',
-                        'link' => $url('users', ['action' => 'edit', 'id' => $user->getId()])
-                    ];
-            
+                'id' => 'manage_account',
+                'label' => 'Manage Account',
+                'link' => $url('users', ['action' => 'edit', 'id' => $user->getId()])
+            ];
+
             $settingsDropDownViewAccount = [
-                        'id' => 'view_account',
-                        'label' => 'View Account',
-                        'link' => $url('application', ['action' => 'settings'])
-                    ];
-            
+                'id' => 'view_account',
+                'label' => 'View Account',
+                'link' => $url('application', ['action' => 'settings'])
+            ];
+
             $settingsDropDownLogout = [
-                        'id' => 'logout',
-                        'label' => 'Logout',
-                        'link' => $url('logout')
-                    ];
-            
+                'id' => 'logout',
+                'label' => 'Logout',
+                'link' => $url('logout')
+            ];
+
             $settingsDropDown = [];
-            
+
             //only add the Manage Account link for Admins.
-            if($isAdmin){
+            if ($isAdmin) {
                 $settingsDropDown[] = $settingsDropDownManageAccount;
             }
-            
+
             $settingsDropDown[] = $settingsDropDownViewAccount;
-            
+
             $settingsDropDown[] = $settingsDropDownLogout;
 
             $items[] = [
@@ -169,30 +163,29 @@ class NavManager {
                 'float' => 'right',
                 'dropdown' => $settingsDropDown
             ];
-            
+
             $loggedInItems = $this->getLoggedInItems();
-            
-            if($loggedInItems)
-                array_merge ($items, $loggedInItems);
+
+            if ($loggedInItems)
+                array_merge($items, $loggedInItems);
 
             // add items to right of settings in top right corner only for logged-in users here
-            //MUST set 'float' => 'static'
-            /*
-              $items[] = [
-              'id' => 'sales',
-              'label' => 'Sales',
-              'float' => 'static',
-              'link' => $url('sales'), <-- throws an exception if sales is not a valid registered route.
-              ];
-             */
+            //Show Salespeople link only to Admin users
+            if ($isAdmin) {
+
+                $items[] = [
+                    'id' => 'salespeople',
+                    'label' => 'Salespeople',
+                    'float' => 'static',
+                    'link' => $url('salespeople', ['action' => 'index']),
+                ];
+            }
         }
 
         return $items;
     }
-    
-    
-    
-    function getLoggedInItems(){
+
+    function getLoggedInItems() {
         return NULL;
     }
 

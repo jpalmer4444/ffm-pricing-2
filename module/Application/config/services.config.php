@@ -9,10 +9,17 @@ return [
     'factories' => [
         'Zend\Validator\Translator\TranslatorInterface' => 'Zend\I18n\Translator\TranslatorServiceFactory',
         'Application\Navigation\NavManager' => 'Application\Navigation\Factory\NavManagerFactory',
-        //services
+        //services (model compliant)
         'Application\Service\PermissionService' => 'Application\Service\Factory\PermissionServiceFactory',
         'Application\Service\RolesService' => 'Application\Service\Factory\RolesServiceFactory',
         'Application\Service\UserService' => 'Application\Service\Factory\UserServiceFactory',
         'Application\Service\UserSessionService' => 'Application\Service\Factory\UserSessionServiceFactory',
+        //services (NOT model compliant)
+        'Application\Service\RestService' => 'Application\Service\Factory\RestServiceFactory',
+        
+        'Application\Datatables\SSPJoin' => 'Application\Datatables\Factory\SSPJoinFactory',
     ],
+    'shared' => [
+        'Application\Datatables\SSPJoin' => false,
+    ]
 ];

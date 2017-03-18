@@ -1,0 +1,109 @@
+<script type="text/ng-template" id="addSalespersonModal.html">
+<form id="add_salesperson_form" method="post" name="addSalespersonForm">
+    <div class="modal-header">
+        <div class="container">
+            <div class="row">
+                <div class="pull-left col-md-11 col-lg-11 col-sm-11">
+<h3>{{vmc.scenario === 'create' ? 'Add User' : 'Edit User'}}</h3>
+                </div>
+                <a class="pull-right modal-icon ion-ios-close-outline" data-dismiss="modal" ng-click="vmc.cancel()"></a>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="container">
+            <div class="form-group" >
+                <div class="row">
+                    <!--Left Column on md or lg-->
+                    <div class="col-sm-12 col-md-6 col-lg-6 row">
+                        <!--Username-->
+                        <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
+                            <label class="control-label">{{ vmc.label.username}}</label>
+                            <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.username.$valid && addSalespersonForm.username.$touched}">
+                                <input class="form-control" ng-required="true" ng-pattern="vmc.pattern.username" ng-model="vmc.username" placeholder="Username" name="username" type="text" select-on-focus>
+                            </div>
+                        </div>
+                        <!--Email-->
+                        <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
+                            <label class="control-label">{{ vmc.label.email}}</label>
+                            <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.email.$valid && addSalespersonForm.email.$touched}">
+                                <input class="form-control" ng-required="true" ng-pattern="vmc.pattern.email" ng-model="vmc.email" placeholder="Email" name="email" type="text" select-on-focus>
+                            </div>
+                        </div>
+                        <!--Full Name-->
+                        <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
+                            <label class="control-label">{{ vmc.label.full_name}}</label>
+                            <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.full_name.$valid && addSalespersonForm.full_name.$touched}">
+                                <input class="form-control" ng-required="true" ng-pattern="vmc.pattern.full_name" ng-model="vmc.full_name" placeholder="Full Name" name="full_name" type="text" select-on-focus>
+                            </div>
+                        </div>
+                        <!--Status-->
+                        <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
+                            <label class="control-label">{{ vmc.label.status}}</label>
+                            <div class="form-group input-group dropdown col-sm-12 col-md-12 col-lg-12" uib-dropdown >
+                                <button id="status-button" type="button" class="btn dropdown-toggle btn-default bool-drop-btn" uib-dropdown-toggle >
+                                    {{vmc.status === 1 ? 'Active' : 'Inactive'}}<span class="caret bool-drop-btn-caret"></span>
+                                </button>
+                                <ul class="dropdown-menu bool-drop-btn" uib-dropdown-menu role="menu" aria-labelledby="status-button">
+                                    <li class="" ng-class="{'selected': vmc.status === 1 || vmc.status === '1'}">
+                                        <a ng-click="vmc.selectStatus(1)" class="">
+                                            <span class="text">Active</span>
+                                            <span class="glyphicon glyphicon-ok check-mark bool-drop-btn-caret"></span>
+                                        </a>
+                                    </li>
+                                    <li class="" ng-class="{'selected': vmc.status === 0 || vmc.status === '0'}">
+                                        <a ng-click="vmc.selectStatus(0)" class="">
+                                            <span class="text">Inactive</span>
+                                            <span class="glyphicon glyphicon-ok check-mark"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Right Column on md or lg-->
+                    <div class="col-sm-12 col-md-6 col-lg-6 row">
+                        <!--Phone 1-->
+                        <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
+                            <label class="control-label">{{ vmc.label.phone1}}</label>
+                            <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.phone1.$valid && addSalespersonForm.phone1.$touched}">
+                                <input class="form-control" ng-required="true" ng-pattern="vmc.pattern.phone1" ng-model="vmc.phone1" placeholder="Phone" name="phone1" type="text" select-on-focus>
+                            </div>
+                        </div>
+                        <!--Role-->
+                        <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
+                            <label class="control-label">{{ vmc.label.role}}</label>
+                            <div class="input-group col-sm-12 col-md-12 col-lg-12">
+                                <input class="form-control" ng-model="vmc.role" name="role" type="text" readonly>
+                            </div>
+                        </div>
+                        <!--Password-->
+                        <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
+                            <label class="control-label">{{ vmc.label.password}}</label>
+                            <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.password.$valid && addSalespersonForm.password.$touched}">
+                                <input id="password_check" ng-required="vmc.scenario == 'create'" class="form-control" ng-pattern="vmc.pattern.password" ng-model="vmc.password" placeholder="Password" name="password" type="password" select-on-focus>
+                            </div>
+                        </div>
+                        <!--Verify Password-->
+                        <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
+                            <label class="control-label">{{ vmc.label.password_verify}}</label>
+                            <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.password_verify.$valid && addSalespersonForm.password_verify.$touched}">
+                                <input class="form-control" ng-required="vmc.scenario == 'create'" ffm-pw-check="password_check" ng-pattern="vmc.pattern.password" ng-model="vmc.password_verify" placeholder="Verify" name="password_verify" type="password" select-on-focus>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="container">
+            <div class="row">
+                <button class="btn reset-btn" type="button" data-dismiss="modal" ng-click="vmc.cancel()">Cancel</button>
+<button class="row-save btn btn-primary" ng-click="vmc.ok(addSalespersonForm.email.$valid &&
+                            addSalespersonForm.username.$valid && addSalespersonForm.full_name.$valid && addSalespersonForm.phone1.$valid)">Save</button>
+            </div>
+        </div>
+    </div>
+</form>
+</script>

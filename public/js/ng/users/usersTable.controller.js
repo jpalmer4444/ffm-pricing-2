@@ -78,29 +78,15 @@
       // Recompiling so we can bind Angular directive to the DT
       $compile(angular.element(row).contents())($scope);
     }
+    
+    function warn(title, msg){
+      screenService.showWarning(title, msg);
+    }
 
     //initialize
     activate();
 
     function renderStatus(data, type, full) {
-      /*
-       <div class="btn-group bootstrap-select filter form-control" uib-dropdown dropdown-append-to-body="true">
-       <ul class="dropdown-menu table-head" uib-dropdown-menu >
-       <li >
-       <a href="#" ng-click="user.selectStatus('Active')">Active</a>
-       </li>
-       <li >
-       <a href="#" ng-click="user.selectStatus('Inactive')">Inactive</a>
-       </li>
-       </ul>
-       <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle >
-       <span ng-if="!user.status" class="filter-option pull-left">- Select -</span>
-       <span ng-if="user.status" class="filter-option pull-left">{{user.status}}</span>
-       &nbsp;
-       <span class="caret"></span>
-       </button>
-       </div>
-       */
       //wrapping div
       var bootstrapSelect = angular.element('<div/>', {
         class: 'btn-group bootstrap-select filter form-control',
@@ -117,15 +103,16 @@
       var listItem1 = angular.element('<li/>', {}).appendTo(listdropdown);
       angular.element('<a/>', {
         href: '#',
-        'ng-click': 'user.setActive("Active", ' + full[0] + ')',
+        'ng-click': 'userCtrl.setActive("Active", ' + full[0] + ')',
         text: 'Active'
       }).appendTo(listItem1);
 
       //liItem2
       var listItem2 = angular.element('<li/>', {}).appendTo(listdropdown);
+      
       angular.element('<a/>', {
         href: '#',
-        'ng-click': 'user.setActive("Inactive", ' + full[0] + ')',
+        'ng-click': 'userCtrl.setActive("Inactive", ' + full[0] + ')',
         text: 'Inactive'
       }).appendTo(listItem2);
 
@@ -155,19 +142,6 @@
 
     //actions columns renderer
     function renderActions(data, type, full) {
-
-      /*
-       <div class="around-table-actions">
-       <a class="btn btn-default btn-square btn-transparent" 
-       title="Edit User" href="users/edit/' + data">
-       <i class="ion ion-edit spin-logo"></i>
-       </a>
-       <a class="btn btn-default  btn-square btn-transparent" 
-       title="Change User Password" href="users/change-password/' + data + '">
-       <i class="ion ion-locked spin-logo"></i>
-       </a>
-       </div>
-       */
 
       var aroundTableActions = angular.element('<div/>', {
         class: 'around-table-actions'
@@ -264,6 +238,16 @@
           $scope.$apply();
           fnCallback(data, textStatus, jqXHR);
           screenService.hideOverlay();
+        },
+        'error': function(jqXHR, errorMsg, exception){
+          screenService.hideOverlay();
+          //now show a warn modal to inform the request failed.
+          var msg = 'Table request has failed. \n';
+          if(exception){
+            msg += 'Message: ' + JSON.stringify(exception) + '. ';
+          }
+          msg += 'Please inform IT of this error.';
+          warn('Table Data Source Failed', msg);
         }
       });
     }

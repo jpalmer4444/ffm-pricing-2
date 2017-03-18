@@ -2,7 +2,7 @@
     <div class="pull-left">
         <header>
             <h4 class="pull-left">
-                Users (<span ng-bind="user.recordsFiltered"></span>)
+                Users (<span ng-bind="userCtrl.recordsFiltered"></span>)
 
                 <?php if (!empty($this->permissions()->isGranted('User\Controller\UserController', 'add'))): ?>
 
@@ -17,7 +17,7 @@
 
     <div class="pull-right">
         
-        <a class="table-header-btn reset-filters-btn btn-default" title="Reset Filters" ng-click="user.resetFilters()"> 
+        <a class="table-header-btn reset-filters-btn btn-default" title="Reset Filters" ng-click="userCtrl.resetFilters()"> 
             Reset all filters
             <i class="ion-close"></i>
         </a>
@@ -25,10 +25,10 @@
         <div class="btn-group bootstrap-select itemPerPage form-control" uib-dropdown>
 
             <button class="btn dropdown-toggle btn-default" type="button" 
-                    uib-dropdown-toggle ng-title="user.pageSize" >
+                    uib-dropdown-toggle ng-title="userCtrl.pageSize" >
 
                 <span class="filter-option pull-left"> 
-                    {{user.pageSize}}
+                    {{userCtrl.pageSize}}
                 </span>
 
                 <span class="caret"></span>
@@ -37,19 +37,19 @@
 
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" >
                 <li >
-                    <a href="#" ng-click="user.selectPageSize(2)">2</a>
+                    <a href="#" ng-click="userCtrl.selectPageSize(2)">2</a>
                 </li>
                 <li >
-                    <a href="#" ng-click="user.selectPageSize(10)">10</a>
+                    <a href="#" ng-click="userCtrl.selectPageSize(10)">10</a>
                 </li>
                 <li >
-                    <a href="#" ng-click="user.selectPageSize(25)">25</a>
+                    <a href="#" ng-click="userCtrl.selectPageSize(25)">25</a>
                 </li>
                 <li >
-                    <a href="#" ng-click="user.selectPageSize(50)">50</a>
+                    <a href="#" ng-click="userCtrl.selectPageSize(50)">50</a>
                 </li>
                 <li >
-                    <a href="#" ng-click="user.selectPageSize(100)">100</a>
+                    <a href="#" ng-click="userCtrl.selectPageSize(100)">100</a>
                 </li>
             </ul>
 
@@ -60,10 +60,10 @@
         <div class="dataTables_paginate paging_bootstrap pull-right">
 
             <ul uib-pagination direction-links="true" boundary-links="false" 
-                total-items="user.recordsTotal" 
-                ng-model="user.page" 
+                total-items="userCtrl.recordsTotal" 
+                ng-model="userCtrl.page" 
                 previous-text="‹" next-text="›" 
-                items-per-page="user.pageSize" ng-change="user.reloadData()"
+                items-per-page="userCtrl.pageSize" ng-change="userCtrl.reloadData()"
                 rotate="true" 
                 max-size="5" boundary-link-numbers="true" 
                 class="pagination">

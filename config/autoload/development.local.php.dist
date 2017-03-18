@@ -16,13 +16,38 @@
  */
 
 return [
+    'pricing_config' => [
+        'debug' => TRUE,
+        'by_sku_base_url' => 'https://svc.localhost/bySKU.php',
+        'by_sku_userid' => 'jpalmer',
+        'by_sku_password' => 'goodbass',
+        'by_sku_method' => 'GET',
+        'by_sku_object_items_controller' => 'customerlistitems',
+        'by_sku_object_users_controller' => 'customers',
+        'by_sku_object_sales_controller' => 'salespeople',
+        'ssl' => array(
+            // Do not Verify server side certificate,
+            // accept invalid or self-signed SSL certificates
+            'verify_peer' => FALSE,
+            'allow_self_signed' => TRUE,
+            // Capture the peer's certificate
+            'verify_host' => FALSE,
+            'CN_match' => 'svc.localhost'
+        ),
+    ],
+    'daily_cutoff' => [
+        //'time_string' => 'today -1 year',
+        'year' => 2017,
+        'month' => 1,
+        'date' => 1
+    ],
     'doctrine' => array(
         'connection' => array(
             // default connection name
             'orm_default' => array(
                 'driverClass' => 'Doctrine\DBAL\Driver\Mysqli\Driver',
                 'params' => array(
-                    'dbname' => 'pricing_skeleton',
+                    'dbname' => 'pricing_2',
                     'user' => 'jpalmer',
                     'password' => 'goodbass',
                     'host' => 'localhost',
@@ -53,7 +78,7 @@ return [
     ),
     'db' => array(
         'driver'         => 'Pdo',
-        'dsn'            => 'mysql:dbname=pricing_skeleton;host=localhost',
+        'dsn'            => 'mysql:dbname=pricing_2;host=localhost',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),

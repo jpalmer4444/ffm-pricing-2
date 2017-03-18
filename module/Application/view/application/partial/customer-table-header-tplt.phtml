@@ -1,0 +1,78 @@
+<div class="table-header" >
+    <div class="pull-left">
+        <header>
+            <h4 class="pull-left">
+                Customers (<span ng-bind="customerCtrl.recordsFiltered"></span>)
+
+                <?php if (!empty($this->permissions()->isGranted('Application\Controller\CustomerController', 'add'))): ?>
+
+                    <span >
+                        <a class="ion-plus" title="Add Customer" href="#"></a>
+                    </span>
+
+                <?php endif; ?>
+            </h4>
+        </header>
+    </div>
+
+    <div class="pull-right">
+        
+        <a class="table-header-btn reset-filters-btn btn-default" title="Reset Filters" ng-click="customerCtrl.resetFilters()"> 
+            Reset all filters
+            <i class="ion-close"></i>
+        </a>
+
+        <div class="btn-group bootstrap-select itemPerPage form-control" uib-dropdown>
+
+            <button class="btn dropdown-toggle btn-default" type="button" 
+                    uib-dropdown-toggle ng-title="customerCtrl.pageSize" >
+
+                <span class="filter-option pull-left"> 
+                    {{customerCtrl.pageSize}}
+                </span>
+
+                <span class="caret"></span>
+
+            </button>
+
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" >
+                <li >
+                    <a href="#" ng-click="customerCtrl.selectPageSize(2)">2</a>
+                </li>
+                <li >
+                    <a href="#" ng-click="customerCtrl.selectPageSize(10)">10</a>
+                </li>
+                <li >
+                    <a href="#" ng-click="customerCtrl.selectPageSize(25)">25</a>
+                </li>
+                <li >
+                    <a href="#" ng-click="customerCtrl.selectPageSize(50)">50</a>
+                </li>
+                <li >
+                    <a href="#" ng-click="customerCtrl.selectPageSize(100)">100</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="table-header-text">Customers</div>
+
+        <div class="dataTables_paginate paging_bootstrap pull-right">
+
+            <ul uib-pagination direction-links="true" boundary-links="false" 
+                total-items="customerCtrl.recordsTotal" 
+                ng-model="customerCtrl.page" 
+                previous-text="‹" next-text="›" 
+                items-per-page="customerCtrl.pageSize" ng-change="customerCtrl.reloadData()"
+                rotate="true" 
+                max-size="5" boundary-link-numbers="true" 
+                class="pagination">
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+

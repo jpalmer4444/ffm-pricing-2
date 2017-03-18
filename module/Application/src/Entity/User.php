@@ -15,7 +15,7 @@ class User
 {
     // User status constants.
     const STATUS_ACTIVE       = 1; // Active user.
-    const STATUS_DISABLED      = 0; // Retired user.
+    const STATUS_INACTIVE      = 0; // Retired user.
     
     /**
      * @ORM\Id
@@ -50,7 +50,7 @@ class User
     protected $status;
     
     /**
-     * @ORM\Column(name="date_created")  
+     * @ORM\Column(name="date_created", type="datetime")  
      */
     protected $dateCreated;
         
@@ -60,7 +60,7 @@ class User
     protected $passwordResetToken;
     
     /**
-     * @ORM\Column(name="pwd_reset_token_creation_date")  
+     * @ORM\Column(name="pwd_reset_token_creation_date", type="datetime", nullable=true)  
      */
     protected $passwordResetTokenCreationDate;
     
@@ -76,12 +76,43 @@ class User
      */
     protected $lastlogin;
     
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $sales_attr_id;
+    
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $salespersonname;
+    
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $phone1;
+    
     public function setLastlogin($lastlogin) {
         $this->lastlogin = $lastlogin;
     }
     
     public function getLastlogin() {
         return $this->lastlogin;
+    }
+    
+    function getSalespersonname() {
+        return $this->salespersonname;
+    }
+
+    function getPhone1() {
+        return $this->phone1;
+    }
+
+    function setSalespersonname($salespersonname) {
+        $this->salespersonname = $salespersonname;
+    }
+
+    function setPhone1($phone1) {
+        $this->phone1 = $phone1;
     }
     
     /**
@@ -93,6 +124,14 @@ class User
         return $this->id;
     }
     
+    function getSales_attr_id() {
+        return $this->sales_attr_id;
+    }
+
+    function setSales_attr_id($sales_attr_id) {
+        $this->sales_attr_id = $sales_attr_id;
+    }
+
     /**
      * 
      * @return [Role]
@@ -191,7 +230,7 @@ class User
     {
         return [
             self::STATUS_ACTIVE => 'Active',
-            self::STATUS_DISABLED => 'Disabled'
+            self::STATUS_INACTIVE => 'Inactive'
         ];
     }    
     

@@ -1,6 +1,7 @@
 <?php
 namespace User\Controller\Factory;
 
+use Application\Controller\Factory\BaseFactory;
 use Interop\Container\ContainerInterface;
 use User\Controller\UserController;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -9,7 +10,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
  * This is the factory for UserController. Its purpose is to instantiate the
  * controller and inject dependencies into it.
  */
-class UserControllerFactory implements FactoryInterface
+class UserControllerFactory extends BaseFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -18,11 +19,11 @@ class UserControllerFactory implements FactoryInterface
         $authManager = $container->get('User\Service\AuthManager');
         $dbAdapter = $container->get('Zend\Db\Adapter\Adapter');
         $logger = $container->get('Zend\Log\Logger');
-        $authenticationService = $container->get('Zend\Authentication\AuthenticationService');
+        $authenticationService = static::getAuthenticationService($container);
         $config = $container->get('Config');
-        //$ssp = $container->get('Application\Datatables\SSP');
+        $sspJoin = $container->get('Application\Datatables\SSPJoin');
         
         // Instantiate the controller and inject dependencies
-        return new UserController($entityManager, $userManager, $authManager, $dbAdapter, $logger, $config, $authenticationService);
+        return new UserController($entityManager, $userManager, $authManager, $dbAdapter, $logger, $config, $authenticationService, $sspJoin);
     }
 }

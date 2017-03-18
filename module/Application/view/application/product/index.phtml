@@ -1,0 +1,22 @@
+<?php
+$this->headTitle('Product');
+
+if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleController', 'index'))) {
+    $this->pageBreadcrumbs()->setItems([
+        'Salespeople' => $this->url('salespeople', ['action' => 'index']),
+        'Customers' => $this->url('customer', ['action' => 'index']),
+        'Products' => $this->url('product', ['action' => 'index']),
+    ]);
+} else {
+    $this->pageBreadcrumbs()->setItems([
+        'Customers' => $this->url('customer', ['action' => 'index']),
+        'Products' => $this->url('product', ['action' => 'index']),
+    ]);
+}
+?>
+
+<div class="around_datatables" ng-controller="ProductTableController as productCtrl">
+    
+    <?= $this->partial('partial/product-table-header-tplt') ?>
+    
+</div>

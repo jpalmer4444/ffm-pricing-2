@@ -50,12 +50,6 @@ class BalancedRemoteAddr extends RemoteAddr{
     {
         return ($this->getIpAddress() === $this->getData());
     }
-    
-    private function getServer($key){
-        return isset($_SERVER[$key])
-                   ? $_SERVER[$key]
-                   : null;
-    }
 
     
 }
