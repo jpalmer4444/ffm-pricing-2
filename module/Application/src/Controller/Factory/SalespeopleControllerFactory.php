@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Application\Controller\Factory;
 
 use Application\Controller\SalespeopleController;
@@ -23,7 +17,7 @@ class SalespeopleControllerFactory extends BaseFactory implements FactoryInterfa
         $logger = $container->get('Zend\Log\Logger');
         $entityManager = $container->get('Doctrine\ORM\EntityManager');
         
-        $authenticationService = static::getAuthenticationService($container);
+        $authManager = static::getAuthManager($container);
         $restService = $container->get('Application\Service\RestService');
         $userManager = $container->get('User\Service\UserManager');
         $userService = $container->get('Application\Service\UserService');
@@ -34,7 +28,7 @@ class SalespeopleControllerFactory extends BaseFactory implements FactoryInterfa
                 $logger, 
                 $config, 
                 $restService, 
-                $authenticationService, 
+                $authManager, 
                 $sspJoin, 
                 $userManager, 
                 $userService

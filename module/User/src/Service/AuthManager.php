@@ -125,6 +125,17 @@ class AuthManager {
         }
         return $this->userService->getRepository()->findOneByUsername($this->authService->getIdentity());
     }
+    
+    public function isAdmin(){
+        $user = $this->getLoggedInUser();
+        foreach($user->getRoles() as $role){
+            $name = $role->getName();
+            if(strcmp('admin', $name) == 0){
+                return true;
+            }
+        }
+        return FALSE;
+    }
 
     public function isGranted($controllerName, $actionName, AssertionInterface $assertion = null) {
         if (!$this->authService->hasIdentity()) {
@@ -156,7 +167,7 @@ class AuthManager {
     }
 
     /**
-     * Email must always be non-null, but sessionId should be null
+     * Username must always be non-null, but sessionId should be null
      * when logging out the User.
      * @param type $email
      * @param type $sessionId

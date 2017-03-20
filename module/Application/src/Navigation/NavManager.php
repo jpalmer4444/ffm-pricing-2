@@ -2,10 +2,9 @@
 
 namespace Application\Navigation;
 
-use Application\Entity\Role;
 use Application\Service\UserService;
 use Application\View\Helper\Breadcrumbs;
-use Zend\Authentication\AuthenticationService;
+use User\Service\AuthManager;
 use Zend\View\Helper\Url;
 
 /**
@@ -16,9 +15,9 @@ class NavManager {
 
     /**
      * Auth service.
-     * @var AuthenticationService
+     * @var AuthManager
      */
-    private $authService;
+    private $authManager;
 
     /**
      * Url view helper.
@@ -39,7 +38,7 @@ class NavManager {
     private $config;
 
     /**
-     * @var Application\View\Helper\Breadcrumbs
+     * @var Breadcrumbs
      */
     private $breadcrumbs;
 
@@ -47,9 +46,9 @@ class NavManager {
      * Constructs the service.
      */
     public function __construct(
-    AuthenticationService $authService, UserService $userService, array $config, Breadcrumbs $breadcrumbs, $urlHelper
+    AuthManager $authManager, UserService $userService, array $config, Breadcrumbs $breadcrumbs, $urlHelper
     ) {
-        $this->authService = $authService;
+        $this->authManager = $authManager;
         $this->urlHelper = $urlHelper;
         $this->userService = $userService;
         $this->config = $config;
@@ -84,11 +83,13 @@ class NavManager {
           ];
          */
 
+        $user = $this->authManager->getLoggedInUser();
+
         //BEGIN Authentication/Rendering Logic
         // Display "Login" menu item for not authorized user only. On the other hand,
         // display "Admin" and "Logout" menu items only for authorized users and any other links 
         // that should be visible by logged-in users.
-        if (!$this->authService->hasIdentity()) {
+        if (!$user) {
 
             $items[] = [
                 'id' => 'login',
@@ -98,34 +99,31 @@ class NavManager {
             ];
         } else {
 
-            //home page for all users.
-            $items[] = [
-                'id' => 'customers',
-                'label' => 'Customers',
-                'float' => 'static',
-                'link' => $url('customer', ['action' => 'index'])
-            ];
-
+            //render Customers link for all users with sales_attr_id value in users table
+            if (!empty($user->getSales_attr_id())) {
+                $items[] = [
+                    'id' => 'customers',
+                    'label' => 'Customers',
+                    'data-ffm-salesperson' => $user->getFullName(),
+                    'float' => 'static',
+                    'link' => $url('customer', ['action' => 'index', 'id' => $user->getSales_attr_id()])
+                ];
+            }
             //only display admin drop down for admin users.
-            $isAdmin = FALSE;
-            $user = $this->userService->getRepository()->findOneByUsername($this->authService->getIdentity());
-            $roles = !empty($user) ? $user->getRoles() : [];
-            foreach ($roles as $role) {
-                if (strcmp($role->getName(), Role::ROLE_ADMIN) == 0) {
-                    $isAdmin = TRUE;
-                    $items[] = [
-                        'id' => 'admin',
-                        'label' => '<i class="ion-gear-a"></i>',
-                        'float' => 'right',
-                        'dropdown' => [
-                            [
-                                'id' => 'users',
-                                'label' => 'Manage Users',
-                                'link' => $url('users')
-                            ]
+            $isAdmin = $this->authManager->isAdmin();
+            if ($isAdmin) {
+                $items[] = [
+                    'id' => 'admin',
+                    'label' => '<i class="ion-gear-a"></i>',
+                    'float' => 'right',
+                    'dropdown' => [
+                        [
+                            'id' => 'users',
+                            'label' => 'Manage Users',
+                            'link' => $url('users')
                         ]
-                    ];
-                }
+                    ]
+                ];
             }
 
             $settingsDropDownManageAccount = [

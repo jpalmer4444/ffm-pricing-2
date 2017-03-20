@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright  Copyright (c) 2017 Fulton Inc.
- * @author     Jason Palmer <jpalmer@meadedigital.com>
- */
 
 namespace Application\Entity;
 

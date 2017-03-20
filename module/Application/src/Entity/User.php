@@ -67,9 +67,23 @@ class User
     /**
      * @var ArrayCollection|Role[]
      * @ManyToMany(targetEntity="Role", inversedBy="users")
-     * @JoinTable(name="user_role")
+     * @ORM\JoinTable(name="user_role",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=true)}
+     *      )
+     * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html (5.6. One-To-Many, Unidirectional with Join Table)
      */
     protected $roles;
+    
+    /**
+     * @var ArrayCollection|Customer[]
+     * @ManyToMany(targetEntity="Customer", inversedBy="users")
+     * @ORM\JoinTable(name="user_customer",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="customer_id", referencedColumnName="id", unique=true)}
+     *      )
+     */
+    protected $customers;
     
     /**
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
@@ -90,6 +104,11 @@ class User
      * @ORM\Column(type="string")
      */
     protected $phone1;
+    
+    public function __construct() {
+        $this->customers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
     
     public function setLastlogin($lastlogin) {
         $this->lastlogin = $lastlogin;
@@ -142,12 +161,30 @@ class User
     }
     
     /**
+     * 
+     * @return [Customer]
+     */
+    public function getCustomers() 
+    {
+        return $this->customers;
+    }
+    
+    /**
      * Sets roles. 
      * @param array $roles    
      */
     public function setRoles($roles) 
     {
         $this->roles = $roles;
+    }
+    
+    /**
+     * Sets customers. 
+     * @param array $customers    
+     */
+    public function setCustomers($customers) 
+    {
+        $this->customers = $customers;
     }
 
     /**

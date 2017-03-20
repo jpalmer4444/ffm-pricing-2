@@ -237,11 +237,11 @@ class SSPJoin {
         $order = $this->order($request, $columns);
         $where = $this->filter($request, $columns, $bindings);
 
-        if ($this->debug) {
+        //if ($this->debug) {
 
-            $b4SQL = "SELECT `" . implode("`, `", $this->pluck($columns, 'db')) . "` FROM `$table` $where $order $limit";
-            $this->logger->log(Logger::INFO, PHP_EOL . "SSP SQL BEFORE MANIPULATING IN SSPJoin: " . PHP_EOL . ' ' . $b4SQL);
-        }
+            //$b4SQL = "SELECT `" . implode("`, `", $this->pluck($columns, 'db')) . "` FROM `$table` $where $order $limit";
+            //$this->logger->log(Logger::INFO, PHP_EOL . $b4SQL);
+        //}
 
         if (!empty($this->andWhere)) {
             //only add the and when there is some "where" clause!
@@ -258,25 +258,24 @@ class SSPJoin {
             }
         }
 
-        if ($this->debug) {
-
-            $afterSQL = "SELECT `" . implode("`, `", $this->pluck($columns, 'db')) . "` FROM `$table` $where $order $limit";
-            $this->logger->log(Logger::INFO, PHP_EOL . "SSP SQL AFTER MANIPULATING IN SSPJoin: " . PHP_EOL . ' ' . $afterSQL);
-        }
-
         if (empty($this->joinStatement)) {
             // Main query to actually get the data
+            
             $data = $this->sql_exec($db, $bindings, "SELECT `" . implode("`, `", $this->pluck($columns, 'db')) . "` FROM `$table` $where $order $limit"
             );
         } else {
+            $afterJoin = $this->joinStatement . $where . ' ' . $order . ' ' . $limit;
             if ($this->debug) {
-                $afterJoin = $this->joinStatement . $where . $order . $limit;
-                $this->logger->log(Logger::INFO, PHP_EOL . "SSP SQL AFTER MANIPULATING IN SSPJoin: " . PHP_EOL . ' ' . $afterJoin);
+                $this->logger->log(Logger::INFO, $afterJoin);
             }
             // Main query to actually get the data
-            $dataJoin = $this->sql_exec($db, $bindings, $this->joinStatement . $where . $order . $limit);
+            $dataJoin = $this->sql_exec($db, $bindings, $afterJoin);
+
             if (!empty($this->joinStatementUnion)) {
-                $dataJoinUnion = $this->sql_exec($db, $bindings, $this->joinStatementUnion . $where . $order . $limit);
+                $dataJoinUnion = $this->sql_exec($db, $bindings, $this->joinStatementUnion . $where . ' ' . $order . ' ' . $limit);
+                if ($this->debug) {
+                    $this->logger->log(Logger::INFO, PHP_EOL . $afterJoin);
+                }
                 $dataMerged = array_merge($dataJoin, $dataJoinUnion);
             }
             $data = !empty($dataMerged) ? $dataMerged : $dataJoin;
@@ -286,16 +285,17 @@ class SSPJoin {
 
         if (empty($this->joinCountStatement)) {
             // Data set length after filtering
-            $resFilterLength = $this->sql_exec($db, $bindings, "SELECT COUNT(`{$primaryKey}`)
-			 FROM   `$table`
-			 $where"
-            );
+            $countQuery = "SELECT COUNT(`{$primaryKey}`) FROM  `$table` $where";
+            $this->logger->log(Logger::INFO, $countQuery);
+            $resFilterLength = $this->sql_exec($db, $bindings, $countQuery);
         } else {
             // Data set length after filtering
 
             $resFilterLength = $this->sql_exec($db, $bindings, $this->joinCountStatement . ' ' . ' ' . $where);
+            $this->logger->log(Logger::INFO, $this->joinCountStatement . ' ' . ' ' . $where);
             if (!empty($this->joinCountStatementUnion)) {
                 $resFilterLength2 = $this->sql_exec($db, $bindings, $this->joinCountStatementUnion . ' ' . ' ' . $where);
+                $this->logger->log(Logger::INFO, $this->joinCountStatementUnion . ' ' . ' ' . $where);
             }
         }
 
@@ -308,24 +308,29 @@ class SSPJoin {
         if (empty($this->joinCountStatement)) {
             // Total data set length
             if (empty($this->andWhere)) {
-                $resTotalLength = $this->sql_exec($db, "SELECT COUNT(`{$primaryKey}`)
-			 FROM   `$table`");
+                $resTotalLength = $this->sql_exec($db, "SELECT COUNT(`{$primaryKey}`) FROM `$table`");
+                $this->logger->log(Logger::INFO, "SELECT COUNT(`{$primaryKey}`) FROM `$table`");
             } else {
-                $resTotalLength = $this->sql_exec($db, "SELECT COUNT(`{$primaryKey}`)
-			 FROM   `$table` WHERE " . $this->andWhere);
+
+                $resTotalLength = $this->sql_exec($db, "SELECT COUNT(`{$primaryKey}`) FROM `$table` WHERE " . $this->andWhere);
+                $this->logger->log(Logger::INFO, "SELECT COUNT(`{$primaryKey}`) FROM `$table` WHERE " . $this->andWhere);
             }
         } else {
             // Total data set length
             if (empty($this->andWhere)) {
+                $this->logger->log(Logger::INFO, $this->joinCountStatement);
                 $resTotalLength = $this->sql_exec($db, $this->joinCountStatement);
             } else {
+                $this->logger->log(Logger::INFO, $this->joinCountStatement . " WHERE " . $this->andWhere);
                 $resTotalLength = $this->sql_exec($db, $this->joinCountStatement . " WHERE " . $this->andWhere);
             }
             if ($this->joinCountStatementUnion) {
                 if (empty($this->andWhere)) {
                     $resTotalLength2 = $this->sql_exec($db, $this->joinCountStatementUnion);
+                    $this->logger->log(Logger::INFO, $this->joinCountStatementUnion);
                 } else {
                     $resTotalLength2 = $this->sql_exec($db, $this->joinCountStatementUnion . " WHERE " . $this->andWhere);
+                    $this->logger->log(Logger::INFO, $this->joinCountStatementUnion . " WHERE " . $this->andWhere);
                 }
             }
         }
@@ -342,84 +347,6 @@ class SSPJoin {
          */
         return array(
             "draw" => $draw,
-            "recordsTotal" => intval($recordsTotal),
-            "recordsFiltered" => intval($recordsFiltered),
-            "data" => $this->data_output($columns, $data)
-        );
-    }
-
-    /**
-     * The difference between this method and the `simple` one, is that you can
-     * apply additional `where` conditions to the SQL queries. These can be in
-     * one of two forms:
-     *
-     * * 'Result condition' - This is applied to the result set, but not the
-     *   overall paging information query - i.e. it will not effect the number
-     *   of records that a user sees they can have access to. This should be
-     *   used when you want apply a filtering condition that the user has sent.
-     * * 'All condition' - This is applied to all queries that are made and
-     *   reduces the number of records that the user can access. This should be
-     *   used in conditions where you don't want the user to ever have access to
-     *   particular records (for example, restricting by a login id).
-     *
-     *  @param  array $request Data sent to server by DataTables
-     *  @param  array|PDO $conn PDO connection resource or connection parameters array
-     *  @param  string $table SQL table to query
-     *  @param  string $primaryKey Primary key of the table
-     *  @param  array $columns Column information array
-     *  @param  string $whereResult WHERE condition to apply to the result set
-     *  @param  string $whereAll WHERE condition to apply to all queries
-     *  @return array          Server-side processing response array
-     */
-    public function complex($request, $conn, $table, $primaryKey, $columns, $whereResult = null, $whereAll = null) {
-        $bindings = array();
-        $db = $this->db($conn);
-        $localWhereResult = array();
-        $localWhereAll = array();
-        $whereAllSql = '';
-        // Build the SQL query string from the request
-        $limit = $this->limit($request, $columns);
-        $order = $this->order($request, $columns);
-        $where = $this->filter($request, $columns, $bindings);
-        $whereResult = $this->_flatten($whereResult);
-        $whereAll = $this->_flatten($whereAll);
-        if ($whereResult) {
-            $where = $where ?
-                    $where . ' AND ' . $whereResult :
-                    'WHERE ' . $whereResult;
-        }
-        if ($whereAll) {
-            $where = $where ?
-                    $where . ' AND ' . $whereAll :
-                    'WHERE ' . $whereAll;
-            $whereAllSql = 'WHERE ' . $whereAll;
-        }
-        // Main query to actually get the data
-        $data = $this->sql_exec($db, $bindings, "SELECT `" . implode("`, `", $this->pluck($columns, 'db')) . "`
-			 FROM `$table`
-			 $where
-			 $order
-			 $limit"
-        );
-        // Data set length after filtering
-        $resFilterLength = $this->sql_exec($db, $bindings, "SELECT COUNT(`{$primaryKey}`)
-			 FROM   `$table`
-			 $where"
-        );
-        $recordsFiltered = $resFilterLength[0][0];
-        // Total data set length
-        $resTotalLength = $this->sql_exec($db, $bindings, "SELECT COUNT(`{$primaryKey}`)
-			 FROM   `$table` " .
-                $whereAllSql
-        );
-        $recordsTotal = $resTotalLength[0][0];
-        /*
-         * Output
-         */
-        return array(
-            "draw" => isset($request['draw']) ?
-            intval($request['draw']) :
-            0,
             "recordsTotal" => intval($recordsTotal),
             "recordsFiltered" => intval($recordsFiltered),
             "data" => $this->data_output($columns, $data)

@@ -3,9 +3,9 @@
 
   angular
           .module('salespeople')
-          .controller('SalespeopleTableController', ['$rootScope', '$scope', '$filter', '$compile', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', '$uibModal', '$http', 'config', 'screenService', SalespeopleTableController]);
+          .controller('SalespeopleTableController', ['$rootScope', '$scope', '$filter', '$compile', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', '$uibModal', '$http', 'config', 'screenService', 'localStorageService', SalespeopleTableController]);
 
-  function SalespeopleTableController($rootScope, $scope, $filter, $compile, $window, DTOptionsBuilder, DTColumnBuilder, $uibModal, $http, config, screenService) {
+  function SalespeopleTableController($rootScope, $scope, $filter, $compile, $window, DTOptionsBuilder, DTColumnBuilder, $uibModal, $http, config, screenService, localStorageService) {
 
     //screenService.showOverlay();
 
@@ -94,6 +94,12 @@
       $compile(angular.element(row).contents())($scope);
 
     }
+    
+    vm.clickCustomers = function(sales_attr_id, salesperson_name){
+      localStorageService.set('salesperson_name', salesperson_name);
+      localStorageService.set('sales_attr_id', sales_attr_id);
+      $window.location = 'customer/index/' + sales_attr_id;
+    }
 
     //initialize
     activate();
@@ -117,10 +123,9 @@
         class: 'around-table-actions'
       });
 
-      //Edit button
-      //uib-popover="{{dynamicPopover.content}}" popover-title="{{dynamicPopover.title}}"
+      //link to customers
       var linkButton = angular.element('<a/>', {
-        href: 'customer/view/' + data,
+        'ng-click': 'salespeopleCtrl.clickCustomers(' + data + ', "' + data[4] + '")',
         class: 'btn btn-default btn-square btn-transparent',
         title: 'View ' + full[4] + '\'s Customers'
       }).
@@ -228,6 +233,8 @@
           var msg = 'Table request has failed. \n';
           if (exception) {
             msg += 'Message: ' + JSON.stringify(exception) + '. ';
+          } else if (errorMsg) {
+            msg += 'Message: ' + JSON.stringify(errorMsg) + '. ';
           }
           msg += 'Please inform IT of this error.';
           warn('Table Data Source Failed', msg);
@@ -402,8 +409,11 @@
 
     function rowClickHandler(data) {
       //only allow click when no missing class on the data
-      if (!missing(data))
-        $window.location.href = 'customer/view/' + data[0];
+      if (!missing(data)){
+        localStorageService.set('salesperson_name', data[4]);
+        localStorageService.set('sales_attr_id', data[7]);
+        $window.location = 'customer/index/' + data[7];
+      }
     }
 
     function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {

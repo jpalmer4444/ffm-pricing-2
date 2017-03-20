@@ -18,7 +18,68 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
 ?>
 
 <div class="around_datatables" ng-controller="CustomerTableController as customerCtrl">
-    
+
     <?= $this->partial('partial/customer-table-header-tplt') ?>
-    
+
+    <div >
+        <table datatable="customersTable" dt-instance="customerCtrl.dtInstanceCallback" dt-options="customerCtrl.dtOptions" dt-columns="customerCtrl.dtColumns" style="width: 100%;" class="table-bordered table-condensed table-hover table-striped">
+            <thead>
+                <tr class="no-padding">
+                    <th>
+                        <!-- ID -->
+                    </th>
+                    <th>
+                        <!-- COMPANY -->
+                        <input name="zff_company" ffm-enter="customerCtrl.reloadData()" ng-model="customerCtrl.zff_company" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- NAME -->
+                        <input name="zff_name" ffm-enter="customerCtrl.reloadData()" ng-model="customerCtrl.zff_name" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- EMAIL -->
+                        <input name="zff_email" ffm-enter="customerCtrl.reloadData()" ng-model="customerCtrl.zff_email" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- CREATED -->
+                        <label ng-click="customerCtrl.zff_created_open = true" class="cursor-pointer date-picker-table">
+                            <input name="zff_created" ng-change="customerCtrl.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{customerCtrl.dateformat}}" ng-model="customerCtrl.zff_created" is-open="customerCtrl.zff_created_open" datepicker-options="customerCtrl.dateOptions" alt-input-formats="customerCtrl.altInputFormats" />
+                            <i class="ion-calendar" ></i>
+                        </label>
+                    </th>
+                    <th>
+                        <!-- UPDATED -->
+                        <label ng-click="customerCtrl.zff_updated_open = true" class="cursor-pointer date-picker-table">
+                            <input name="zff_updated" ng-change="customerCtrl.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{customerCtrl.dateformat}}" ng-model="customerCtrl.zff_updated" is-open="customerCtrl.zff_updated_open" datepicker-options="customerCtrl.dateOptions" alt-input-formats="customerCtrl.altInputFormats" />
+                            <i class="ion-calendar" ></i>
+                        </label>
+                    </th>
+                    <th>
+                        <!-- ACTIONS -->
+                    </th>
+                </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Company</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Company</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>

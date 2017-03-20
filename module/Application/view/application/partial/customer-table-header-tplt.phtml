@@ -2,15 +2,7 @@
     <div class="pull-left">
         <header>
             <h4 class="pull-left">
-                Customers (<span ng-bind="customerCtrl.recordsFiltered"></span>)
-
-                <?php if (!empty($this->permissions()->isGranted('Application\Controller\CustomerController', 'add'))): ?>
-
-                    <span >
-                        <a class="ion-plus" title="Add Customer" href="#"></a>
-                    </span>
-
-                <?php endif; ?>
+                <span class="ffs-remove" ng-bind="customerCtrl.salesperson"></span> (<span ng-bind="customerCtrl.recordsFiltered"></span>)
             </h4>
         </header>
     </div>

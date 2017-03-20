@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright  Copyright (c) 2017 Fulton Inc.
- * @author     Jason Palmer <jpalmer@meadedigital.com>
- */
 
 namespace Application\Entity;
 
@@ -13,7 +9,7 @@ use DateTime;
  * @ORM\Entity()
  * @ORM\Table(name="row_plus_items_page")
  */
-class RowPlusItemsPage {
+class AddedProduct {
     
     public function __construct()
     {
@@ -81,9 +77,9 @@ class RowPlusItemsPage {
 
     /**
      * @ORM\ManyToOne(targetEntity="Customer", cascade={"all"}, fetch="LAZY")
-     * @ORM\JoinColumn(name="customerid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="customer", referencedColumnName="id")
      */
-    protected $customerid;
+    protected $customer;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"all"}, fetch="LAZY")
@@ -136,7 +132,7 @@ class RowPlusItemsPage {
     }
 
     public function getCustomer() {
-        return $this->customerid;
+        return $this->customer;
     }
 
     public function getSalesperson() {
@@ -202,7 +198,7 @@ class RowPlusItemsPage {
     }
 
     public function setCustomer(Customer $customer) {
-        $this->customerid = $customer;
+        $this->customer = $customer;
         return $this;
     }
 

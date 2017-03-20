@@ -9,33 +9,33 @@ use Application\Form\SalespersonForm;
 use Application\Service\RestService;
 use Application\Service\UserService;
 use Doctrine\ORM\EntityManager;
+use User\Service\AuthManager;
 use User\Service\UserManager;
-use Zend\Authentication\AuthenticationService;
 use Zend\Log\Logger;
 
 class SalespeopleController extends BaseController {
 
     /**
      *
-     * @var Zend\Log\Logger $logger
+     * @var Logger $logger
      */
     private $logger;
     
     /**
      *
-     * @var Doctrine\ORM\EntityManager $entityManager
+     * @var EntityManager $entityManager
      */
     private $entityManager;
     
     /**
      *
-     * @var Application\Service\RestService
+     * @var RestService
      */
     private $restService;
     
     /**
      *
-     * @var Application\Datatables\SSPJoin
+     * @var SSPJoin
      */
     private $sspJoin;
     
@@ -56,13 +56,13 @@ class SalespeopleController extends BaseController {
             Logger $logger, 
             array $config, 
             RestService $restService, 
-            AuthenticationService $authenticationService, 
+            AuthManager $authManager, 
             SSPJoin $sspJoin, 
             UserManager $userManager, 
             UserService $userService
     ) {
 
-        parent::__construct($authenticationService, $config);
+        parent::__construct($authManager, $config);
 
         $this->logger = $logger;
 
@@ -184,7 +184,7 @@ class SalespeopleController extends BaseController {
                     return date('m/d/Y', strtotime($d));
                 }
             ),
-            array('db' => 'id', 'dt' => 7),
+            array('db' => 'sales_attr_id', 'dt' => 7),
         );
 
         // SQL server connection information

@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright  Copyright (c) 2017 Fulton Inc.
- * @author     Jason Palmer <jpalmer@meadedigital.com>
- */
 
 namespace Application\Entity;
 
@@ -11,61 +7,60 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="user_products")
+ * @ORM\Table(name="user_product_preferences")
  */
-class UserProduct {
-    
-    public function __construct()
-    {
-        $this->created=new DateTime();
+class Preferences {
+
+    public function __construct() {
+        $this->created = new DateTime();
+        $this->updated = new DateTime();
     }
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(name="user_id", type="integer")
+     */
+    protected $userId;
     
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Customer", cascade={"all"}, fetch="LAZY")
-     * @ORM\JoinColumn(name="customer", referencedColumnName="id")
+     * @ORM\Column(name="product_id", type="integer")
      */
-    protected $customer;
-    
+    protected $productId;
+
     /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Product", cascade={"all"}, fetch="LAZY")
-     * @ORM\JoinColumn(name="product", referencedColumnName="id")
-     */
-    protected $product;
-    
-    /** 
+     * Used internally by Doctrine - Do not touch or manipulate.
      * @ORM\Column(type="integer") 
      * @ORM\Version 
      */
-    protected $version;
-    
+    private $version;
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $comment;
-    
+
     /**
-     * @ORM\Column(name="`option`", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $option;
-    
+
     /**
-     * @ORM\Column(name="created", type="datetime")
+     * @ORM\Column(name="created", type="datetime", nullable=true)
      */
     protected $created;
-    
+
     /**
-     * @ORM\Column(name="updated", type="datetime")
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
      */
     protected $updated;
     
-    public function getCustomer() {
-        return $this->customer;
+    public function getUserId() {
+        return $this->userId;
     }
 
-    public function getProduct() {
-        return $this->product;
+    public function getProductId() {
+        return $this->productId;
     }
 
     public function getVersion() {
@@ -88,13 +83,18 @@ class UserProduct {
         return $this->updated;
     }
 
-    public function setCustomer($customer) {
-        $this->customer = $customer;
+    public function setUserId($userId) {
+        $this->userId = $userId;
         return $this;
     }
 
-    public function setProduct($product) {
-        $this->product = $product;
+    public function setProductId($productId) {
+        $this->productId = $productId;
+        return $this;
+    }
+
+    public function setVersion($version) {
+        $this->version = $version;
         return $this;
     }
 
@@ -117,5 +117,5 @@ class UserProduct {
         $this->updated = $updated;
         return $this;
     }
-    
+
 }

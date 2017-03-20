@@ -243,3 +243,14 @@ label.date-picker-table input.form_datetime{
     cursor: auto !important;
     opacity: .5;
 }
+
+.ffs-remove{
+    font-feature-settings: 'none';
+}
+
+tbody tr.odd td, tbody tr.even td{
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}

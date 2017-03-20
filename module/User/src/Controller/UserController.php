@@ -14,7 +14,6 @@ use User\Form\PasswordResetForm;
 use User\Form\UserForm;
 use User\Service\AuthManager;
 use User\Service\UserManager;
-use Zend\Authentication\AuthenticationService;
 use Zend\Db\Adapter\Adapter;
 use Zend\Log\Logger;
 use Zend\View\Model\ViewModel;
@@ -36,12 +35,7 @@ class UserController extends BaseController {
      * @var User\Service\UserManager 
      */
     private $userManager;
-
-    /**
-     * Auth manager.
-     * @var User\Service\AuthManager 
-     */
-    private $authManager;
+    
     private $dbAdapter;
     private $logger;
     private $sspJoin;
@@ -55,14 +49,12 @@ class UserController extends BaseController {
             AuthManager $authManager, 
             Adapter $dbAdapter, 
             Logger $logger, 
-            array $config, 
-            AuthenticationService $authenticationService,
+            array $config,
             SSPJoin $sspJoin
     ) {
-        parent::__construct($authenticationService, $config);
+        parent::__construct($authManager, $config);
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
-        $this->authManager = $authManager;
         $this->dbAdapter = $dbAdapter;
         $this->logger = $logger;
         $this->sspJoin = $sspJoin;

@@ -9,6 +9,7 @@
   "author": "jpalmer",
   "license": "ISC",
   "dependencies": {
+    "angular-local-storage": "^0.5.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-uglify": "^1.5.4"

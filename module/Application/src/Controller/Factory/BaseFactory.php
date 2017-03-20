@@ -15,14 +15,14 @@ namespace Application\Controller\Factory;
  */
 class BaseFactory {
 
-    public static function getAuthenticationService($container) {
+    public static function getAuthManager($container) {
         $sessionManager = $container->get('Zend\Session\SessionManager');
         if (!$sessionManager->isValid()) {
             $sessionManager->destroy();
             $sessionManager->regenerateId();
         }
-        $authenticationService = $container->get('Zend\Authentication\AuthenticationService');
-        return $authenticationService;
+        $authManager = $container->get('User\Service\AuthManager');
+        return $authManager;
     }
 
 }

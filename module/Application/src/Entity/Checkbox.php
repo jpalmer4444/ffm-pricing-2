@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright  Copyright (c) 2017 Fulton Inc.
- * @author     Jason Palmer <jpalmer@meadedigital.com>
- */
 
 namespace Application\Entity;
 
@@ -11,15 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="item_price_override")
+ * @ORM\Table(name="item_table_checkbox")
  */
-class ItemPriceOverride {
+class Checkbox {
     
     public function __construct()
     {
         $this->created=new DateTime();
     }
-
+    
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
@@ -33,7 +29,7 @@ class ItemPriceOverride {
      * @ORM\Version 
      */
     private $version;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="Product", cascade={"all"}, fetch="LAZY")
      * @ORM\JoinColumn(name="product", referencedColumnName="id")
@@ -41,14 +37,10 @@ class ItemPriceOverride {
     protected $product;
     
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\ManyToOne(targetEntity="RowPlusItemsPage", cascade={"all"}, fetch="LAZY")
+     * @ORM\JoinColumn(name="row_plus_items_page", referencedColumnName="id")
      */
-    protected $overrideprice;
-
-    /**
-     * @ORM\Column(name="active", type="boolean")
-     */
-    protected $active;
+    protected $rowPlusItemsPage;
     
     /**
      * @ORM\Column(name="created", type="datetime", nullable=true)
@@ -57,51 +49,35 @@ class ItemPriceOverride {
 
     /**
      * @ORM\ManyToOne(targetEntity="Customer", cascade={"all"}, fetch="LAZY")
-     * @ORM\JoinColumn(name="customerid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="customer", referencedColumnName="id")
      */
-    protected $customerid;
+    protected $customer;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"all"}, fetch="LAZY")
      * @ORM\JoinColumn(name="salesperson", referencedColumnName="id")
      */
     protected $salesperson;
-
-    /*
-     * Hydration
+    
+     /**
+     * @ORM\Column(name="checked", type="boolean")
      */
-
-    public function exchangeArray($data) {
-        $this->overrideprice = (isset($data['overrideprice'])) ? $data['overrideprice'] : null;
-    }
-
-    // Add the following method:
-    public function getArrayCopy() {
-        return get_object_vars($this);
-    }
-
-    /*
-     * Accessors and Mutators.
-     */
-
+    protected $checked;
+    
     public function getId() {
         return $this->id;
     }
-
-    public function getProduct() {
-        return $this->product;
+    
+    public function getChecked() {
+        return $this->checked;
     }
 
     public function getCustomer() {
-        return $this->customerid;
+        return $this->customer;
     }
-
-    public function getOverrideprice() {
-        return $this->overrideprice;
-    }
-
-    public function getActive() {
-        return $this->active;
+    
+    public function getRowPlusItemsPage() {
+        return $this->rowPlusItemsPage;
     }
 
     public function getCreated() {
@@ -111,29 +87,33 @@ class ItemPriceOverride {
     public function getSalesperson() {
         return $this->salesperson;
     }
-
+    
+    public function getProduct() {
+        return $this->product;
+    }
+    
     public function setId($id) {
         $this->id = $id;
         return $this;
     }
-
+    
     public function setProduct($product) {
         $this->product = $product;
         return $this;
     }
+    
+    public function setRowPlusItemsPage($rowPlusItemsPage) {
+        $this->rowPlusItemsPage = $rowPlusItemsPage;
+        return $this;
+    }
+    
+    public function setChecked($checked) {
+        $this->checked = $checked;
+        return $this;
+    }
 
     public function setCustomer($customer) {
-        $this->customerid = $customer;
-        return $this;
-    }
-
-    public function setOverrideprice($overrideprice) {
-        $this->overrideprice = $overrideprice;
-        return $this;
-    }
-
-    public function setActive($active) {
-        $this->active = $active;
+        $this->customer = $customer;
         return $this;
     }
 

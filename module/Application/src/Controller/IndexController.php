@@ -5,7 +5,7 @@ namespace Application\Controller;
 use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Exception;
-use Zend\Authentication\AuthenticationService;
+use User\Service\AuthManager;
 use Zend\Log\Logger;
 
 class IndexController extends BaseController
@@ -19,9 +19,9 @@ class IndexController extends BaseController
             EntityManager $entityManager, 
             Logger $logger, 
             array $config, 
-            AuthenticationService $authenticationService
+            AuthManager $authManager
             ) {
-        parent::__construct($authenticationService, $config);
+        parent::__construct($authManager, $config);
         $this->entityManager = $entityManager;
         $this->logger = $logger;
     }

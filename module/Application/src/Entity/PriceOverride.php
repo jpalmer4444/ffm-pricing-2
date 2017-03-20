@@ -1,25 +1,21 @@
 <?php
-/**
- * @copyright  Copyright (c) 2017 Fulton Inc.
- * @author     Jason Palmer <jpalmer@meadedigital.com>
- */
 
 namespace Application\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="pricing_override_report")
+ * @ORM\Table(name="item_price_override")
  */
-class PricingOverrideReport {
+class PriceOverride {
     
     public function __construct()
     {
         $this->created=new DateTime();
     }
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
@@ -33,7 +29,7 @@ class PricingOverrideReport {
      * @ORM\Version 
      */
     private $version;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Product", cascade={"all"}, fetch="LAZY")
      * @ORM\JoinColumn(name="product", referencedColumnName="id")
@@ -41,38 +37,49 @@ class PricingOverrideReport {
     protected $product;
     
     /**
-     * @ORM\ManyToOne(targetEntity="RowPlusItemsPage", cascade={"all"}, fetch="LAZY")
-     * @ORM\JoinColumn(name="row_plus_items_page_id", referencedColumnName="id")
-     */
-    protected $rowPlusItemsPage;
-    
-    /**
-     * @ORM\Column(type="decimal")
-     */
-    protected $retail;
-    
-    /**
      * @ORM\Column(type="decimal")
      */
     protected $overrideprice;
+
+    /**
+     * @ORM\Column(name="active", type="boolean")
+     */
+    protected $active;
     
     /**
      * @ORM\Column(name="created", type="datetime", nullable=true)
      */
     protected $created;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Customer", cascade={"all"}, fetch="LAZY")
-     * @ORM\JoinColumn(name="customerid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="customer", referencedColumnName="id")
      */
-    protected $customerid;
-    
+    protected $customer;
+
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"all"}, fetch="LAZY")
      * @ORM\JoinColumn(name="salesperson", referencedColumnName="id")
      */
     protected $salesperson;
-    
+
+    /*
+     * Hydration
+     */
+
+    public function exchangeArray($data) {
+        $this->overrideprice = (isset($data['overrideprice'])) ? $data['overrideprice'] : null;
+    }
+
+    // Add the following method:
+    public function getArrayCopy() {
+        return get_object_vars($this);
+    }
+
+    /*
+     * Accessors and Mutators.
+     */
+
     public function getId() {
         return $this->id;
     }
@@ -80,34 +87,17 @@ class PricingOverrideReport {
     public function getProduct() {
         return $this->product;
     }
-    public function getVersion() {
-        return $this->version;
-    }
 
-    public function getRowPlusItemsPage() {
-        return $this->rowPlusItemsPage;
-    }
-
-    public function setVersion($version) {
-        $this->version = $version;
-        return $this;
-    }
-
-    public function setRowPlusItemsPage($rowPlusItemsPage) {
-        $this->rowPlusItemsPage = $rowPlusItemsPage;
-        return $this;
-    }
-
-        public function getRetail() {
-        return $this->retail;
-    }
-    
-    public function getCustomerid() {
-        return $this->customerid;
+    public function getCustomer() {
+        return $this->customer;
     }
 
     public function getOverrideprice() {
         return $this->overrideprice;
+    }
+
+    public function getActive() {
+        return $this->active;
     }
 
     public function getCreated() {
@@ -122,19 +112,14 @@ class PricingOverrideReport {
         $this->id = $id;
         return $this;
     }
-    
-    public function setCustomer($customer) {
-        $this->customerid = $customer;
-        return $this;
-    }
-    
-    public function setRetail($retail) {
-        $this->retail = $retail;
-        return $this;
-    }
 
     public function setProduct($product) {
         $this->product = $product;
+        return $this;
+    }
+
+    public function setCustomer($customer) {
+        $this->customer = $customer;
         return $this;
     }
 
@@ -142,7 +127,12 @@ class PricingOverrideReport {
         $this->overrideprice = $overrideprice;
         return $this;
     }
-    
+
+    public function setActive($active) {
+        $this->active = $active;
+        return $this;
+    }
+
     public function setCreated($created) {
         $this->created = $created;
         return $this;
@@ -152,5 +142,5 @@ class PricingOverrideReport {
         $this->salesperson = $salesperson;
         return $this;
     }
-    
+
 }

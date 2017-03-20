@@ -3,14 +3,6 @@
         <header>
             <h4 class="pull-left">
                 Salespeople (<span ng-bind="salespeopleCtrl.recordsFiltered"></span>)
-
-                <?php if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleController', 'add'))): ?>
-
-                    <span >
-                        <a class="ion-plus" title="Add Salesperson" href="salespeople/add"></a>
-                    </span>
-
-                <?php endif; ?>
             </h4>
         </header>
     </div>

@@ -33,12 +33,6 @@ class AuthController extends AbstractActionController {
     private $authManager;
 
     /**
-     * Auth service.
-     * @var AuthenticationService
-     */
-    private $authService;
-
-    /**
      * User manager.
      * @var User\Service\UserManager
      */
@@ -49,11 +43,10 @@ class AuthController extends AbstractActionController {
      * Constructor.
      */
     public function __construct(
-    EntityManager $entityManager, AuthManager $authManager, AuthenticationService $authService, UserManager $userManager, Logger $logger
+    EntityManager $entityManager, AuthManager $authManager, UserManager $userManager, Logger $logger
     ) {
         $this->entityManager = $entityManager;
         $this->authManager = $authManager;
-        $this->authService = $authService;
         $this->userManager = $userManager;
         $this->logger = $logger;
     }
@@ -111,7 +104,12 @@ class AuthController extends AbstractActionController {
                     // If redirect URL is provided, redirect the user to that URL;
                     // otherwise redirect to Home page.
                     if (empty($redirectUrl)) {
-                        return $this->redirect()->toRoute('home');
+                        if($this->authManager->isAdmin()){
+                            return $this->redirect()->toRoute('salespeople');
+                        }else{
+                           $user = $this->authManager->getLoggedInUser();
+                           return $this->redirect()->toRoute('customer', array('action' => 'index', 'id' => $user->getSales_attr_id));
+                        }
                     } else {
                         $this->redirect()->toUrl($redirectUrl);
                     }
@@ -119,7 +117,6 @@ class AuthController extends AbstractActionController {
                     foreach ($result->getMessages() as $msg) {
                         $this->plugin('flashmessenger')->addMessage($msg);
                     }
-
                     $isLoginError = true;
                 }
             } else {

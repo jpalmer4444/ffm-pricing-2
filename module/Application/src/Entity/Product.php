@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright  Copyright (c) 2017 Fulton Inc.
- * @author     Jason Palmer <jpalmer@meadedigital.com>
- */
 
 namespace Application\Entity;
 
@@ -91,17 +87,25 @@ class Product {
     protected $saturdayenabled;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserProduct", mappedBy="product")
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="products")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @ORM\JoinTable(name="user_products",
+     *      joinColumns={@ORM\JoinColumn(name="product", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="customer", referencedColumnName="id", unique=true)}
+     *      )
      */
-    private $userProducts;
+    private $customer;
+    
+    function getCustomer() {
+        return $this->customer;
+    }
+
+    function setCustomer($customer) {
+        $this->customer = $customer;
+    }
 
     public function getId() {
         return $this->id;
-    }
-
-    public function getCustomerUserProduct($customer) {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("customer", $customer));
-        return $this->getUserProducts()->matching($criteria);
     }
 
     public function getVersion() {
@@ -150,10 +154,6 @@ class Product {
 
     public function getSaturdayenabled() {
         return $this->saturdayenabled;
-    }
-
-    public function getUserProducts() {
-        return $this->userProducts;
     }
 
     public function setId($id) {
@@ -218,11 +218,6 @@ class Product {
 
     public function setSaturdayenabled($saturdayenabled) {
         $this->saturdayenabled = $saturdayenabled;
-        return $this;
-    }
-
-    public function setUserProducts($userProducts) {
-        $this->userProducts = $userProducts;
         return $this;
     }
 

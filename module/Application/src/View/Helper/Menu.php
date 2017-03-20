@@ -173,8 +173,12 @@ class Menu extends AbstractHelper {
         } else {
             $link = isset($item['link']) ? $item['link'] : '#';
 
+            //add data-ffm-salesperson attribute if present in keys
+            $data_ffm_salesperson = isset($item['data-ffm-salesperson']) ? $item['data-ffm-salesperson'] : '';
+            
             $result .= $isActive ? '<li class="active">' : '<li>';
-            $result .= '<a href="' . $escapeHtml($link) . '">' . ($sanitizeLabel ? $escapeHtml($label) : $label) . '</a>';
+            
+            $result .= '<a id="' . $item['id'] . '_link" '. ($data_ffm_salesperson ?  'data-ffm-salesperson="' . $data_ffm_salesperson . '"' : '') .' href="' . $escapeHtml($link) . '">' . ($sanitizeLabel ? $escapeHtml($label) : $label) . '</a>';
             $result .= '</li>';
         }
 

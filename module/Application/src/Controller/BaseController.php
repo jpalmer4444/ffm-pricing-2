@@ -1,15 +1,9 @@
 <?php
 
-/*
- * BaseController parent for all application controller to encapsulate common functionality.
- * 1. Authentication
- * 2. Views
- */
-
 namespace Application\Controller;
 
 use InvalidArgumentException;
-use Zend\Authentication\AuthenticationService;
+use User\Service\AuthManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -22,11 +16,13 @@ abstract class BaseController extends AbstractActionController{
     
     protected $config;
     
-    protected $authenticationService;
+    protected $user; //logged-in user
     
-    public function __construct(AuthenticationService $authenticationService, array $config){
+    protected $authManager;
+    
+    public function __construct(AuthManager $authManager, array $config){
         $this->config = $config;
-        $this->authenticationService = $authenticationService;
+        $this->authManager = $authManager;
     }
 
     protected function getBasePath()
@@ -52,7 +48,8 @@ abstract class BaseController extends AbstractActionController{
 
     public function serveNgPage($isNgPage = TRUE) {
         $this->layout()->setVariable('ngPage', $isNgPage);
-        $this->layout()->setVariable('username', $this->authenticationService->getIdentity());
+        $user = $this->authManager->getLoggedInUser();
+        $this->layout()->setVariable('user', $user);
     }
 
     /**

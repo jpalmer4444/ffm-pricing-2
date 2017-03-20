@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright  Copyright (c) 2015 Busteco Global Brain
- * @author     Valentina <valentina@busteco.ro>
- */
 
 namespace Application\Entity;
 

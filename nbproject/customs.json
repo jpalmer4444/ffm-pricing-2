@@ -3,6 +3,7 @@
     "attributes": {
         "uib-dropdown-menu": {},
         "uib-dropdown": {},
+        "no-back-on-delete": {},
         "uib-dropdown-toggle": {}
     }
 }

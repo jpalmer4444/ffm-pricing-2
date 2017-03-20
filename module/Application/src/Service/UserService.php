@@ -122,6 +122,17 @@ class UserService extends BaseService
     {
         return $this->getRepository()->findOneBy(['username' => $username]);
     }
+    
+    /**
+     * Get user by sales_attr_id
+     *
+     * @param $sales_attr_id
+     * @return null|object
+     */
+    public function findBySalesperson($sales_attr_id)
+    {
+        return $this->getRepository()->findOneBy(['sales_attr_id' => $sales_attr_id]);
+    }
 
     /**
      * Get all users, as formatted array

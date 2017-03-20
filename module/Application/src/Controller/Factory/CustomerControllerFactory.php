@@ -22,9 +22,13 @@ class CustomerControllerFactory extends BaseFactory implements FactoryInterface 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = NULL) {
         $logger = $container->get('Zend\Log\Logger');
         $entityManager = $container->get('Doctrine\ORM\EntityManager');
-        $authenticationService = static::getAuthenticationService($container);
+        $customerService = $container->get('Application\Service\CustomerService');
+        $restService = $container->get('Application\Service\RestService');
+        $userService = $container->get('Application\Service\UserService');
+        $sspJoin = $container->get('Application\Datatables\SSPJoin');
+        $authManager = static::getAuthManager($container);
         $config = $container->get('Config');
-        return new CustomerController($entityManager, $logger, $config, $authenticationService);
+        return new CustomerController($entityManager, $logger, $config, $authManager, $sspJoin, $customerService, $restService, $userService);
     }
 
 }

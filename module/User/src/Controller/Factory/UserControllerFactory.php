@@ -16,14 +16,13 @@ class UserControllerFactory extends BaseFactory implements FactoryInterface
     {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $userManager = $container->get('User\Service\UserManager');
-        $authManager = $container->get('User\Service\AuthManager');
+        $authManager = static::getAuthManager($container);
         $dbAdapter = $container->get('Zend\Db\Adapter\Adapter');
         $logger = $container->get('Zend\Log\Logger');
-        $authenticationService = static::getAuthenticationService($container);
         $config = $container->get('Config');
         $sspJoin = $container->get('Application\Datatables\SSPJoin');
         
         // Instantiate the controller and inject dependencies
-        return new UserController($entityManager, $userManager, $authManager, $dbAdapter, $logger, $config, $authenticationService, $sspJoin);
+        return new UserController($entityManager, $userManager, $authManager, $dbAdapter, $logger, $config, $sspJoin);
     }
 }

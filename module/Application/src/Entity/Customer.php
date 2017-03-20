@@ -1,13 +1,13 @@
 <?php
 
+namespace Application\Entity;
+
 use DateTime;
-use Doctrine\ORM\Version;
+use Doctrine\ORM\Mapping as ORM;
 /**
  * @copyright  Copyright (c) 2017 Fulton Inc.
  * @author     Jason Palmer <jpalmer@meadedigital.com>
  */
-
-namespace Application\Entity;
 
 /** 
  * @ORM\Entity()
@@ -18,7 +18,9 @@ class Customer
     
     public function __construct()
     {
-        $this->_created=new DateTime();
+        $this->created=new DateTime();
+        $this->updated = new DateTime();
+        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -30,9 +32,19 @@ class Customer
     /** 
      * Used internally by Doctrine - Do not touch or manipulate.
      * @ORM\Column(type="integer") 
-     * @Version 
+     * @ORM\Version 
      */
-    private $version;
+    protected $version;
+    
+    /**
+     * @var ArrayCollection|Product[]
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="customers")
+     * @ORM\JoinTable(name="customer_product",
+     *      joinColumns={@ORM\JoinColumn(name="customer", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="product", referencedColumnName="id", unique=true)}
+     *      )
+     */
+    protected $products;
     
     /**
      * @ORM\Column(type="string", length=100)

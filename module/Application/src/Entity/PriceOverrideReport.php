@@ -1,19 +1,14 @@
 <?php
-/**
- * @copyright  Copyright (c) 2017 Fulton Inc.
- * @author     Jason Palmer <jpalmer@meadedigital.com>
- */
-
 namespace Application\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="item_table_checkbox")
+ * @ORM\Table(name="pricing_override_report")
  */
-class ItemTableCheckbox {
+class PriceOverrideReport {
     
     public function __construct()
     {
@@ -47,41 +42,67 @@ class ItemTableCheckbox {
     protected $rowPlusItemsPage;
     
     /**
+     * @ORM\Column(type="decimal")
+     */
+    protected $retail;
+    
+    /**
+     * @ORM\Column(type="decimal")
+     */
+    protected $overrideprice;
+    
+    /**
      * @ORM\Column(name="created", type="datetime", nullable=true)
      */
     protected $created;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="Customer", cascade={"all"}, fetch="LAZY")
-     * @ORM\JoinColumn(name="customerid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="customer", referencedColumnName="id")
      */
-    protected $customerid;
-
+    protected $customer;
+    
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"all"}, fetch="LAZY")
      * @ORM\JoinColumn(name="salesperson", referencedColumnName="id")
      */
     protected $salesperson;
     
-     /**
-     * @ORM\Column(name="checked", type="boolean")
-     */
-    protected $checked;
-    
     public function getId() {
         return $this->id;
     }
-    
-    public function getChecked() {
-        return $this->checked;
+
+    public function getProduct() {
+        return $this->product;
+    }
+    public function getVersion() {
+        return $this->version;
     }
 
-    public function getCustomer() {
-        return $this->customerid;
-    }
-    
     public function getRowPlusItemsPage() {
         return $this->rowPlusItemsPage;
+    }
+
+    public function setVersion($version) {
+        $this->version = $version;
+        return $this;
+    }
+
+    public function setRowPlusItemsPage($rowPlusItemsPage) {
+        $this->rowPlusItemsPage = $rowPlusItemsPage;
+        return $this;
+    }
+
+        public function getRetail() {
+        return $this->retail;
+    }
+    
+    public function getCustomer() {
+        return $this->customer;
+    }
+
+    public function getOverrideprice() {
+        return $this->overrideprice;
     }
 
     public function getCreated() {
@@ -91,36 +112,32 @@ class ItemTableCheckbox {
     public function getSalesperson() {
         return $this->salesperson;
     }
-    
-    public function getProduct() {
-        return $this->product;
-    }
-    
+
     public function setId($id) {
         $this->id = $id;
         return $this;
     }
     
+    public function setCustomer($customer) {
+        $this->customer = $customer;
+        return $this;
+    }
+    
+    public function setRetail($retail) {
+        $this->retail = $retail;
+        return $this;
+    }
+
     public function setProduct($product) {
         $this->product = $product;
         return $this;
     }
-    
-    public function setRowPlusItemsPage($rowPlusItemsPage) {
-        $this->rowPlusItemsPage = $rowPlusItemsPage;
-        return $this;
-    }
-    
-    public function setChecked($checked) {
-        $this->checked = $checked;
-        return $this;
-    }
 
-    public function setCustomer($customerid) {
-        $this->customerid = $customerid;
+    public function setOverrideprice($overrideprice) {
+        $this->overrideprice = $overrideprice;
         return $this;
     }
-
+    
     public function setCreated($created) {
         $this->created = $created;
         return $this;
@@ -130,5 +147,5 @@ class ItemTableCheckbox {
         $this->salesperson = $salesperson;
         return $this;
     }
-
+    
 }
