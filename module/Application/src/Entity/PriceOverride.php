@@ -31,7 +31,7 @@ class PriceOverride {
     private $version;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Product", cascade={"all"}, fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Product", fetch="LAZY")
      * @ORM\JoinColumn(name="product", referencedColumnName="id")
      */
     protected $product;
@@ -52,13 +52,13 @@ class PriceOverride {
     protected $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Customer", cascade={"all"}, fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Customer", fetch="LAZY")
      * @ORM\JoinColumn(name="customer", referencedColumnName="id")
      */
     protected $customer;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", cascade={"all"}, fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="User", fetch="LAZY")
      * @ORM\JoinColumn(name="salesperson", referencedColumnName="id")
      */
     protected $salesperson;

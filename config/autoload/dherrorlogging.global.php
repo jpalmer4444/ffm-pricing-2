@@ -54,7 +54,7 @@ $config = [
             'stream' => array(
                 'name' => 'stream',
                 'options' => array(
-                    'stream' => 'data/log/error.log',
+                    'stream' => __DIR__ . '/../../data/log/error.log',
                     'log_separator' => "\n"
                 ),
             

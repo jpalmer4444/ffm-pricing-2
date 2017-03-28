@@ -2,5 +2,5 @@
   'use strict';
 
   angular
-    .module('product', ['datatables']);
+    .module('product', ['datatables', 'datatables.fixedcolumns', 'datatables.select', 'datatables.buttons']);
 })();

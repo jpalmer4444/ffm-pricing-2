@@ -1,5 +1,5 @@
 <?php
-$this->headTitle('Welcome');
+$this->headTitle('Customers');
 
 $this->mainMenu()->setActiveItemId('customers');
 
@@ -8,11 +8,11 @@ $this->mainMenu()->setSiteMapOverride('Customers');
 if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleController', 'index'))) {
     $this->pageBreadcrumbs()->setItems([
         'Salespeople' => $this->url('salespeople', ['action' => 'index']),
-        'Customers' => $this->url('customer', ['action' => 'index']),
+        'Customers' => $this->url('customer', ['action' => 'view']),
     ]);
 } else {
     $this->pageBreadcrumbs()->setItems([
-        'Customers' => $this->url('customer', ['action' => 'index']),
+        'Customers' => $this->url('customer', ['action' => 'view']),
     ]);
 }
 ?>

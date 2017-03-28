@@ -2349,19 +2349,19 @@ a.btn.disabled, fieldset[disabled] a.btn {
     color: #777777;
     text-decoration: none; }
 
-.btn-lg, .btn-group-lg > .btn {
+.btn-lg {
   padding: 10px 16px;
   font-size: 18px;
   line-height: 1.33333;
   border-radius: 6px; }
 
-.btn-sm, .btn-group-sm > .btn {
+.btn-sm {
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 6px; }
 
-.btn-xs, .btn-group-xs > .btn {
+.btn-xs {
   padding: 1px 5px;
   font-size: 12px;
   line-height: 1.5;
@@ -2536,171 +2536,6 @@ tbody.collapse.in {
   .navbar-right .dropdown-menu-left {
     left: 0;
     right: auto; } }
-.btn-group,
-.btn-group-vertical {
-  position: relative;
-  display: inline-block;
-  vertical-align: middle; }
-  .btn-group > .btn,
-  .btn-group-vertical > .btn {
-    position: relative;
-    float: left; }
-    .btn-group > .btn:hover, .btn-group > .btn:focus, .btn-group > .btn:active, .btn-group > .btn.active,
-    .btn-group-vertical > .btn:hover,
-    .btn-group-vertical > .btn:focus,
-    .btn-group-vertical > .btn:active,
-    .btn-group-vertical > .btn.active {
-      z-index: 2; }
-
-.btn-group .btn + .btn,
-.btn-group .btn + .btn-group,
-.btn-group .btn-group + .btn,
-.btn-group .btn-group + .btn-group {
-  margin-left: -1px; }
-
-.btn-toolbar {
-  margin-left: -5px; }
-  .btn-toolbar:before, .btn-toolbar:after {
-    content: " ";
-    display: table; }
-  .btn-toolbar:after {
-    clear: both; }
-  .btn-toolbar .btn,
-  .btn-toolbar .btn-group,
-  .btn-toolbar .input-group {
-    float: left; }
-  .btn-toolbar > .btn,
-  .btn-toolbar > .btn-group,
-  .btn-toolbar > .input-group {
-    margin-left: 5px; }
-
-.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
-  border-radius: 0; }
-
-.btn-group > .btn:first-child {
-  margin-left: 0; }
-  .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0; }
-
-.btn-group > .btn:last-child:not(:first-child),
-.btn-group > .dropdown-toggle:not(:first-child) {
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0; }
-
-.btn-group > .btn-group {
-  float: left; }
-
-.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn {
-  border-radius: 0; }
-
-.btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child,
-.btn-group > .btn-group:first-child:not(:last-child) > .dropdown-toggle {
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 0; }
-
-.btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child {
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0; }
-
-.btn-group .dropdown-toggle:active,
-.btn-group.open .dropdown-toggle {
-  outline: 0; }
-
-.btn-group > .btn + .dropdown-toggle {
-  padding-left: 8px;
-  padding-right: 8px; }
-
-.btn-group > .btn-lg + .dropdown-toggle, .btn-group-lg.btn-group > .btn + .dropdown-toggle {
-  padding-left: 12px;
-  padding-right: 12px; }
-
-.btn-group.open .dropdown-toggle {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .btn-group.open .dropdown-toggle.btn-link {
-    -webkit-box-shadow: none;
-    box-shadow: none; }
-
-.btn .caret {
-  margin-left: 0; }
-
-.btn-lg .caret, .btn-group-lg > .btn .caret {
-  border-width: 5px 5px 0;
-  border-bottom-width: 0; }
-
-.dropup .btn-lg .caret, .dropup .btn-group-lg > .btn .caret {
-  border-width: 0 5px 5px; }
-
-.btn-group-vertical > .btn,
-.btn-group-vertical > .btn-group,
-.btn-group-vertical > .btn-group > .btn {
-  display: block;
-  float: none;
-  width: 100%;
-  max-width: 100%; }
-.btn-group-vertical > .btn-group:before, .btn-group-vertical > .btn-group:after {
-  content: " ";
-  display: table; }
-.btn-group-vertical > .btn-group:after {
-  clear: both; }
-.btn-group-vertical > .btn-group > .btn {
-  float: none; }
-.btn-group-vertical > .btn + .btn,
-.btn-group-vertical > .btn + .btn-group,
-.btn-group-vertical > .btn-group + .btn,
-.btn-group-vertical > .btn-group + .btn-group {
-  margin-top: -1px;
-  margin-left: 0; }
-
-.btn-group-vertical > .btn:not(:first-child):not(:last-child) {
-  border-radius: 0; }
-.btn-group-vertical > .btn:first-child:not(:last-child) {
-  border-top-right-radius: 6px;
-  border-top-left-radius: 6px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0; }
-.btn-group-vertical > .btn:last-child:not(:first-child) {
-  border-top-right-radius: 0;
-  border-top-left-radius: 0;
-  border-bottom-right-radius: 6px;
-  border-bottom-left-radius: 6px; }
-
-.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn {
-  border-radius: 0; }
-
-.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn:last-child,
-.btn-group-vertical > .btn-group:first-child:not(:last-child) > .dropdown-toggle {
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0; }
-
-.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child {
-  border-top-right-radius: 0;
-  border-top-left-radius: 0; }
-
-.btn-group-justified {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: separate; }
-  .btn-group-justified > .btn,
-  .btn-group-justified > .btn-group {
-    float: none;
-    display: table-cell;
-    width: 1%; }
-  .btn-group-justified > .btn-group .btn {
-    width: 100%; }
-  .btn-group-justified > .btn-group .dropdown-menu {
-    left: auto; }
-
-[data-toggle="buttons"] > .btn input[type="radio"],
-[data-toggle="buttons"] > .btn input[type="checkbox"],
-[data-toggle="buttons"] > .btn-group > .btn input[type="radio"],
-[data-toggle="buttons"] > .btn-group > .btn input[type="checkbox"] {
-  position: absolute;
-  clip: rect(0, 0, 0, 0);
-  pointer-events: none; }
-
 .input-group {
   position: relative;
   display: table;
@@ -4172,21 +4007,35 @@ select.mobile-device {
   font-style: normal; }
 .ion, .ionicons,
 .ion-alert-circled:before,
-.ion-android-restaurant:before,
+.ion-android-checkbox-outline:before,
+.ion-android-checkbox-outline-blank:before,
+.ion-android-contact:before,
+.ion-android-download:before,
 .ion-android-unlock:before,
+.ion-arrow-down-c:before,
 .ion-arrow-right-a:before,
+.ion-arrow-right-b:before,
+.ion-arrow-right-c:before,
 .ion-calendar:before,
+.ion-cash:before,
 .ion-checkmark:before,
 .ion-chevron-left:before,
 .ion-close:before,
 .ion-document-text:before,
 .ion-edit:before,
+.ion-eye:before,
+.ion-eye-disabled:before,
+.ion-fork:before,
 .ion-gear-a:before,
 .ion-ios-close-outline:before,
+.ion-ios-eye:before,
+.ion-ios-eye-outline:before,
 .ion-person:before,
 .ion-plus:before,
 .ion-printer:before,
 .ion-refresh:before,
+.ion-social-usd:before,
+.ion-social-usd-outline:before,
 .ion-trash-a:before {
   display: inline-block;
   font-family: "Ionicons";
@@ -4203,17 +4052,38 @@ select.mobile-device {
 .ion-alert-circled:before {
   content: ""; }
 
-.ion-android-restaurant:before {
-  content: ""; }
+.ion-android-checkbox-outline:before {
+  content: ""; }
+
+.ion-android-checkbox-outline-blank:before {
+  content: ""; }
+
+.ion-android-contact:before {
+  content: ""; }
+
+.ion-android-download:before {
+  content: ""; }
 
 .ion-android-unlock:before {
   content: ""; }
 
+.ion-arrow-down-c:before {
+  content: ""; }
+
 .ion-arrow-right-a:before {
   content: ""; }
 
+.ion-arrow-right-b:before {
+  content: ""; }
+
+.ion-arrow-right-c:before {
+  content: ""; }
+
 .ion-calendar:before {
   content: ""; }
+
+.ion-cash:before {
+  content: ""; }
 
 .ion-checkmark:before {
   content: ""; }
@@ -4230,11 +4100,26 @@ select.mobile-device {
 .ion-edit:before {
   content: ""; }
 
+.ion-eye:before {
+  content: ""; }
+
+.ion-eye-disabled:before {
+  content: ""; }
+
+.ion-fork:before {
+  content: ""; }
+
 .ion-gear-a:before {
   content: ""; }
 
 .ion-ios-close-outline:before {
   content: ""; }
+
+.ion-ios-eye:before {
+  content: ""; }
+
+.ion-ios-eye-outline:before {
+  content: ""; }
 
 .ion-person:before {
   content: ""; }
@@ -4247,6 +4132,12 @@ select.mobile-device {
 
 .ion-refresh:before {
   content: ""; }
+
+.ion-social-usd:before {
+  content: ""; }
+
+.ion-social-usd-outline:before {
+  content: ""; }
 
 .ion-trash-a:before {
   content: ""; }

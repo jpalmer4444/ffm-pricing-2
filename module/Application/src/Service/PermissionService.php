@@ -1,14 +1,17 @@
 <?php
-/**
- * @copyright  Copyright (c) 2017 Fulton Inc
- * @author     Jason Palmer <jpalmer@meadedigital.com>
- */
 
 namespace Application\Service;
 
 use Application\Entity\Permission;
+use Application\Service\BaseService;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Query;
 use Zend\Log\Logger;
+/**
+ * @copyright  Copyright (c) 2017 Fulton Inc
+ * @author     Jason Palmer <jpalmer@meadedigital.com>
+ */
 
 class PermissionService extends BaseService
 {
@@ -29,6 +32,33 @@ class PermissionService extends BaseService
     public function findById($id)
     {
         return $this->getRepository()->find($id);
+    }
+    
+    /**
+     * @param $id
+     * @return null|object
+     */
+    public function find($id)
+    {
+        return $this->getRepository()->find($id);
+    }
+    
+    /**
+     * 
+     * @param array $eager map of class names to alias for eagerly fetched @ManyToOne and @OneToOne associations only
+     * @param array $parameters map of parameters names to values for the passed in SQL @default = []
+     * @param type $dql DQL to execute
+     */
+    public function findEager(array $eager, array $parameters = [], $dql = []) {
+        /** @var Query $item */
+        $query = $this->getEntityManager()->createQuery(empty($dql) ? $this->config['pricing_config']['dql']['find_eager']['PermissionService'] : $dql);
+        foreach ($eager as $clazz => $alias) {
+            $query->setFetchMode($clazz, $alias, ClassMetadata::FETCH_EAGER);
+        }
+        foreach ($parameters as $parameter => $value) {
+            $query->setParameter($parameter, $value);
+        }
+        return $query->getResult();
     }
 
     /**
@@ -68,7 +98,7 @@ class PermissionService extends BaseService
             $this->getEntityManager()->flush();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -92,7 +122,7 @@ class PermissionService extends BaseService
 
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
 

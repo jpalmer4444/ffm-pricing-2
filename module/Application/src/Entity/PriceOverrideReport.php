@@ -36,10 +36,10 @@ class PriceOverrideReport {
     protected $product;
     
     /**
-     * @ORM\ManyToOne(targetEntity="RowPlusItemsPage", cascade={"all"}, fetch="LAZY")
-     * @ORM\JoinColumn(name="row_plus_items_page_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AddedProduct", cascade={"all"}, fetch="LAZY")
+     * @ORM\JoinColumn(name="added_product", referencedColumnName="id")
      */
-    protected $rowPlusItemsPage;
+    protected $addedProduct;
     
     /**
      * @ORM\Column(type="decimal")
@@ -79,8 +79,8 @@ class PriceOverrideReport {
         return $this->version;
     }
 
-    public function getRowPlusItemsPage() {
-        return $this->rowPlusItemsPage;
+    public function getAddedProduct() {
+        return $this->addedProduct;
     }
 
     public function setVersion($version) {
@@ -88,8 +88,8 @@ class PriceOverrideReport {
         return $this;
     }
 
-    public function setRowPlusItemsPage($rowPlusItemsPage) {
-        $this->rowPlusItemsPage = $rowPlusItemsPage;
+    public function setAddedProduct($addedProduct) {
+        $this->addedProduct = $addedProduct;
         return $this;
     }
 

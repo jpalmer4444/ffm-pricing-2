@@ -4,6 +4,11 @@
         "uib-dropdown-menu": {},
         "uib-dropdown": {},
         "no-back-on-delete": {},
-        "uib-dropdown-toggle": {}
+        "uib-dropdown-toggle": {},
+        "popover-trigger": {
+            "context": "a"
+        },
+        "uib-popover": {},
+        "popover-placement": {}
     }
 }

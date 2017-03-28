@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Global Configuration Override
  *
@@ -10,23 +11,22 @@
  * control, so do not include passwords or other sensitive information in this
  * file.
  */
-
 return [
     'translator' => [
         'locale' => 'en_US',
         'translation_file_patterns' => [
             [
-                'type'     => 'gettext',
+                'type' => 'gettext',
                 'base_dir' => __DIR__ . '/../language',
-                'pattern'  => '%s.mo',
+                'pattern' => '%s.mo',
             ],
         ],
     ],
     // Session configuration.
     'session_config' => [
-        'cookie_lifetime'       => 60*60*24, // Session cookie will expire in 24 hours.
-        'gc_maxlifetime'        => 60*60*24*30, // How long to store session data on server (for 1 month).    
-        'cookie_secure'         => true
+        'cookie_lifetime' => 60 * 60 * 24, // Session cookie will expire in 24 hours.
+        'gc_maxlifetime' => 60 * 60 * 24 * 30, // How long to store session data on server (for 1 month).    
+        'cookie_secure' => true
     ],
     // Session manager configuration.
     'session_manager' => [
@@ -41,5 +41,12 @@ return [
         'type' => 'Zend\Session\Storage\SessionArrayStorage'
     ],
     'ngSettings' => [
+    ],
+    'queries' => [
+        "Application\Controller\ProductController" => [
+            'actions' => [
+                'productTableAction' => include __DIR__ . '/../queries/productTableAction.php'
+            ]
+        ]
     ],
 ];

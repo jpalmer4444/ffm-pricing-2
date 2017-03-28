@@ -4,7 +4,6 @@ namespace Application\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,7 +14,8 @@ class Product {
 
     public function __construct() {
         $this->created = new DateTime();
-        $this->userProducts = new ArrayCollection();
+        $this->updated = new DateTime();
+        $this->checkboxes = new ArrayCollection();
     }
 
     /**
@@ -85,23 +85,20 @@ class Product {
      * @ORM\Column(name="saturdayenabled", type="boolean")
      */
     protected $saturdayenabled;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="products")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-     * @ORM\JoinTable(name="user_products",
-     *      joinColumns={@ORM\JoinColumn(name="product", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="customer", referencedColumnName="id", unique=true)}
-     *      )
-     */
-    private $customer;
     
-    function getCustomer() {
-        return $this->customer;
+    /**
+     * One Product has Many Checkboxes (By Customer).
+     * @ORM\OneToMany(targetEntity="Checkbox", mappedBy="product")
+     */
+    protected $checkboxes;
+    
+    public function getCheckboxes() {
+        return $this->checkboxes;
     }
 
-    function setCustomer($customer) {
-        $this->customer = $customer;
+    public function setCheckboxes($checkboxes) {
+        $this->checkboxes = $checkboxes;
+        return $this;
     }
 
     public function getId() {

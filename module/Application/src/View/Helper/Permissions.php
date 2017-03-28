@@ -23,4 +23,21 @@ class Permissions extends AbstractHelper{
         return $this->authManager->isGranted($controllerName, $actionName, $assertion);
     }
     
+    public function getLoggedInUser() {
+        return $this->authManager->getLoggedInUser();
+    }
+    
+    public function isAdmin() {
+        return $this->authManager->isAdmin();
+    }
+    
+    /**
+     * 
+     * @param string $role User[Role]
+     * @return boolean tests whether the logged-in user has the passed in role.
+     */
+    public function hasRole($role) {
+        return $this->authManager->hasRole($role);
+    }
+    
 }

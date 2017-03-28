@@ -3,21 +3,13 @@
         <header>
             <h4 class="pull-left">
                 Users (<span ng-bind="userCtrl.recordsFiltered"></span>)
-
-                <?php if (!empty($this->permissions()->isGranted('User\Controller\UserController', 'add'))): ?>
-
-                    <span >
-                        <a class="ion-plus" title="Add User" href="users/add"></a>
-                    </span>
-
-                <?php endif; ?>
             </h4>
         </header>
     </div>
 
     <div class="pull-right">
         
-        <a class="table-header-btn reset-filters-btn btn-default" title="Reset Filters" ng-click="userCtrl.resetFilters()"> 
+        <a uib-popover="Reset all page filters and re-populate results" popover-placement="bottom" popover-trigger="'mouseenter'" class="table-header-btn reset-filters-btn btn-default" title="Reset Filters" ng-click="userCtrl.resetFilters()"> 
             Reset all filters
             <i class="ion-close"></i>
         </a>
@@ -37,19 +29,19 @@
 
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" >
                 <li >
-                    <a href="#" ng-click="userCtrl.selectPageSize(2)">2</a>
+                    <a href="#" ng-click="userCtrl.selectPageSize(salespeopleCtrl.pageSizes[0])" ng-bind="userCtrl.pageSizes[0]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="userCtrl.selectPageSize(10)">10</a>
+                    <a href="#" ng-click="userCtrl.selectPageSize(salespeopleCtrl.pageSizes[1])" ng-bind="userCtrl.pageSizes[1]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="userCtrl.selectPageSize(25)">25</a>
+                    <a href="#" ng-click="userCtrl.selectPageSize(salespeopleCtrl.pageSizes[2])" ng-bind="userCtrl.pageSizes[2]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="userCtrl.selectPageSize(50)">50</a>
+                    <a href="#" ng-click="userCtrl.selectPageSize(salespeopleCtrl.pageSizes[3])" ng-bind="userCtrl.pageSizes[3]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="userCtrl.selectPageSize(100)">100</a>
+                    <a href="#" ng-click="userCtrl.selectPageSize(userCtrl.pageSizes[4])" ng-bind="userCtrl.pageSizes[4]"></a>
                 </li>
             </ul>
 

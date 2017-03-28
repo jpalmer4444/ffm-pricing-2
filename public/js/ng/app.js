@@ -9,6 +9,10 @@
       //add constants here.
       var loginUrl = (typeof window.loginUrl !== "undefined" ? window.loginUrl : '');
       var username = (typeof window.username !== "undefined" ? window.username : '');
+      var productsTableChecked = (typeof window.productsTableChecked !== "undefined" ? window.productsTableChecked : '');
+      var productsTableReport = (typeof window.productsTableReport !== "undefined" ? window.productsTableReport : '');
+      var productsTableProduct = (typeof window.productsTableProduct !== "undefined" ? window.productsTableProduct : '');
+      var productsTableOverride = (typeof window.productsTableOverride !== "undefined" ? window.productsTableOverride : '');
       var salesAttrId = (typeof window.salesAttrId !== "undefined" ? window.salesAttrId : '');
       var usersTableAjax = (typeof window.usersTableAjax !== "undefined" ? window.usersTableAjax : '');
       var productsTableAjax = (typeof window.productsTableAjax !== "undefined" ? window.productsTableAjax : '');
@@ -18,7 +22,10 @@
       var addSalespersonUrl = (typeof window.addSalespersonUrl !== "undefined" ? window.addSalespersonUrl : '');
       //console.log('loginUrl: '+loginUrl);
       //addSalespersonUrl
-      console.log('salespeopleTableAjax: '+salespeopleTableAjax);
+      var dynHeight = $(document).height() - 250;
+      if(dynHeight < 350){
+        dynHeight = 350;
+      }
       return {
         salesAttrId: salesAttrId,
         username: username,
@@ -27,10 +34,17 @@
           addSalespersonUrl : addSalespersonUrl,
           usersTableAjax : usersTableAjax,
           productsTableAjax : productsTableAjax,
+          productsTableReport : productsTableReport,
           customersTableAjax : customersTableAjax,
           salespeopleTableAjax : salespeopleTableAjax,
-          usersTableUpdateStatusAjax : usersTableUpdateStatusAjax
+          usersTableUpdateStatusAjax : usersTableUpdateStatusAjax,
+          productsTableChecked: productsTableChecked,
+          productsTableProduct: productsTableProduct,
+          productsTableOverride: productsTableOverride
         },
+        pageSizes: [2, 10, 25, 50, 100],
+        pageSize: 25,
+        scrollY:  (dynHeight) + 'px'
       };
     })())
     
@@ -54,9 +68,8 @@
     $httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8";
     $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
     $httpProvider.defaults.withCredentials = true;
-    localStorageServiceProvider.setPrefix('ff');
-    localStorageServiceProvider
-    .setStorageCookie(30, '/', true);
+    localStorageServiceProvider.setPrefix(window.username);
+    localStorageServiceProvider.setStorageCookie(30, '/', true);
     $httpProvider.interceptors.push("checkSession");
     $provide.decorator('$locale', function ($delegate) {
       var value = $delegate.DATETIME_FORMATS;

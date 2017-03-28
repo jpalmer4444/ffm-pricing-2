@@ -20,6 +20,9 @@
         if ($this->ngPage) {
 
             $this->headLink()->prependStylesheet($this->basePath() . 'css/jquery.dataTables.css');
+            $this->headLink()->prependStylesheet($this->basePath() . 'css/select.dataTables.min.css');
+            $this->headLink()->prependStylesheet($this->basePath() . 'css/buttons.dataTables.min.css');
+            $this->headLink()->prependStylesheet($this->basePath() . 'css/fixedColumns.bootstrap.css');
             $this->headLink()->prependStylesheet($this->basePath() . 'css/angular-datables.min.css');
             //ng variables
         }
@@ -28,6 +31,10 @@
         <script>
             var username = '<?php echo $this->user ? $this->user->getUsername() : ''; ?>',
             loginUrl = '<?= $this->url('login'); ?>',
+            productsTableChecked = '<?= $this->url('product', ['action' => 'checked']); ?>',
+            productsTableReport = '<?= $this->url('product', ['action' => 'report']); ?>',
+            productsTableProduct = '<?= $this->url('product', ['action' => 'product']); ?>',
+            productsTableOverride = '<?= $this->url('product', ['action' => 'override']); ?>',
             salesAttrId = '<?= $this->user ? $this->user->getSales_attr_id() : ''; ?>',
             usersTableAjax = '<?= $this->url('users', ['action' => 'users-table']); ?>';
             productsTableAjax = '<?= $this->url('product', ['action' => 'product-table']); ?>';
@@ -66,7 +73,7 @@
             <?php echo $this->content; ?>
 
         </div> 
-        <footer>
+        <footer id="ffm-footer">
             <p> <?php echo $this->translate('Fulton Fish Market - Skeleton App') ?>&nbsp; <?php echo date('Y') ?> Meade Digital Enterprises </p>
         </footer>
 
@@ -74,22 +81,30 @@
 //add angular files for appropriate pages.
         if ($this->ngPage) {
             
-            $version = 1;
+            $version = 5;
             //$this->inlineScript()->appendFile($this->basePath('js/dist/angular-app-files.js?v='.
             //1));
 
             $this->inlineScript()->appendFile($this->basePath('js/jquery.min.js'))
                     ->appendFile($this->basePath('js/jquery.dataTables.min.js'))
-                    ->appendFile($this->basePath('js/vendor/dataTables.fixedHeader.min.js'))
-                    ///u/local/jasonpalmer/ffmpricing/public/js/vendor/dataTables.fixedHeader.min.js
+                    ->appendFile($this->basePath('js/vendor-orders/dataTables.select.min.js'))
+                    ->appendFile($this->basePath('js/vendor-orders/dataTables.buttons.min.js'))
+                    ->appendFile($this->basePath('js/vendor-orders/buttons.html5.min.js'))
+                    ->appendFile($this->basePath('js/vendor-orders/buttons.flash.min.js'))
+                    ->appendFile($this->basePath('js/vendor-orders/pdfmake.min.js'))
+                    ->appendFile($this->basePath('js/vendor-orders/vfs_fonts.js'))
+                    ->appendFile($this->basePath('js/vendor-orders/dataTables.fixedColumns.js'))
                     ->appendFile($this->basePath('js/ng/vendor/angular.min.js'))
-                    ->appendFile($this->basePath('js/ng/vendor/angular-datatables/plugins/fixedheader/angular-datatables.fixedheader.min.js'))
-                    ->appendFile($this->basePath('js/ng/vendor/angular-datatables/angular-datatables.js'))
-                    
                     ->appendFile($this->basePath('js/ng/vendor/select.min.js'))
                     ->appendFile($this->basePath('js/ng/vendor/ui-bootstrap-tpls.min.js'))
                     ->appendFile($this->basePath('js/ng/vendor/angular-sanitize.min.js'))
                     ->appendFile($this->basePath('js/ng/vendor/angular-local-storage.min.js'))
+                    ->appendFile($this->basePath('js/ng/vendor/angular-datatables/angular-datatables.js'))
+                    ->appendFile($this->basePath('js/ng/vendor/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js'))
+                    ->appendFile($this->basePath('js/ng/vendor/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js'))
+                    ->appendFile($this->basePath('js/ng/vendor/angular-datatables/plugins/select/angular-datatables.select.min.js'))
+                    
+                    
 
                     //app
                     ->appendFile($this->basePath('js/ng/app.js?v='.$version))
@@ -105,6 +120,8 @@
                     //product module
                     ->appendFile($this->basePath('js/ng/product/product.module.js?v='.$version))
                     ->appendFile($this->basePath('js/ng/product/productTable.controller.js?v='.$version))
+                    ->appendFile($this->basePath('js/ng/product/addProductModal.controller.js?v='.$version))
+                    ->appendFile($this->basePath('js/ng/product/addOverridePriceModal.controller.js?v='.$version))
                     
                     //salespeople module
                     ->appendFile($this->basePath('js/ng/salespeople/salespeople.module.js?v='.$version))

@@ -8,7 +8,6 @@ use Exception;
 use User\Form\LoginForm;
 use User\Service\AuthManager;
 use User\Service\UserManager;
-use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
 use Zend\Log\Logger;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -65,8 +64,6 @@ class AuthController extends AbstractActionController {
         // Create login form
         $form = new LoginForm();
 
-        $form->get('redirect_url')->setValue($redirectUrl);
-
         // Store login status.
         $isLoginError = false;
 
@@ -85,13 +82,10 @@ class AuthController extends AbstractActionController {
                 $data = $form->getData();
 
                 // Perform login attempt.
-                $result = $this->authManager->login($data['username'], $data['password'], $data['remember_me']);
+                $result = $this->authManager->login($data['username'], $data['password'], 1);
 
                 // Check result.
                 if ($result->getCode() == Result::SUCCESS) {
-
-                    // Get redirect URL.
-                    $redirectUrl = $this->params()->fromPost('redirect_url', '');
 
                     if (!empty($redirectUrl)) {
                         // The below check is to prevent possible redirect attack 
@@ -103,12 +97,12 @@ class AuthController extends AbstractActionController {
 
                     // If redirect URL is provided, redirect the user to that URL;
                     // otherwise redirect to Home page.
-                    if (empty($redirectUrl)) {
-                        if($this->authManager->isAdmin()){
+                    if (empty($redirectUrl) || strcmp('/', $redirectUrl) == 0) {
+                        if ($this->authManager->isAdmin()) {
                             return $this->redirect()->toRoute('salespeople');
-                        }else{
-                           $user = $this->authManager->getLoggedInUser();
-                           return $this->redirect()->toRoute('customer', array('action' => 'index', 'id' => $user->getSales_attr_id));
+                        } else {
+                            $user = $this->authManager->getLoggedInUser();
+                            return $this->redirect()->toRoute('customer', array('action' => 'view', 'id' => $user->getSales_attr_id));
                         }
                     } else {
                         $this->redirect()->toUrl($redirectUrl);
@@ -121,6 +115,21 @@ class AuthController extends AbstractActionController {
                 }
             } else {
                 $isLoginError = true;
+            }
+        } else {
+            //Very Important and slightly confusing.
+            //if we are logged-in here - we should log out the User 
+            //or the page shows logged in details and is wrong. So we redirect to logout
+            //taking care to preserve any redirectUrl parameter then we redirect back to this
+            //page where we will no longer be logged-in and the 2nd time this test is encountered
+            //it passes and we are logged-out. Tricky, but extremely useful and necessary for 
+            //seamless intuitive page flow and logic.
+            if (!empty($this->authManager->getLoggedInUser())) {
+                if ($redirectUrl) {
+                    return $this->redirect()->toRoute('logout', [], ['query' => ['redirectUrl' => $redirectUrl]]);
+                } else {
+                    return $this->redirect()->toRoute('logout');
+                }
             }
         }
 
@@ -136,8 +145,12 @@ class AuthController extends AbstractActionController {
      */
     public function logoutAction() {
         $this->authManager->logout();
-
-        return $this->redirect()->toRoute('login');
+        $redirectUrl = (string) $this->params()->fromQuery('redirectUrl', '');
+        if ($redirectUrl) {
+            return $this->redirect()->toRoute('login', [], ['query' => ['redirectUrl' => $redirectUrl]]);
+        } else {
+            return $this->redirect()->toRoute('login');
+        }
     }
 
 }

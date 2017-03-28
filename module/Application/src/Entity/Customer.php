@@ -3,6 +3,7 @@
 namespace Application\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * @copyright  Copyright (c) 2017 Fulton Inc.
@@ -20,7 +21,8 @@ class Customer
     {
         $this->created=new DateTime();
         $this->updated = new DateTime();
-        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->products = new ArrayCollection();
+        $this->addedProducts = new ArrayCollection();
     }
     
     /**
@@ -38,13 +40,23 @@ class Customer
     
     /**
      * @var ArrayCollection|Product[]
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="customers")
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="customers", cascade={"all"}, fetch="LAZY")
      * @ORM\JoinTable(name="customer_product",
      *      joinColumns={@ORM\JoinColumn(name="customer", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="product", referencedColumnName="id", unique=true)}
      *      )
      */
     protected $products;
+    
+    /**
+     * @var ArrayCollection|AddedProduct[]
+     * @ORM\ManyToMany(targetEntity="AddedProduct", inversedBy="customers", cascade={"all"}, fetch="LAZY")
+     * @ORM\JoinTable(name="customer_added_product",
+     *      joinColumns={@ORM\JoinColumn(name="customer", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="added_product", referencedColumnName="id", unique=true)}
+     *      )
+     */
+    protected $addedProducts;
     
     /**
      * @ORM\Column(type="string", length=100)
@@ -133,5 +145,25 @@ class Customer
         $this->updated = $updated;
         return $this;
     }
+    
+    public function getProducts() {
+        return $this->products;
+    }
+
+    public function setProducts($products) {
+        $this->products = $products;
+        return $this;
+    }
+
+    public function getAddedProducts() {
+        return $this->addedProducts;
+    }
+
+    public function setAddedProducts($addedProducts) {
+        $this->addedProducts = $addedProducts;
+        return $this;
+    }
+
+
 
 }

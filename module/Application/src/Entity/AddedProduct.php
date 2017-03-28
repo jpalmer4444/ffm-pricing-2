@@ -2,18 +2,20 @@
 
 namespace Application\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="row_plus_items_page")
+ * @ORM\Table(name="added_product")
  */
 class AddedProduct {
     
     public function __construct()
     {
-        $this->created=new DateTime();
+        $this->created = new DateTime();
+        $this->checkboxes = new ArrayCollection();
     }
 
     /**
@@ -34,6 +36,12 @@ class AddedProduct {
      * @ORM\Column(type="string", length=255)
      */
     protected $productname;
+    
+    /**
+     * One Product has Many Checkboxes (By Customer).
+     * @ORM\OneToMany(targetEntity="Checkbox", mappedBy="addedProduct")
+     */
+    protected $checkboxes;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -61,7 +69,7 @@ class AddedProduct {
     protected $comment;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", columnDefinition="DECIMAL(22,2) DEFAULT NULL")
      */
     protected $overrideprice;
 
@@ -93,6 +101,15 @@ class AddedProduct {
 
     public function getId() {
         return $this->id;
+    }
+    
+    public function getCheckboxes() {
+        return $this->checkboxes;
+    }
+
+    public function setCheckboxes($checkboxes) {
+        $this->checkboxes = $checkboxes;
+        return $this;
     }
 
     public function getVersion() {

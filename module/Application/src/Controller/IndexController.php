@@ -29,9 +29,17 @@ class IndexController extends BaseController
     public function indexAction()
     {
         
-        $this->serveNgPage();
+        $user = $this->authManager->getLoggedInUser();
         
-        return $this->getView();
+        $isAdmin = $this->authManager->isAdmin();
+        
+        $sales_attr_id = $user->getSales_attr_id();
+        
+        if(!empty($sales_attr_id) && !$isAdmin){
+            return $this->redirect()->toRoute('customer', ['action' => 'view', 'id' => $sales_attr_id]);
+        }else{
+            return $this->redirect()->toRoute('salespeople', ['action' => 'index']);
+        }
     }
     
     /**

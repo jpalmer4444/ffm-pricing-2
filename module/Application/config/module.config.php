@@ -73,10 +73,17 @@ return [
             'partial/confirmation-modal-tplt' => __DIR__ . '/../view/application/partial/confirmation-modal-tplt.phtml',
             //add Salesperson modal
             'partial/add-salesperson-modal-tplt' => __DIR__ . '/../view/application/partial/add-salesperson-modal-tplt.phtml',
+            //add Product modal
+            'partial/add-product-modal-tplt' => __DIR__ . '/../view/application/partial/add-product-modal-tplt.phtml',
+            //override price modal
+            'partial/override-price-modal-tplt' => __DIR__ . '/../view/application/partial/override-price-modal-tplt.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
     ],
     // The following key allows to define custom styling for FlashMessenger view helper.
     'view_helper_config' => [

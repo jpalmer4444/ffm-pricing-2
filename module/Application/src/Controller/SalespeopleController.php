@@ -121,7 +121,7 @@ class SalespeopleController extends BaseController {
                         if (!empty($user)) {
                             $this->userManager->updateUser($user, $data);
                             if ($this->isDebug()) {
-                                $this->logger("User Updated");
+                                $this->logger->log(Logger::INFO, "User Updated");
                             }
                         } else {
                             if (empty($data['id'])) {

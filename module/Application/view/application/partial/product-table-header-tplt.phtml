@@ -1,22 +1,65 @@
-<div class="table-header" >
+<div class="table-header product-table-header" >
     <div class="pull-left">
         <header>
-            <h4 class="pull-left">
-                Products (<span ng-bind="productCtrl.recordsFiltered"></span>)
-
-                <?php if (!empty($this->permissions()->isGranted('Application\Controller\ProductController', 'add'))): ?>
-
-                    <span >
-                        <a class="ion-plus" title="Add Product" href="#"></a>
-                    </span>
-
-                <?php endif; ?>
-            </h4>
+            <div class="pull-left header-item-wrapper">
+                <h4 uib-popover="{{productCtrl.tableTitle()}}" 
+                    popover-placement="bottom" 
+                    popover-trigger="'mouseenter'" 
+                    class="table-header-item">
+                    Products
+                    <span class="table-header-item">(</span>
+                    <span class="table-header-item" ng-bind="productCtrl.recordsFiltered"></span>
+                    <span class="table-header-item">/</span>
+                    <span class="table-header-item" ng-bind="productCtrl.recordsTotal"></span>
+                    <span class="table-header-item">)</span>
+                </h4>
+            </div>
         </header>
     </div>
 
-    <div class="pull-right">
-        
+    <div id="pdf-container" 
+         class="pull-right">
+
+        <?php if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleController', 'index'))): ?>
+
+            <a uib-popover="Go to Salespeople" 
+               popover-placement="bottom" 
+               popover-trigger="'mouseenter'" 
+               class="table-header-btn reset-filters-btn btn-accent" href="/salespeople"> 
+                <span class="ffs-remove" ng-bind="productCtrl.salesperson"></span>
+                <i class="ion-person"></i>
+            </a>
+
+        <?php endif; ?>
+
+        <a uib-popover="Go to Customers" 
+           popover-placement="bottom" 
+           popover-trigger="'mouseenter'" 
+           class="table-header-btn reset-filters-btn btn-accent" 
+           href="/customer">
+            <span class="ffs-remove" ng-bind="productCtrl.company"></span>
+            <i class="ion-fork"></i>
+        </a>
+
+        <a uib-popover="Go to Customers" 
+           popover-placement="bottom" 
+           popover-trigger="'mouseenter'" 
+           class="table-header-btn reset-filters-btn btn-accent" 
+           href="/customer">
+            <span class="ffs-remove" ng-bind="productCtrl.name"></span>
+            <i class="ion-person"></i>
+        </a>
+
+        <a id="add_product_button" uib-popover="Add Product" 
+               popover-placement="bottom" 
+               popover-trigger="'mouseenter'" 
+               ng-click="productCtrl.addProduct()" 
+               class="table-header-btn reset-filters-btn btn-accent" title="Add Product" href="#">
+                Add Product
+                <i class="ion-plus"></i>
+               
+            </a>
+
         <a class="table-header-btn reset-filters-btn btn-default" title="Reset Filters" ng-click="productCtrl.resetFilters()"> 
             Reset all filters
             <i class="ion-close"></i>
@@ -37,19 +80,19 @@
 
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" >
                 <li >
-                    <a href="#" ng-click="productCtrl.selectPageSize(2)">2</a>
+                    <a href="#" ng-click="productCtrl.selectPageSize(productCtrl.pageSizes[0])" ng-bind="productCtrl.pageSizes[0]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="productCtrl.selectPageSize(10)">10</a>
+                    <a href="#" ng-click="productCtrl.selectPageSize(productCtrl.pageSizes[1])" ng-bind="productCtrl.pageSizes[1]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="productCtrl.selectPageSize(25)">25</a>
+                    <a href="#" ng-click="productCtrl.selectPageSize(productCtrl.pageSizes[2])" ng-bind="productCtrl.pageSizes[2]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="productCtrl.selectPageSize(50)">50</a>
+                    <a href="#" ng-click="productCtrl.selectPageSize(productCtrl.pageSizes[3])" ng-bind="productCtrl.pageSizes[3]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="productCtrl.selectPageSize(100)">100</a>
+                    <a href="#" ng-click="productCtrl.selectPageSize(productCtrl.pageSizes[4])" ng-bind="productCtrl.pageSizes[4]"></a>
                 </li>
             </ul>
 
@@ -60,7 +103,7 @@
         <div class="dataTables_paginate paging_bootstrap pull-right">
 
             <ul uib-pagination direction-links="true" boundary-links="false" 
-                total-items="productCtrl.recordsTotal" 
+                total-items="productCtrl.recordsFiltered" 
                 ng-model="productCtrl.page" 
                 previous-text="‹" next-text="›" 
                 items-per-page="productCtrl.pageSize" ng-change="productCtrl.reloadData()"

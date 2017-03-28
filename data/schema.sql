@@ -2,13 +2,14 @@ use `pricing_2`;
 
 DROP TABLE IF EXISTS `error_log`;
 DROP TABLE IF EXISTS `item_table_checkbox`;
-DROP TABLE IF EXISTS `row_plus_items_page`;
 DROP TABLE IF EXISTS `item_price_override`;
 DROP TABLE IF EXISTS `pricing_override_report`;
+DROP TABLE IF EXISTS `customer_added_product`;
 DROP TABLE IF EXISTS `user_product_preferences`;
 DROP TABLE IF EXISTS `user_customer`;
 DROP TABLE IF EXISTS `customer_product`;
 DROP TABLE IF EXISTS `products`;
+DROP TABLE IF EXISTS `row_plus_items_page`;
 DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `user_role`;
 drop table if exists `role_permission`;
@@ -173,7 +174,7 @@ CREATE TABLE `item_price_override` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE `row_plus_items_page` (
+CREATE TABLE `added_product` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `version` int(11) DEFAULT '1',
   `overrideprice` decimal(22,2) DEFAULT NULL,
@@ -188,10 +189,10 @@ CREATE TABLE `row_plus_items_page` (
   `customer` int(11) NOT NULL,
   `salesperson` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `KEY_ROLE_PLUS_ITEMS_PAGE_SALESPERSON` (`salesperson`),
-  KEY `KEY_ROLE_PLUS_ITEMS_PAGE_CUSTOMER` (`customer`),
-  CONSTRAINT `FK_ROLE_PLUS_ITEMS_PAGE_SALESPERSON` FOREIGN KEY (`salesperson`) REFERENCES `users` (`id`),
-  CONSTRAINT `FK_ROLE_PLUS_ITEMS_PAGE_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
+  KEY `KEY_ADDED_PRODUCT_SALESPERSON` (`salesperson`),
+  KEY `KEY_ADDED_PRODUCT_CUSTOMER` (`customer`),
+  CONSTRAINT `FK_ADDED_PRODUCT_SALESPERSON` FOREIGN KEY (`salesperson`) REFERENCES `users` (`id`),
+  CONSTRAINT `FK_ADDED_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -199,18 +200,18 @@ CREATE TABLE `item_table_checkbox` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `version` int(11) DEFAULT '1',
   `product` int(11) DEFAULT NULL,
-  `row_plus_items_page` int(11) DEFAULT NULL,
+  `added_product` int(11) DEFAULT NULL,
   `checked` tinyint(1) DEFAULT '0',
   `customer` int(11) NOT NULL,
   `salesperson` int(11) NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `KEY_ITEM_TABLE_CHECKBOX_PRODUCT` (`product`),
-  KEY `KEY_ITEM_TABLE_CHECKBOX_ROW_PLUS_ITEMS_PAGE` (`row_plus_items_page`),
+  KEY `KEY_ITEM_TABLE_CHECKBOX_ADDED_PRODUCT` (`added_product`),
   KEY `KEY_ITEM_TABLE_CHECKBOX_SALESPERSON` (`salesperson`),
   KEY `KEY_ITEM_TABLE_CHECKBOX_CUSTOMER` (`customer`),
   CONSTRAINT `FK_ITEM_TABLE_CHECKBOX_PRODUCT` FOREIGN KEY (`product`) REFERENCES `products` (`id`),
-  CONSTRAINT `FK_ITEM_TABLE_CHECKBOX_ROW_PLUS_ITEMS_PAGE` FOREIGN KEY (`row_plus_items_page`) REFERENCES `row_plus_items_page` (`id`),
+  CONSTRAINT `FK_ITEM_TABLE_CHECKBOX_ADDED_PRODUCT` FOREIGN KEY (`added_product`) REFERENCES `added_product` (`id`),
   CONSTRAINT `FK_ITEM_TABLE_CHECKBOX_SALESPERSON` FOREIGN KEY (`salesperson`) REFERENCES `users` (`id`),
   CONSTRAINT `FK_ITEM_TABLE_CHECKBOX_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -220,7 +221,7 @@ CREATE TABLE `pricing_override_report` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `version` int(11) DEFAULT '1',
   `product` int(11) DEFAULT NULL,
-  `row_plus_items_page_id` int(11) DEFAULT NULL,
+  `added_product` int(11) DEFAULT NULL,
   `overrideprice` decimal(22,2) DEFAULT NULL,
   `retail` decimal(22,2) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -244,14 +245,20 @@ CREATE TABLE `customer_product` (
   CONSTRAINT `FK_CUSTOMER_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `customer_added_product` (
+  `customer` int(11) NOT NULL,
+  `added_product` int(11) NOT NULL,
+  PRIMARY KEY (`customer`,`added_product`),
+  CONSTRAINT `FK_CUSTOMER_ADDED_PRODUCT_ADDED_PRODUCT` FOREIGN KEY (`added_product`) REFERENCES `added_product` (`id`),
+  CONSTRAINT `FK_CUSTOMER_ADDED_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `user_product_preferences` (
   `user_id` int(11) NOT NULL DEFAULT '0',
   `product_id` int(11) NOT NULL DEFAULT '0',
   `version` int(11) DEFAULT '1',
   `comment` varchar(255) DEFAULT NULL,
   `option` varchar(255) DEFAULT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`,`product_id`),
   CONSTRAINT `FK_USER_PRODUCT_PREFERENCES_PRODUCT` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
   CONSTRAINT `FK_USER_PRODUCT_PREFERENCES_CUSTOMER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -304,7 +311,6 @@ INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(11, 'index/index', 'Ind
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(12, 'index/settings', 'Index Settings Action');
 
 # CustomerController
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(14, 'customer/index', 'Customer Index Action');
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(20, 'customer/view', 'Customer View Action');
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(15, 'customer/customerTable', 'Customer Customer Table');
 
@@ -314,7 +320,11 @@ INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(21, 'salespeople/add', 
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(17, 'salespeople/salespeopleTable', 'Salespeople Salespeople Table');
 
 # ProductController
-INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(18, 'product/index', 'Product Index Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(18, 'product/view', 'Product View Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(22, 'product/checked', 'Product Checked Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(23, 'product/product', 'Product Product Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(25, 'product/report', 'Product Report Action');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(24, 'product/override', 'Product Override Action');
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(19, 'product/productTable', 'Product Product Table');
 
 # Admin Permissions
@@ -327,18 +337,21 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 6); # admin
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 7); # admin user/index (List Users)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 8); # admin user/message (Message User)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 9); # admin user/usersTable (Ajax Users Table Action)
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 10); # adminindex/about (About Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 10); # admin index/about (About Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 11); # admin index/index (Index Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 12); # admin index/settings (Settings Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 13); # admin user/usersTableUpdateStatus (Users Table Update Status)
 
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 14); # admin customer/index (Customer Index Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 20); # admin customer/view (Customer View Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 15); # admin customer/customerTable (Customer Customer Table)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 16); # admin salespeople/index (Salespeople Index Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 21); # admin salespeople/add (Salespeople Add Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 17); # admin salespeople/salespeopleTable (Salespeople Salespeople Table)
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 18); # admin product/index (Product Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 18); # admin product/view (Product View Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 22); # admin product/checked (Product Checked Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 23); # admin product/product (Product Product Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 24); # admin product/override (Product Override Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 25); # admin product/report (Product Report Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 19); # admin product/productTable (Product Product Table)
 
 # User Permissions
@@ -347,8 +360,11 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 10);   # sa
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 11);   # sales index/index (Index Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 12);   # sales index/settings (Settings Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 6);    # sales user/edit (Edit User)
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 14);   # sales customer/index (Customer Index Action)
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 20);   # admin customer/view (Customer View Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 20);   # sales customer/view (Customer View Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 15);   # sales customer/customerTable (Customer Customer Table)
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 18);   # sales product/index (Product Index Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 18);   # sales product/view (Product View Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 22);   # sales product/checked (Product Checked Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 23);   # sales product/product (Product Product Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 24);   # sales product/override (Product Override Action)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 25);   # sales product/report (Product Report Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 19);   # sales product/productTable (Product Product Table)

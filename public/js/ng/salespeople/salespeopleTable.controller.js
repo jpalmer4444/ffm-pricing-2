@@ -17,6 +17,7 @@
 
     vm.start;
     vm.pageSize;
+    vm.pageSizes = config.pageSizes;
     vm.page = 1; //not zero based.
     vm.status; //string status eg. Enabled or Disabled
     vm.recordsTotal;
@@ -65,7 +66,9 @@
             .withDataProp('data')
             .withDOM('<"ffmtoolbar">t')
             .withOption('processing', true)
-            .withOption('scrollX', '100%')
+            .withOption('scrollY', config.scrollY)
+            .withOption('scrollX', true)
+            .withOption('scrollCollapse', true)
             .withOption('serverSide', true)
             .withOption('createdRow', createdRow)
             .withOption('rowCallback', rowCallback)
@@ -98,7 +101,7 @@
     vm.clickCustomers = function(sales_attr_id, salesperson_name){
       localStorageService.set('salesperson_name', salesperson_name);
       localStorageService.set('sales_attr_id', sales_attr_id);
-      $window.location = 'customer/index/' + sales_attr_id;
+      $window.location = '/customer/view/' + sales_attr_id;
     }
 
     //initialize
@@ -125,9 +128,12 @@
 
       //link to customers
       var linkButton = angular.element('<a/>', {
-        'ng-click': 'salespeopleCtrl.clickCustomers(' + data + ', "' + data[4] + '")',
+        'ng-click': 'salespeopleCtrl.clickCustomers(' + data + ', "' + full[4] + '")',
         class: 'btn btn-default btn-square btn-transparent',
-        title: 'View ' + full[4] + '\'s Customers'
+        'uib-popover': 'View ' + full[4] + '\'s Customers',
+        'popover-placement': 'left',
+        'popover-trigger': "'mouseenter'",
+        'popover-append-to-body': "'true'"
       }).
               //add button to div
               appendTo(aroundTableActions);
@@ -375,18 +381,18 @@
               .post(config.urls.addSalespersonUrl, $.param(data))
               .then(function (response) {
 
-                if (typeof resultHandler == "function") {
+                if (typeof resultHandler === "function") {
 
                   resultHandler(response.data, data);
                 }
 
-                if (typeof finalHandler == "function") {
+                if (typeof finalHandler === "function") {
                   finalHandler();
                 }
 
               }, function () {
 
-                if (typeof finalHandler == "function") {
+                if (typeof finalHandler === "function") {
                   finalHandler();
                 }
               });
@@ -412,7 +418,7 @@
       if (!missing(data)){
         localStorageService.set('salesperson_name', data[4]);
         localStorageService.set('sales_attr_id', data[7]);
-        $window.location = 'customer/index/' + data[7];
+        $window.location = '/customer/view/' + data[7];
       }
     }
 
@@ -432,7 +438,7 @@
 
     function resetVmProps() {
       vm.start = 0;
-      vm.pageSize = 10;
+      vm.pageSize = config.pageSize;
       vm.page = 0;
       vm.recordsTotal = 0;
       vm.recordsFiltered = 0;

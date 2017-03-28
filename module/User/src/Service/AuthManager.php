@@ -117,6 +117,7 @@ class AuthManager {
         $this->setSessionId($this->authService->getIdentity(), NULL);
         // Remove identity from session.
         $this->authService->clearIdentity();
+        $this->sessionManager->expireSessionCookie();
     }
     
     public function getLoggedInUser(){
@@ -135,6 +136,19 @@ class AuthManager {
             }
         }
         return FALSE;
+    }
+    
+    public function hasRole($rolename){
+        $user = $this->getLoggedInUser();
+        if(empty($user)){
+            return false;
+        }
+        foreach($user->getRoles() as $role){
+            if(strcmp($role->getName(), $rolename) == 0){
+                return true;
+            }
+        }
+        return false;
     }
 
     public function isGranted($controllerName, $actionName, AssertionInterface $assertion = null) {

@@ -17,6 +17,7 @@
 
     vm.start;
     vm.pageSize;
+    vm.pageSizes = config.pageSizes;
     vm.page = 1; //not zero based.
     vm.status; //string status eg. Enabled or Disabled
     vm.recordsTotal;
@@ -55,7 +56,9 @@
             .withDataProp('data')
             .withDOM('<"ffmtoolbar">t')
             .withOption('processing', true)
-            .withOption('scrollX', '100%')
+            .withOption('scrollY', config.scrollY)
+            .withOption('scrollX', true)
+            .withOption('scrollCollapse', true)
             .withOption('serverSide', true)
             .withOption('createdRow', createdRow)
             .withOption('headerCallback', function (thead, data, start, end, display) {
@@ -299,7 +302,7 @@
 
     function resetVmProps() {
       vm.start = 0;
-      vm.pageSize = 10;
+      vm.pageSize = config.pageSize;
       vm.page = 0;
       vm.recordsTotal = 0;
       vm.recordsFiltered = 0;

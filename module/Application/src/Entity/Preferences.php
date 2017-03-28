@@ -12,21 +12,21 @@ use Doctrine\ORM\Mapping as ORM;
 class Preferences {
 
     public function __construct() {
-        $this->created = new DateTime();
-        $this->updated = new DateTime();
     }
-
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="user_id", type="integer")
-     */
-    protected $userId;
     
     /**
      * @ORM\Id
-     * @ORM\Column(name="product_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="User", fetch="LAZY")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    protected $productId;
+    protected $user;
+    
+    /**
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Product", fetch="LAZY")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     */
+    protected $product;
 
     /**
      * Used internally by Doctrine - Do not touch or manipulate.
@@ -36,31 +36,21 @@ class Preferences {
     private $version;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", name="`comment`", length=255, nullable=true)
      */
     protected $comment;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", name="`option`", length=255, nullable=true)
      */
     protected $option;
-
-    /**
-     * @ORM\Column(name="created", type="datetime", nullable=true)
-     */
-    protected $created;
-
-    /**
-     * @ORM\Column(name="updated", type="datetime", nullable=true)
-     */
-    protected $updated;
     
-    public function getUserId() {
-        return $this->userId;
+    public function getUser() {
+        return $this->user;
     }
 
-    public function getProductId() {
-        return $this->productId;
+    public function getProduct() {
+        return $this->product;
     }
 
     public function getVersion() {
@@ -75,21 +65,13 @@ class Preferences {
         return $this->option;
     }
 
-    public function getCreated() {
-        return $this->created;
-    }
-
-    public function getUpdated() {
-        return $this->updated;
-    }
-
-    public function setUserId($userId) {
-        $this->userId = $userId;
+    public function setUser($user) {
+        $this->user = $user;
         return $this;
     }
 
-    public function setProductId($productId) {
-        $this->productId = $productId;
+    public function setProduct($product) {
+        $this->product = $product;
         return $this;
     }
 
@@ -107,15 +89,4 @@ class Preferences {
         $this->option = $option;
         return $this;
     }
-
-    public function setCreated($created) {
-        $this->created = $created;
-        return $this;
-    }
-
-    public function setUpdated($updated) {
-        $this->updated = $updated;
-        return $this;
-    }
-
 }

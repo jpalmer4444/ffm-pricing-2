@@ -37,10 +37,10 @@ class Checkbox {
     protected $product;
     
     /**
-     * @ORM\ManyToOne(targetEntity="RowPlusItemsPage", cascade={"all"}, fetch="LAZY")
-     * @ORM\JoinColumn(name="row_plus_items_page", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AddedProduct", cascade={"all"}, fetch="LAZY")
+     * @ORM\JoinColumn(name="added_product", referencedColumnName="id")
      */
-    protected $rowPlusItemsPage;
+    protected $addedProduct;
     
     /**
      * @ORM\Column(name="created", type="datetime", nullable=true)
@@ -76,8 +76,8 @@ class Checkbox {
         return $this->customer;
     }
     
-    public function getRowPlusItemsPage() {
-        return $this->rowPlusItemsPage;
+    public function getAddedProduct() {
+        return $this->addedProduct;
     }
 
     public function getCreated() {
@@ -102,8 +102,8 @@ class Checkbox {
         return $this;
     }
     
-    public function setRowPlusItemsPage($rowPlusItemsPage) {
-        $this->rowPlusItemsPage = $rowPlusItemsPage;
+    public function setAddedProduct($addedProduct) {
+        $this->addedProduct = $addedProduct;
         return $this;
     }
     

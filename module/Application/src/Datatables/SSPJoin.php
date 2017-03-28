@@ -21,6 +21,7 @@ class SSPJoin {
     protected $logger;
     protected $andWhere;
     protected $joinStatement;
+    protected $joinMap;
     protected $joinStatementUnion;
     protected $joinCountStatement;
     protected $joinCountStatementUnion;
@@ -38,6 +39,10 @@ class SSPJoin {
 
     public function setAndWhere($andWhere) {
         $this->andWhere = $andWhere;
+    }
+    
+    public function setJoinMap($joinMap) {
+        $this->joinMap = $joinMap;
     }
 
     public function setLogger($logger) {
@@ -391,8 +396,21 @@ class SSPJoin {
     private function sql_exec($db, $bindings, $sql = null) {
         // Argument shifting
         if ($sql === null) {
+            $sqlWasNull = TRUE;
             $sql = $bindings;
         }
+        
+        
+        
+        if(!empty($this->joinMap) && !$sqlWasNull){
+            foreach($this->joinMap as $column=>$replaceColumn){
+                //$this->logger->log(Logger::INFO, "SQL: "+$sql);
+                $sql = str_replace($column, $replaceColumn, $sql);
+            }
+        }
+        
+        $this->logger->log(Logger::INFO, "SQL: ".$sql);
+        
         $stmt = $db->prepare($sql);
         //echo $sql;
         // Bind parameters

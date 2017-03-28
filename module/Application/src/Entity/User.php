@@ -1,10 +1,12 @@
 <?php
+
 namespace Application\Entity;
 
+use Application\Entity\Customer;
+use Application\Entity\Preferences;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\JoinTable;
+
 
 /**
  * This class represents a registered user.
@@ -66,7 +68,7 @@ class User
     
     /**
      * @var ArrayCollection|Role[]
-     * @ManyToMany(targetEntity="Role", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      * @ORM\JoinTable(name="user_role",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=true)}
@@ -77,13 +79,20 @@ class User
     
     /**
      * @var ArrayCollection|Customer[]
-     * @ManyToMany(targetEntity="Customer", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Customer", inversedBy="users")
      * @ORM\JoinTable(name="user_customer",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="customer_id", referencedColumnName="id", unique=true)}
      *      )
      */
     protected $customers;
+    
+    /**
+     * @var ArrayCollection|Preferences[]
+     * @ORM\OneToMany(targetEntity="Preferences", mappedBy="user")
+     * 
+     */
+    protected $preferences;
     
     /**
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
@@ -106,8 +115,8 @@ class User
     protected $phone1;
     
     public function __construct() {
-        $this->customers = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->customers = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
     
     public function setLastlogin($lastlogin) {
@@ -118,22 +127,31 @@ class User
         return $this->lastlogin;
     }
     
-    function getSalespersonname() {
+    public function getSalespersonname() {
         return $this->salespersonname;
     }
 
-    function getPhone1() {
+    public function getPhone1() {
         return $this->phone1;
     }
 
-    function setSalespersonname($salespersonname) {
+    public function setSalespersonname($salespersonname) {
         $this->salespersonname = $salespersonname;
     }
 
-    function setPhone1($phone1) {
+    public function setPhone1($phone1) {
         $this->phone1 = $phone1;
     }
     
+    public function getPreferences() {
+        return $this->preferences;
+    }
+
+    public function setPreferences($preferences) {
+        $this->preferences = $preferences;
+        return $this;
+    }
+
     /**
      * Returns user ID.
      * @return integer
@@ -143,11 +161,11 @@ class User
         return $this->id;
     }
     
-    function getSales_attr_id() {
+    public function getSales_attr_id() {
         return $this->sales_attr_id;
     }
 
-    function setSales_attr_id($sales_attr_id) {
+    public function setSales_attr_id($sales_attr_id) {
         $this->sales_attr_id = $sales_attr_id;
     }
 

@@ -1,0 +1,183 @@
+<?php
+$this->headTitle('Products');
+
+$this->mainMenu()->setSiteMapOverride('Products');
+
+if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleController', 'index'))) {
+    $this->pageBreadcrumbs()->setItems([
+        'Salespeople' => $this->url('salespeople', ['action' => 'index']),
+        'Customers' => $this->url('customer', ['action' => 'view']),
+        'Products' => $this->url('product', ['action' => 'view']),
+    ]);
+} else {
+    $this->pageBreadcrumbs()->setItems([
+        'Customers' => $this->url('customer', ['action' => 'view']),
+        'Products' => $this->url('product', ['action' => 'view']),
+    ]);
+}
+?>
+
+<style>
+    #productsTable {
+        width: 2000px !important;
+    }
+    /* Ensure that the table scrolls */
+    #productsTable_wrapper th,
+    #productsTable_wrapper td {
+        
+    }
+    #productsTable_wrapper.dataTables_wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+</style>
+
+<div class="around_datatables" ng-controller="ProductTableController as productCtrl">
+
+    <script type="text/ng-template" id="addProductModal.html">
+        <?= $this->partial('partial/add-product-modal-tplt') ?>
+    </script>
+    
+    <script type="text/ng-template" id="addOverridePriceModal.html">
+        <?= $this->partial('partial/override-price-modal-tplt') ?>
+    </script>
+
+    <?= $this->partial('partial/product-table-header-tplt') ?>
+
+    <div id="my_products_wrapper" >
+        <table id="productsTable" datatable dt-instance="productCtrl.dtInstanceCallback" dt-options="productCtrl.dtOptions" dt-columns="productCtrl.dtColumns" style="width: 100%;" class="table-bordered table-condensed table-hover table-striped">
+            <thead>
+                <tr class="no-padding">
+                    <th ng-class="{ 'selected' : productCtrl.selected }" title="{{ productCtrl.selected ? 'Click to unselect all products' : 'Click to select all products' }}"
+                        ng-click="productCtrl.selectAll()">
+                        <!-- CHECKBOX -->
+                        <i ng-class="{'ion': true, 'ion-android-checkbox-outline-blank' : !productCtrl.selected, 'ion-android-checkbox-outline' : productCtrl.selected}" class="checker-header"></i>
+                    </th>
+                    <th>
+                        <!-- ID -->
+                        ID
+                    </th>
+                    <th>
+                        <!-- PRODUCTNAME -->
+                        <input name="zff_productname" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_productname" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- DESCRIPTION -->
+                        <input name="zff_description" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_description" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- COMMENT -->
+                        <input name="zff_comment" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_comment" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- OPTION -->
+                        <input name="zff_option" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_option" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- WHOLESALE -->
+                        <input name="zff_wholesale" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_wholesale" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- RETAIL -->
+                        <input name="zff_retail" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_retail" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- OVERRIDE -->
+                        <input name="zff_override" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_override" class="filter form-control" value="" type="text">
+                    </th>
+                    <th>
+                        <!-- UOM -->
+                        <input name="zff_uom" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_uom" class="filter form-control" value="" type="text">
+                    </th>
+                    <!--STATUS-->
+                    <th>
+                        <div class="btn-group bootstrap-select filter form-control" uib-dropdown dropdown-append-to-body="true">
+                            <ul class="dropdown-menu table-head" uib-dropdown-menu >
+                                <li >
+                                    <a href="#" ng-click="productCtrl.selectStatus('Enabled')">Enabled</a>
+                                </li>
+                                <li >
+                                    <a href="#" ng-click="productCtrl.selectStatus('Disabled')">Disabled</a>
+                                </li>
+                            </ul>
+                            <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle >
+                                <span ng-if="!productCtrl.status" class="filter-option pull-left">- Select -</span>
+                                <span ng-if="productCtrl.status" class="filter-option pull-left">{{productCtrl.status}}</span>
+                                &nbsp;
+                                <span class="caret"></span>
+                            </button>
+
+                        </div>
+
+                    </th>
+
+                    <!--SATURDAYENABLED-->
+                    <th>
+                        <div class="btn-group bootstrap-select filter form-control" uib-dropdown dropdown-append-to-body="true">
+                            <ul class="dropdown-menu table-head" uib-dropdown-menu >
+                                <li >
+                                    <a href="#" ng-click="productCtrl.selectSaturdayEnabled('On')">On</a>
+                                </li>
+                                <li >
+                                    <a href="#" ng-click="productCtrl.selectSaturdayEnabled('Off')">Off</a>
+                                </li>
+                            </ul>
+                            <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle >
+                                <span ng-if="!productCtrl.zff_saturdayenabled" class="filter-option pull-left">- Select -</span>
+                                <span ng-if="productCtrl.zff_saturdayenabled" class="filter-option pull-left">{{productCtrl.zff_saturdayenabled}}</span>
+                                &nbsp;
+                                <span class="caret"></span>
+                            </button>
+
+                        </div>
+
+                    </th>
+
+                    <th>
+                        <!-- SKU -->
+                        <input name="zff_sku" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_sku" class="filter form-control" value="" type="text">
+                    </th>
+
+                    <th>
+                        <!-- ACTIONS -->
+                    </th>
+                </tr>
+                <tr>
+                    <th> </th>
+                    <th>ID</th>
+                    <th>Product</th>
+                    <th>Description</th>
+                    <th>Comment</th>
+                    <th>Option</th>
+                    <th>Wholesale</th>
+                    <th>Retail</th>
+                    <th>Override</th>
+                    <th>UOM</th>
+                    <th>Status</th>
+                    <th>Saturday Enabled</th>
+                    <th>SKU</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <th> </th>
+                    <th>ID</th>
+                    <th>Product</th>
+                    <th>Description</th>
+                    <th>Comment</th>
+                    <th>Option</th>
+                    <th>Wholesale</th>
+                    <th>Retail</th>
+                    <th>Override</th>
+                    <th>UOM</th>
+                    <th>Status</th>
+                    <th>Saturday Enabled</th>
+                    <th>SKU</th>
+                    <th>Actions</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

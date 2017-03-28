@@ -3,9 +3,9 @@
 
   angular
           .module('customer')
-          .controller('CustomerTableController', ['$scope', '$filter', '$compile', '$http', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', 'localStorageService', CustomerTableController]);
+          .controller('CustomerTableController', ['$scope', '$filter', '$compile', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', 'localStorageService', CustomerTableController]);
 
-  function CustomerTableController($scope, $filter, $compile, $http, DTOptionsBuilder, DTColumnBuilder, config, screenService, localStorageService) {
+  function CustomerTableController($scope, $filter, $compile, $window, DTOptionsBuilder, DTColumnBuilder, config, screenService, localStorageService) {
 
     //screenService.showOverlay();
 
@@ -15,11 +15,14 @@
      */
     var vm = this;
 
+    vm.db_synced_once = false;
     vm.start;
     vm.pageSize;
+    vm.pageSizes = config.pageSizes;
     vm.page = 1; //not zero based.
     vm.recordsTotal;
     vm.recordsFiltered;
+    vm.isSalesperson = !config.salesAttrId;
     vm.zff_company;
     vm.zff_name;
     vm.zff_email;
@@ -27,9 +30,9 @@
     vm.zff_updated;
     vm.zff_created_open = false;
     vm.zff_updated_open = false;
-    
+
     vm.salesperson = localStorageService.get('salesperson_name');
-    
+
 
     vm.dateformat = 'MM/dd/yyyy';
     vm.altInputFormats = ['M!/d!/yyyy'];
@@ -56,11 +59,14 @@
             .withDataProp('data')
             .withDOM('<"ffmtoolbar">t')
             .withOption('processing', true)
-            .withOption('scrollX', '100%')
+            .withOption('scrollY', config.scrollY)
+            .withOption('scrollX', true)
+            .withOption('scrollCollapse', true)
             .withOption('serverSide', true)
             .withOption('createdRow', createdRow)
+            .withOption('rowCallback', rowCallback)
             .withOption('headerCallback', function (thead, data, start, end, display) {
-
+              
             });
 
     //build columns
@@ -73,6 +79,19 @@
       DTColumnBuilder.newColumn(5).withTitle('Updated'),
       DTColumnBuilder.newColumn(6).withTitle('Actions').renderWith(renderActions)
     ];
+    
+    /**
+     * @returns {String}
+     */
+    vm.tableTitle = function () {
+      var total = vm.recordsTotal;
+      var filtered = vm.recordsFiltered;
+      if ((total === filtered)) {
+        return filtered + ' Total Records';
+      } else {
+        return filtered + ' Filtered Records';
+      }
+    };
 
     function createdRow(row, data, dataIndex) {
       // Recompiling so we can bind Angular directive to the DT
@@ -81,6 +100,13 @@
 
     //initialize
     activate();
+    
+    vm.clickProducts = function(company, name, id){
+      localStorageService.set('company', company);
+      localStorageService.set('name', name);
+      localStorageService.set('customer_id', id);
+      $window.location = '/product/view/' + id;
+    }
 
     //actions columns renderer
     function renderActions(data, type, full) {
@@ -90,14 +116,16 @@
       });
 
       var viewProductsButton = angular.element('<a/>', {
-        href: '/product/index/' + full[0],
+        'ng-click': 'customerCtrl.clickProducts("' + full[1] + '","' + full[2] + '", ' + full[0] + ')',
         class: 'btn btn-default btn-square btn-transparent',
-        title: 'View ' + full[1] + ' Product List'
+        'uib-popover': 'View ' + full[1] + ' Product List',
+        'popover-placement': 'left',
+        'popover-trigger': "'mouseenter'",
+        'popover-append-to-body': "'true'"
       }).appendTo(aroundTableActions);
 
       angular.element('<i/>', {
-        class: 'ion-android-restaurant spin-logo',
-        style: 'position:relative',
+        class: 'ion ion-eye spin-logo',
       }).appendTo(viewProductsButton);
 
       return aroundTableActions.prop('outerHTML');
@@ -110,6 +138,12 @@
     function searchUsers() {
       var params = [
       ];
+      if (!vm.db_synced_once) {
+        params.push('zff_sync=1');
+        vm.db_synced_once = true;
+      } else {
+        params.push('zff_sync=0');
+      }
       if (prop('zff_company')) {
         params.push('zff_company=' + encodeURIComponent(vm.zff_company));
       }
@@ -132,9 +166,13 @@
         params.push('zff_status=' + encodeURIComponent(vm.status === 'Active' ? 1 : 0));
       }
       params.push('zff_page=' + encodeURIComponent(vm.page));
+
+      var sales_attr_id = localStorageService.get('sales_attr_id') ? 
+      localStorageService.get('sales_attr_id') : 
+              config.salesAttrId;
       
-      var sales_attr_id = localStorageService.get('sales_attr_id') ? localStorageService.get('sales_attr_id') : config.salesAttrId;
       //always add sales_attr_id
+      
       params.push('zff_sales_attr_id=' + encodeURIComponent(sales_attr_id));
 
       var query = config.urls.customersTableAjax + (params.length ? '?' + params.join('&') : '');
@@ -158,6 +196,8 @@
           vm.recordsTotal = data.recordsTotal;
           vm.recordsFiltered = data.recordsFiltered;
           vm.start = data.start;
+          localStorageService.set('salesperson_phone', data.salesperson_phone);
+          localStorageService.set('salesperson_email', data.salesperson_email);
           $scope.$apply();
           fnCallback(data, textStatus, jqXHR);
           screenService.hideOverlay();
@@ -192,9 +232,26 @@
       return $filter('date')(new Date(dt), format);
     }
 
+    function rowClickHandler(data) {
+      localStorageService.set('company', data[1]);
+      localStorageService.set('name', data[2]);
+      localStorageService.set('customer_id', data[0]);
+      $window.location = '/product/view/' + data[0];
+    }
+
+    function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+      $('td', nRow).unbind('click');
+      $('td', nRow).bind('click', function () {
+        $scope.$apply(function () {
+          rowClickHandler(aData);
+        });
+      });
+      return nRow;
+    }
+
     function resetVmProps() {
       vm.start = 0;
-      vm.pageSize = 10;
+      vm.pageSize = config.pageSize;
       vm.page = 0;
       vm.recordsTotal = 0;
       vm.recordsFiltered = 0;
@@ -216,11 +273,13 @@
 
     function activate() {
       
-      //if salesperson_name is null (and this can only when when an Admin is a Salesperson 
+
+      //if salesperson_name is null (and this can only be when an Admin is a Salesperson 
       //and they click the Customers link directly.) - then look it up on the data-ffm-salesperson 
       //attribute on customers_link from server-side.
-      if(!vm.salesperson){
+      if (!vm.salesperson) {
         vm.salesperson = angular.element('#customers_link').attr('data-ffm-salesperson');
+        localStorageService.set('salesperson_name', vm.salesperson);
       }
 
       resetVmProps();

@@ -10,18 +10,18 @@
     <div class="pull-right">
 
         <a ng-if="salespeopleCtrl.missingFromWebServiceSalespeople.length > 0" ng-repeat="salesperson in salespeopleCtrl.missingFromWebServiceSalespeople track by $index" 
-           class="table-header-btn reset-filters-btn btn-accent" title="{{salesperson['full_name']}} not found in Web Service!" ng-click="salespeopleCtrl.addSalesperson('missingFromWebServiceSalespeople', $index)">
+           class="table-header-btn reset-filters-btn btn-accent" uib-popover="{{salesperson['full_name']}} not found in Web Service" popover-placement="bottom" popover-trigger="'mouseenter'" ng-click="salespeopleCtrl.addSalesperson('missingFromWebServiceSalespeople', $index)">
             {{salesperson['full_name']}}
             <i class="ion-edit"></i>
         </a>
         
         <a ng-if="salespeopleCtrl.missingFromDBSalespeople.length > 0" ng-repeat="salesperson in salespeopleCtrl.missingFromDBSalespeople track by $index" 
-           class="table-header-btn reset-filters-btn btn-accent" title="{{salesperson['full_name']}} not found in DB!" ng-click="salespeopleCtrl.addSalesperson('missingFromDBSalespeople', $index)">
+           class="table-header-btn reset-filters-btn btn-accent" uib-popover="{{salesperson['full_name']}} not found in DB" popover-placement="bottom" popover-trigger="'mouseenter'" ng-click="salespeopleCtrl.addSalesperson('missingFromDBSalespeople', $index)">
             {{salesperson['full_name']}}
             <i class="ion-plus"></i>
         </a>
 
-        <a class="table-header-btn reset-filters-btn btn-default" title="Reset Filters" ng-click="salespeopleCtrl.resetFilters()"> 
+        <a uib-popover="Reset all page filters and re-populate results" class="table-header-btn reset-filters-btn btn-default" ng-click="salespeopleCtrl.resetFilters()"> 
             Reset all filters
             <i class="ion-close"></i>
         </a>
@@ -41,19 +41,19 @@
 
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" >
                 <li >
-                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(2)">2</a>
+                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(salespeopleCtrl.pageSizes[0])" ng-bind="salespeopleCtrl.pageSizes[0]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(10)">10</a>
+                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(salespeopleCtrl.pageSizes[1])" ng-bind="salespeopleCtrl.pageSizes[1]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(25)">25</a>
+                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(salespeopleCtrl.pageSizes[2])" ng-bind="salespeopleCtrl.pageSizes[2]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(50)">50</a>
+                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(salespeopleCtrl.pageSizes[3])" ng-bind="salespeopleCtrl.pageSizes[3]"></a>
                 </li>
                 <li >
-                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(100)">100</a>
+                    <a href="#" ng-click="salespeopleCtrl.selectPageSize(salespeopleCtrl.pageSizes[4])" ng-bind="salespeopleCtrl.pageSizes[4]"></a>
                 </li>
             </ul>
 

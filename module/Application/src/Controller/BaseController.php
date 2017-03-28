@@ -23,6 +23,7 @@ abstract class BaseController extends AbstractActionController{
     public function __construct(AuthManager $authManager, array $config){
         $this->config = $config;
         $this->authManager = $authManager;
+        $this->layout()->setVariable('user', $this->authManager->getLoggedInUser());
     }
 
     protected function getBasePath()

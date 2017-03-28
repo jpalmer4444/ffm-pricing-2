@@ -32,7 +32,7 @@ return [
                     ],
                     'defaults' => [
                         'controller'    => 'Application\Controller\CustomerController',
-                        'action'        => 'index',
+                        'action'        => 'view',
                     ],
                 ],
             ],
@@ -46,7 +46,7 @@ return [
                     ],
                     'defaults' => [
                         'controller'    => 'Application\Controller\ProductController',
-                        'action'        => 'index',
+                        'action'        => 'view',
                     ],
                 ],
             ],

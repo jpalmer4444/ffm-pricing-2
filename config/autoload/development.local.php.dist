@@ -25,6 +25,32 @@ return [
         'by_sku_object_items_controller' => 'customerlistitems',
         'by_sku_object_users_controller' => 'customers',
         'by_sku_object_sales_controller' => 'salespeople',
+        'dql' => [
+            'find_eager' => [
+                'UserService' => 'SELECT user FROM Application\Entity\User user',
+                'AddedProductService' => 'SELECT addedProduct FROM Application\Entity\AddedProduct addedProduct',
+                'CheckboxService' => 'SELECT checkbox FROM Application\Entity\Checkbox checkbox',
+                'PermissionService' => 'SELECT permission FROM Application\Entity\Permission permission',
+                'PriceOverrideReportService' => 'SELECT priceOverrideReport FROM Application\Entity\PriceOverrideReport priceOverrideReport',
+                'PriceOverrideService' => 'SELECT priceOverride FROM Application\Entity\PriceOverride priceOverride',
+                'ProductService' => 'SELECT product FROM Application\Entity\Product product',
+                'RolesService' => 'SELECT role FROM Application\Entity\Role role',
+                'UserSession' => 'SELECT userSession FROM Application\Entity\UserSession userSession',
+                'CustomerService' => 'SELECT customer FROM Application\Entity\Customer customer'
+            ],
+            'alias' => [
+                'User' => 'user',
+                'AddedProduct' => 'addedProduct',
+                'Checkbox' => 'checkbox',
+                'Permission' => 'permission',
+                'Preferences' => 'preferences',
+                'PriceOverride' => 'priceOverride',
+                'Product' => 'product',
+                'Role' => 'role',
+                'UserSession' => 'userSession',
+                'Customer' => 'customer'
+            ]
+        ],
         'ssl' => array(
             // Do not Verify server side certificate,
             // accept invalid or self-signed SSL certificates
@@ -79,11 +105,9 @@ return [
     'db' => array(
         'driver'         => 'Pdo',
         'dsn'            => 'mysql:dbname=pricing_2;host=localhost',
-        'driver_options' => array(
-            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
-        ),
-        'username'       => 'jpalmer',
-        'password'       => 'goodbass'
+
+        'username'       => 'root',
+        'password'       => 'root'
     ),
     'service_manager' => array(
         'factories' => array(
