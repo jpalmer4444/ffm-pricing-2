@@ -257,8 +257,21 @@ class ProductController extends BaseController {
                         'customer' => $customerid
                     ]);
                 }
+                
+                $entityManager = $this->entityManager;
 
-                $checkboxes = $this->lookupCheckboxes($sales_attr_id, $customerid);
+                $lookup = function($sales_attr_id, $customerid) use (& $entityManager) {
+                    $salesperson = $entityManager->getRepository(User::class)->
+                            findOneBy(['sales_attr_id' => $sales_attr_id]);
+
+                    return $entityManager->getRepository(Checkbox::class)
+                                    ->findBy([
+                                        'salesperson' => $salesperson->getId(),
+                                        'customer' => $customerid
+                    ]);
+                };
+
+                $checkboxes = $lookup($sales_attr_id, $customerid);
 
                 foreach ($checkboxes as $checkbox) {
 
@@ -295,10 +308,25 @@ class ProductController extends BaseController {
                         'customer' => $customerid
                     ]);
                 }
+                
+                $entityManager = $this->entityManager;
 
-                $checkbox = $this->lookupCheckbox($id, $sales_attr_id, $customerid);
+                $lookup = function ($id, $sales_attr_id, $customerid) use (& $entityManager) {
+                    $salesperson = $entityManager->getRepository(User::class)->
+                            findOneBy(['sales_attr_id' => $sales_attr_id]);
 
-                /** @var $checkbox \Application\Entity\Checkbox */
+                    return $entityManager->getRepository(Checkbox::class)
+                                    ->findOneBy([
+                                        $id[0] == 'P' ? 'product' : 'addedProduct' => substr($id, 1),
+                                        'salesperson' => $salesperson->getId(),
+                                        'customer' => $customerid
+                    ]);
+                };
+
+                /** @var \Application\Entity\Checkbox $checkbox */
+                $checkbox = $lookup($id, $sales_attr_id, $customerid);
+
+                
                 $checkbox->setChecked($type == 'select' ? 1 : 0);
 
                 $this->entityManager->merge($checkbox);
@@ -387,9 +415,9 @@ class ProductController extends BaseController {
         }
 
         $cust_id = $this->params()->fromQuery('zff_customer_id');
-        
+
         $sales_user = $this->userService->findBySalesperson($this->params()->fromQuery('zff_sales_attr_id'));
-        
+
         $sales_user_id = $sales_user->getId();
 
         $selectPre = $this->configValue('selectPre');
@@ -407,20 +435,19 @@ class ProductController extends BaseController {
         $sql = $this->configValue('skuSelect');
 
         $stmt = $this->entityManager->getConnection()->executeQuery(
-                $sql, 
-                [
-                    $cust_id, 
-                    $sales_user_id, 
-                    $cust_id
+                $sql, [
+            $cust_id,
+            $sales_user_id,
+            $cust_id
                 ]
-                );
-        
+        );
+
         $skus = [];
         $productnames = [];
         $uoms = [];
-        
+
         while ($row = $stmt->fetch()) {
-            
+
             $skus[] = $row['sku'];
             $productnames[] = $row['product'];
             $uoms[] = $row['uom'];

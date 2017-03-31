@@ -55,8 +55,6 @@
     vm.zff_saturdayenabled;
     vm.zff_sku;
 
-    //table filters
-    vm.filters = {};
 
     //get a reference to the table
     vm.dtInstance = {};
@@ -589,6 +587,7 @@
 
       $http.post(url, param(data))
               .then(function (response) {
+                //this should not be necessary, but it is because of a bug - fix it!
                 api().draw(false);
               }, function (err) {
                 log('Error! ' + stringify(err));
@@ -1046,11 +1045,6 @@
     function activate() {
 
       resetVmProps();
-
-      vm.filters.pageSize = {
-        open: false,
-        value: vm.pageSize
-      };
 
     }
 

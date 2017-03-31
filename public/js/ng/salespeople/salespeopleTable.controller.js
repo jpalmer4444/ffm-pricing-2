@@ -53,9 +53,6 @@
       startingDay: 1
     };
 
-    //table filters
-    vm.filters = {};
-
     //get a reference to the table
     vm.dtInstance = {};
 
@@ -470,12 +467,6 @@
     function activate() {
 
       resetVmProps();
-
-      //initialize pageSize filter
-      vm.filters.pageSize = {
-        open: false,
-        value: vm.pageSize
-      };
 
     }
   }
