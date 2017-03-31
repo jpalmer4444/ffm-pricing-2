@@ -106,7 +106,7 @@ class NavManager {
                     'label' => 'Customers',
                     'data-ffm-salesperson' => $user->getFullName(),
                     'float' => 'static',
-                    'link' => $url('customer', ['action' => 'index', 'id' => $user->getSales_attr_id()])
+                    'link' => $url('customer', ['action' => 'view', 'id' => $user->getSales_attr_id()])
                 ];
             }
             //only display admin drop down for admin users.

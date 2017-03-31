@@ -14,6 +14,8 @@
      * @type this
      */
     var vm = this;
+    
+    vm.salespeopleTablePageSize = 'salespeopleTablePageSize';
 
     vm.start;
     vm.pageSize;
@@ -407,8 +409,9 @@
     };
 
     vm.selectPageSize = function (size) {
-      if (size != vm.pageSize) {
+      if (size !== vm.pageSize) {
         vm.pageSize = size;
+        localStorageService.set(vm.salespeopleTablePageSize, size);
         vm.reloadData();
       }
     };
@@ -458,6 +461,10 @@
       vm.zff_createddate_open = false;
       delete vm.zff_lastlogindate_open;
       vm.zff_lastlogindate_open = false;
+      
+      vm.pageSize = localStorageService.get(vm.salespeopleTablePageSize) ?
+              localStorageService.get(vm.salespeopleTablePageSize) :
+              config.pageSize;
     }
 
     function activate() {

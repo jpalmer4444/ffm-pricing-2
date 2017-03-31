@@ -47,6 +47,11 @@ return [
             'actions' => [
                 'productTableAction' => include __DIR__ . '/../queries/productTableAction.php'
             ]
+        ],
+        "Application\Controller\CustomerController" => [
+            'actions' => [
+                'customerTableAction' => include __DIR__ . '/../queries/customerTableAction.php'
+            ]
         ]
     ],
 ];

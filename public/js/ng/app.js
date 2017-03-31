@@ -42,7 +42,7 @@
           productsTableProduct: productsTableProduct,
           productsTableOverride: productsTableOverride
         },
-        pageSizes: [2, 10, 25, 50, 100],
+        pageSizes: [10, 25, 50, 100, 250],
         pageSize: 25,
         scrollY:  (dynHeight) + 'px'
       };
@@ -54,8 +54,9 @@
   function checkSession($q, $window, config) {
     var checkSessionInterceptors = {
       response: function(response) {
+        var redirect = config.urls.login + "?redirectUrl=" + $window.location.pathname;
         if (typeof response.data === "string" && response.data.indexOf('id="login-form"') > 0) {
-          $window.location.href = config.urls.login;
+          $window.location.href = redirect;
           return $q.reject("session expired");
         }
         return response;

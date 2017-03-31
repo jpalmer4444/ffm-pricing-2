@@ -4027,6 +4027,7 @@ select.mobile-device {
 .ion-eye-disabled:before,
 .ion-fork:before,
 .ion-gear-a:before,
+.ion-ios-arrow-down:before,
 .ion-ios-close-outline:before,
 .ion-ios-eye:before,
 .ion-ios-eye-outline:before,
@@ -4111,6 +4112,9 @@ select.mobile-device {
 
 .ion-gear-a:before {
   content: ""; }
+
+.ion-ios-arrow-down:before {
+  content: ""; }
 
 .ion-ios-close-outline:before {
   content: ""; }

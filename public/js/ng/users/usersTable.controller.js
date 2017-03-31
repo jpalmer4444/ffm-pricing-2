@@ -3,9 +3,9 @@
 
   angular
           .module('users')
-          .controller('UsersTableController', ['$scope', '$filter', '$compile', '$http', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', UsersTableController]);
+          .controller('UsersTableController', ['$scope', 'localStorageService', '$filter', '$compile', '$http', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', UsersTableController]);
 
-  function UsersTableController($scope, $filter, $compile, $http, DTOptionsBuilder, DTColumnBuilder, config, screenService) {
+  function UsersTableController($scope, localStorageService, $filter, $compile, $http, DTOptionsBuilder, DTColumnBuilder, config, screenService) {
 
     //screenService.showOverlay();
 
@@ -14,6 +14,8 @@
      * @type this
      */
     var vm = this;
+    
+    vm.userTablePageSize = 'userTablePageSize';
 
     vm.start;
     vm.pageSize;
@@ -292,6 +294,7 @@
     vm.selectPageSize = function (size) {
       if (size != vm.pageSize) {
         vm.pageSize = size;
+        localStorageService.set(vm.userTablePageSize, size);
         vm.reloadData();
       }
     };
@@ -322,6 +325,9 @@
       vm.zff_createddate_open = false;
       delete vm.zff_lastlogindate_open;
       vm.zff_lastlogindate_open = false;
+      vm.pageSize = localStorageService.get(vm.userTablePageSize) ?
+              localStorageService.get(vm.userTablePageSize) :
+              config.pageSize;
     }
 
     function activate() {

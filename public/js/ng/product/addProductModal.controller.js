@@ -86,17 +86,18 @@
 
       if (valid) {
 
-      var vars = JSON.stringify({
-            "customer_id": vm.customer_id,
-            "sales_attr_id": vm.sales_attr_id,
-            "product_id": vm.product_id,
-            "overrideprice": vm.overrideprice,
-            "scenario": vm.scenario
-          });
-
       //pass to calling script
         $uibModalInstance.close({
-          "$value": vars
+          "$value": {
+            "customer_id": vm.customer_id,
+            "sales_attr_id": vm.sales_attr_id,
+            "product": vm.product,
+            "description": vm.description,
+            "comment": vm.comment,
+            "overrideprice": vm.overrideprice,
+            "uom": vm.uom,
+            "sku": vm.sku
+          }
         });
 
       }

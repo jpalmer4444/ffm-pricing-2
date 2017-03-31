@@ -132,6 +132,14 @@ class AuthController extends AbstractActionController {
                 }
             }
         }
+        
+        $messageFromQuery = $this->params()->fromQuery('message');
+        
+        if(!empty($messageFromQuery)){
+            $isLoginError = true;
+            $this->plugin('flashmessenger')->addMessage($messageFromQuery);
+            
+        }
 
         return new ViewModel([
             'form' => $form,

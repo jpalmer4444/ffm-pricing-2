@@ -4,6 +4,7 @@ namespace Application\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * @copyright  Copyright (c) 2017 Fulton Inc.
@@ -164,6 +165,19 @@ class Customer
         return $this;
     }
 
+    /*
+     * Filters
+     */
+    
+    public function getAllProducts() {
+    return array_merge($this->getProducts(), $this->getAddedProducts()); 
+  }
+  
+  public function getFilteredProducts($criteria) {
+        
+    //$criteria = Criteria::create()->where(Criteria::expr()->in("id", $ids));
 
-
+    return $this->getProducts()->matching($criteria); 
+  }
+    
 }

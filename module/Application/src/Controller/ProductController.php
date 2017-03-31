@@ -339,60 +339,34 @@ class ProductController extends BaseController {
 
         $jsonArgs = Server::buildArrayFromJson($jsonData);
 
-        //merge username
-        $this->sspJoin->setColumnSearchValue(
-                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'productname'), $this->params()->fromQuery('zff_productname')
-        );
+        $argvs = [
+            'productname' => $this->params()->fromQuery('zff_productname'),
+            'description' => $this->params()->fromQuery('zff_description'),
+            'comment' => $this->params()->fromQuery('zff_comment'),
+            'option' => $this->params()->fromQuery('zff_option'),
+            'wholesale' => $this->params()->fromQuery('zff_wholesale'),
+            'retail' => $this->params()->fromQuery('zff_retail'),
+            'override' => $this->params()->fromQuery('zff_override'),
+            'uom' => $this->params()->fromQuery('zff_uom'),
+            'sku' => $this->params()->fromQuery('zff_sku'),
+            'status' => $this->params()->fromQuery('zff_status'),
+            'saturdayenabled' => $this->params()->fromQuery('zff_saturdayenabled')
+        ];
 
-        $this->sspJoin->setColumnSearchValue(
-                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'description'), $this->params()->fromQuery('zff_description')
-        );
-
-        $this->sspJoin->setColumnSearchValue(
-                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'comment'), $this->params()->fromQuery('zff_comment')
-        );
-
-        $this->sspJoin->setColumnSearchValue(
-                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'option'), $this->params()->fromQuery('zff_option')
-        );
-
-        $this->sspJoin->setColumnSearchValue(
-                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'wholesale'), $this->params()->fromQuery('zff_wholesale')
-        );
-
-        $this->sspJoin->setColumnSearchValue(
-                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'retail'), $this->params()->fromQuery('zff_retail')
-        );
-
-        $this->sspJoin->setColumnSearchValue(
-                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'override'), $this->params()->fromQuery('zff_override')
-        );
-
-        $this->sspJoin->setColumnSearchValue(
-                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'uom'), $this->params()->fromQuery('zff_uom')
-        );
-
-        $zff_status = $this->params()->fromQuery('zff_status');
-
-        if ($zff_status == 1 || $zff_status == 0 || $zff_status == '1' || $zff_status == '0') {
-
-            $this->sspJoin->setColumnSearchValue(
-                    $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'status'), $zff_status
-            );
+        foreach ($argvs as $key => $value) {
+            switch ($key) {
+                case 'status' :
+                case 'saturdayenabled' :
+                    if ($value == '1' || $value == '0') {
+                        $this->sspJoin->setColumnSearchValue(
+                                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, $key), $value);
+                    }
+                    break;
+                default:
+                    $this->sspJoin->setColumnSearchValue(
+                            $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, $key), $value);
+            }
         }
-
-        $zff_saturdayenabled = $this->params()->fromQuery('zff_saturdayenabled');
-
-        if ($zff_saturdayenabled == 1 || $zff_saturdayenabled == 0 || $zff_saturdayenabled == '1' || $zff_saturdayenabled == '0') {
-
-            $this->sspJoin->setColumnSearchValue(
-                    $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'saturdayenabled'), $zff_saturdayenabled
-            );
-        }
-
-        $this->sspJoin->setColumnSearchValue(
-                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'sku'), $this->params()->fromQuery('zff_sku')
-        );
 
         $zff_length = $this->params()->fromQuery('zff_length');
 
@@ -413,7 +387,9 @@ class ProductController extends BaseController {
         }
 
         $cust_id = $this->params()->fromQuery('zff_customer_id');
+        
         $sales_user = $this->userService->findBySalesperson($this->params()->fromQuery('zff_sales_attr_id'));
+        
         $sales_user_id = $sales_user->getId();
 
         $selectPre = $this->configValue('selectPre');
@@ -428,8 +404,36 @@ class ProductController extends BaseController {
 
         $selectCountPost = $this->configValue('selectCountPost');
 
+        $sql = $this->configValue('skuSelect');
+
+        $stmt = $this->entityManager->getConnection()->executeQuery(
+                $sql, 
+                [
+                    $cust_id, 
+                    $sales_user_id, 
+                    $cust_id
+                ]
+                );
+        
+        $skus = [];
+        $productnames = [];
+        $uoms = [];
+        
+        while ($row = $stmt->fetch()) {
+            
+            $skus[] = $row['sku'];
+            $productnames[] = $row['product'];
+            $uoms[] = $row['uom'];
+        }
+
+        $response = SSPUnion::union($jsonArgs, $sql_details, $columns, $columnsPre, $columnsPost, $selectPre, $selectPost, $selectCountPre, $selectCountPost, $andWherePre, $andWherePost, $this->logger);
+
+        $response['skus'] = $skus;
+        $response['products'] = $productnames;
+        $response['uoms'] = $uoms;
+
         return $this->jsonResponse(
-                        SSPUnion::union($jsonArgs, $sql_details, $columns, $columnsPre, $columnsPost, $selectPre, $selectPost, $selectCountPre, $selectCountPost, $andWherePre, $andWherePost, $this->logger)
+                        $response
         );
     }
 

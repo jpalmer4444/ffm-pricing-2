@@ -338,5 +338,11 @@ tbody tr.odd td, tbody tr.even td{
     margin-left: 5px;
 }
 
+.skus-match{
+    background-color: lightpink !important;
+    color: #fff !important;
+}
+
+
 
 

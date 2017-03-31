@@ -29,10 +29,10 @@
         <div class="btn-group bootstrap-select itemPerPage form-control" uib-dropdown>
 
             <button class="btn dropdown-toggle btn-default" type="button" 
-                    uib-dropdown-toggle ng-title="salespeopleCtrl.pageSize" >
+                    uib-dropdown-toggle title="Set Page Size" >
 
-                <span class="filter-option pull-left"> 
-                    {{salespeopleCtrl.pageSize}}
+                <span class="filter-option pull-left" ng-bind="salespeopleCtrl.pageSize"> 
+                    
                 </span>
 
                 <span class="caret"></span>
@@ -65,11 +65,11 @@
 
             <ul uib-pagination direction-links="true" boundary-links="false" 
                 total-items="salespeopleCtrl.recordsTotal" 
-                ng-model="salespeopleCtrl.page" 
+                ng-model="salespeopleCtrl.page"
                 previous-text="‹" next-text="›" 
                 items-per-page="salespeopleCtrl.pageSize" ng-change="salespeopleCtrl.reloadData()"
                 rotate="true" 
-                max-size="5" boundary-link-numbers="true" 
+                max-size="10" boundary-link-numbers="true" 
                 class="pagination">
             </ul>
         </div>

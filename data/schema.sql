@@ -33,7 +33,7 @@ CREATE TABLE `users` (
   `salespersonname` VARCHAR(100) DEFAULT NULL,
   `phone1` varchar(100) NOT NULL,
   `sales_attr_id` INTEGER DEFAULT NULL,
-  `last_login` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `last_login` TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `KEY_USERS_SALESPERSONNAME` (`salespersonname`),
   UNIQUE KEY `UNIQKEY_USERS_SALES_ATTR_ID` (`sales_attr_id`),

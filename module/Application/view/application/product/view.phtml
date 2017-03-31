@@ -55,11 +55,17 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
                     </th>
                     <th>
                         <!-- ID -->
-                        ID
                     </th>
                     <th>
                         <!-- PRODUCTNAME -->
-                        <input name="zff_productname" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_productname" class="filter form-control" value="" type="text">
+                        <input type="text" 
+                               name="zff_productname" 
+                               ffm-enter="productCtrl.reloadData()" 
+                               typeahead-on-select="productCtrl.reloadData()"
+                               ng-model="productCtrl.zff_productname" 
+                               uib-typeahead="productname for productname in productCtrl.products | filter:$viewValue" 
+                               typeahead-append-to-body="true"
+                               class="filter form-control">
                     </th>
                     <th>
                         <!-- DESCRIPTION -->
@@ -87,7 +93,14 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
                     </th>
                     <th>
                         <!-- UOM -->
-                        <input name="zff_uom" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_uom" class="filter form-control" value="" type="text">
+                        <input type="text" 
+                               name="zff_uom" 
+                               ffm-enter="productCtrl.reloadData()" 
+                               typeahead-on-select="productCtrl.reloadData()"
+                               ng-model="productCtrl.zff_uom" 
+                               uib-typeahead="uom for uom in productCtrl.uoms | filter:$viewValue" 
+                               typeahead-append-to-body="true"
+                               class="filter form-control">
                     </th>
                     <!--STATUS-->
                     <th>
@@ -101,8 +114,8 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
                                 </li>
                             </ul>
                             <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle >
-                                <span ng-if="!productCtrl.status" class="filter-option pull-left">- Select -</span>
-                                <span ng-if="productCtrl.status" class="filter-option pull-left">{{productCtrl.status}}</span>
+                                <span ng-if="productCtrl.zff_status === ''" class="filter-option pull-left">- Select -</span>
+                                <span ng-if="productCtrl.zff_status !== ''" class="filter-option pull-left">{{productCtrl.zff_status}}</span>
                                 &nbsp;
                                 <span class="caret"></span>
                             </button>
@@ -135,7 +148,16 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
 
                     <th>
                         <!-- SKU -->
-                        <input name="zff_sku" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_sku" class="filter form-control" value="" type="text">
+                        
+                            <input type="text" 
+                               name="zff_sku" 
+                               ffm-enter="productCtrl.reloadData()" 
+                               typeahead-on-select="productCtrl.reloadData()"
+                               ng-model="productCtrl.zff_sku" 
+                               uib-typeahead="sku for sku in productCtrl.skus | filter:$viewValue" 
+                               typeahead-append-to-body="true"
+                               class="filter form-control">
+                        
                     </th>
 
                     <th>

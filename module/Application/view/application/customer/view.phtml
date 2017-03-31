@@ -29,16 +29,43 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
                         <!-- ID -->
                     </th>
                     <th>
-                        <!-- COMPANY -->
+                        <!-- COMPANY 
                         <input name="zff_company" ffm-enter="customerCtrl.reloadData()" ng-model="customerCtrl.zff_company" class="filter form-control" value="" type="text">
+                        -->
+                        <input type="text" 
+                               name="zff_company" 
+                               ffm-enter="customerCtrl.reloadData()" 
+                               typeahead-on-select="customerCtrl.reloadData()"
+                               ng-model="customerCtrl.zff_company" 
+                               uib-typeahead="company for company in customerCtrl.companies | filter:$viewValue" 
+                               typeahead-append-to-body="true"
+                               class="filter form-control">
                     </th>
                     <th>
-                        <!-- NAME -->
+                        <!-- NAME 
                         <input name="zff_name" ffm-enter="customerCtrl.reloadData()" ng-model="customerCtrl.zff_name" class="filter form-control" value="" type="text">
+                        -->
+                        <input type="text" 
+                               name="zff_name" 
+                               ffm-enter="customerCtrl.reloadData()" 
+                               typeahead-on-select="customerCtrl.reloadData()"
+                               ng-model="customerCtrl.zff_name" 
+                               uib-typeahead="name for name in customerCtrl.names | filter:$viewValue" 
+                               typeahead-append-to-body="true"
+                               class="filter form-control">
                     </th>
                     <th>
-                        <!-- EMAIL -->
+                        <!-- EMAIL 
                         <input name="zff_email" ffm-enter="customerCtrl.reloadData()" ng-model="customerCtrl.zff_email" class="filter form-control" value="" type="text">
+                        -->
+                        <input type="text" 
+                               name="zff_email" 
+                               ffm-enter="customerCtrl.reloadData()" 
+                               typeahead-on-select="customerCtrl.reloadData()"
+                               ng-model="customerCtrl.zff_email" 
+                               uib-typeahead="email for email in customerCtrl.emails | filter:$viewValue" 
+                               typeahead-append-to-body="true"
+                               class="filter form-control">
                     </th>
                     <th>
                         <!-- CREATED -->

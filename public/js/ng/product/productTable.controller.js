@@ -3,9 +3,9 @@
 
   angular
           .module('product')
-          .controller('ProductTableController', ['$rootScope', '$scope', '$filter', '$uibModal', '$compile', '$http', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', 'localStorageService', ProductTableController]);
+          .controller('ProductTableController', ['$timeout', '$scope', '$filter', '$uibModal', '$compile', '$http', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', 'localStorageService', ProductTableController]);
 
-  function ProductTableController($rootScope, $scope, $filter, $uibModal, $compile, $http, $window, DTOptionsBuilder, DTColumnBuilder, config, screenService, localStorageService) {
+  function ProductTableController($timeout, $scope, $filter, $uibModal, $compile, $http, $window, DTOptionsBuilder, DTColumnBuilder, config, screenService, localStorageService) {
 
     /*
      * controllerAs syntax
@@ -14,6 +14,12 @@
     var vm = this;
 
     vm.pdfrows;
+    vm.skus = [];
+    vm.products = [];
+    vm.uoms = [];
+
+    //constants (keys)
+    vm.productTablePageSize = 'productTablePageSize';
 
     vm.columns = [
       '', 'ID', 'Product',
@@ -26,12 +32,13 @@
     //do not change after constructor is called
     vm.db_synced_once = false;
     vm.selected = false;
+    vm.callbacksAdded = false;
 
     vm.start;
     vm.pageSize;
     vm.pageSizes = config.pageSizes;
     vm.page = 1; //not zero based.
-    vm.status; //string status eg. Enabled or Disabled
+    vm.zff_status = ''; //string status eg. Enabled or Disabled
     vm.recordsTotal;
     vm.salesperson = localStorageService.get('salesperson_name'); //set on Customer page.
     vm.company = localStorageService.get('company');//set on customer page.
@@ -73,10 +80,6 @@
                 'class': 'ion-arrow-down-c'
               }).appendTo(button);
 
-              /*
-               $("#thelist li").eq(3).after
-               */
-
             })
             .withOption('scrollY', config.scrollY)
             .withOption('scrollX', true)
@@ -87,22 +90,22 @@
             .withButtons(buttons())
             .withOption('createdRow', createdRow)
             .withOption('headerCallback', function (thead, data, start, end, display) {
-              vm.API = element('#productsTable').dataTable().api();
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("ID") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Product") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Description") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Comment") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Option") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Wholesale") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Retail") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Override") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("UOM") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Status") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Saturday Enabled") + 1) + ')', checkbox_click);
-              element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("SKU") + 1) + ')', checkbox_click);
-
-
+              if (!vm.callbacksAdded) {
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("ID") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Product") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Description") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Comment") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Option") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Wholesale") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Retail") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Override") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("UOM") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Status") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Saturday Enabled") + 1) + ')', checkbox_click);
+                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("SKU") + 1) + ')', checkbox_click);
+                vm.callbacksAdded = true;
+              }
             });
 
     vm.columns = [
@@ -111,36 +114,27 @@
     ];
 
     vm.dtColumns = [
-      DTColumnBuilder.newColumn(0).withTitle(vm.columns[0]).renderWith(renderCheckbox).notSortable(),
-      DTColumnBuilder.newColumn(1).withTitle(vm.columns[1]),
-      DTColumnBuilder.newColumn(2).withTitle(vm.columns[2]).withOption('width', '300px'),
-      DTColumnBuilder.newColumn(3).withTitle(vm.columns[3]),
-      DTColumnBuilder.newColumn(4).withTitle(vm.columns[4]),
-      DTColumnBuilder.newColumn(5).withTitle(vm.columns[5]),
-      DTColumnBuilder.newColumn(6).withTitle(vm.columns[6]).renderWith(renderWholesale),
-      DTColumnBuilder.newColumn(7).withTitle(vm.columns[7]).renderWith(renderRetail),
-      DTColumnBuilder.newColumn(8).withTitle(vm.columns[8]).renderWith(renderMoney),
-      DTColumnBuilder.newColumn(9).withTitle(vm.columns[9]).withOption('width', '25px'),
-      DTColumnBuilder.newColumn(10).withTitle(vm.columns[10]).renderWith(renderStatus),
-      DTColumnBuilder.newColumn(11).withTitle(vm.columns[11]).renderWith(renderSaturdayEnabled),
-      DTColumnBuilder.newColumn(12).withTitle(vm.columns[12]),
-      DTColumnBuilder.newColumn(13).withTitle(vm.columns[13]).renderWith(renderActions).notSortable()
+      DTColumnBuilder.newColumn(columnindex("")).withTitle(vm.columns[columnindex("")]).renderWith(renderCheckbox).notSortable(),
+      DTColumnBuilder.newColumn(columnindex("ID")).withTitle(vm.columns[columnindex("ID")]),
+      DTColumnBuilder.newColumn(columnindex("Product")).withTitle(vm.columns[columnindex("Product")]).withOption('width', '300px'),
+      DTColumnBuilder.newColumn(columnindex("Description")).withTitle(vm.columns[columnindex("Description")]),
+      DTColumnBuilder.newColumn(columnindex("Comment")).withTitle(vm.columns[columnindex("Comment")]),
+      DTColumnBuilder.newColumn(columnindex("Option")).withTitle(vm.columns[columnindex("Option")]),
+      DTColumnBuilder.newColumn(columnindex("Wholesale")).withTitle(vm.columns[columnindex("Wholesale")]).renderWith(renderWholesale),
+      DTColumnBuilder.newColumn(columnindex("Retail")).withTitle(vm.columns[columnindex("Retail")]).renderWith(renderRetail),
+      DTColumnBuilder.newColumn(columnindex("Override")).withTitle(vm.columns[columnindex("Override")]).renderWith(renderMoney),
+      DTColumnBuilder.newColumn(columnindex("UOM")).withTitle(vm.columns[columnindex("UOM")]).withOption('width', '25px'),
+      DTColumnBuilder.newColumn(columnindex("Status")).withTitle(vm.columns[columnindex("Status")]).renderWith(renderStatus),
+      DTColumnBuilder.newColumn(columnindex("Saturday Enabled")).withTitle(vm.columns[columnindex("Saturday Enabled")]).renderWith(renderSaturdayEnabled),
+      DTColumnBuilder.newColumn(columnindex("SKU")).withTitle(vm.columns[columnindex("SKU")]),
+      DTColumnBuilder.newColumn(columnindex("Actions")).withTitle(vm.columns[columnindex("Actions")]).renderWith(renderActions).notSortable()
     ];
 
-    vm.API;
+    //Private API
 
-    /**
-     * @returns {String}
-     */
-    vm.tableTitle = function () {
-      var total = vm.recordsTotal;
-      var filtered = vm.recordsFiltered;
-      if (eq(total, filtered)) {
-        return filtered + ' Total Records';
-      } else {
-        return filtered + ' Filtered Records';
-      }
-    };
+    function api() {
+      return vm.dtInstance.DataTable;
+    }
 
     /**
      * 
@@ -211,11 +205,14 @@
      * @returns {undefined}
      */
     function createdRow(row, data, dataIndex) {
-      if (eq(data[10], '0')) {
+      if (eq(data[columnindex("Status")], '0')) {
         element(row).addClass('disabled');
       }
-      if (eq(data[0], '1')) {
+      if (eq(data[columnindex("")], '1')) {
         element(row).addClass('selected');
+      }
+      if (getDuplicateSkuStyle(data[columnindex('SKU')])) {
+        element(row).addClass('skus-match');
       }
       $compile(element(row).contents())($scope);
     }
@@ -238,7 +235,7 @@
      */
     function anySelected() {
       var selected = false;
-      vm.API.rows({page: 'all'}).every(function (rowIdx, tableLoop, rowLoop) {
+      api().rows({page: 'all'}).every(function (rowIdx, tableLoop, rowLoop) {
         if (celldata(rowIdx, 0) === '1') {
           selected = true;
         }
@@ -293,7 +290,7 @@
      * @returns {unresolved}
      */
     function cell(row, column) {
-      return vm.API.cell(row, column);
+      return api().cell(row, column);
     }
 
     /**
@@ -312,7 +309,7 @@
      * @returns {unresolved}
      */
     function rows(options) {
-      return vm.API.rows(options);
+      return api().rows(options);
     }
 
     /**
@@ -375,6 +372,11 @@
       params.push(name + '=' + encodeURIComponent(vm[name] === test ? 1 : 0));
     }
 
+    /**
+     * 
+     * @param {String} key
+     * @returns {unresolved}
+     */
     function prop(key) {
       return vm[key];
     }
@@ -490,9 +492,12 @@
         class: 'ion ion-plus spin-logo'
       }).appendTo(addProductButton);
 
+      var overrideprice = full[columnindex('Override')] ? full[columnindex('Override')] : '';
+      var product_id = full[columnindex('ID')] ? full[columnindex('ID')] : '';
+
       var overridePriceButton = element('<a/>', {
         id: 'overridePriceButton',
-        'ng-click': 'productCtrl.addOverridePrice("' + full[columnindex('Override')] + '", "' + full[columnindex('ID')] + '")',
+        'ng-click': 'productCtrl.addOverridePrice("' + overrideprice + '", "' + product_id + '")',
         class: 'btn btn-default btn-square btn-transparent',
         'uib-popover': 'Override Price',
         'popover-placement': 'left',
@@ -526,24 +531,18 @@
       return aroundTableActions.prop('outerHTML');
     }
 
-    function override_click() {
-      var td = $(this);
-      var tr = td.parent();
-      var rowIndex = tr.index();
-      var override_price = celldata(rowIndex, columnindex('Override'));
-      var product_id = celldata(rowIndex, columnindex('ID'));
-      vm.addOverridePrice(override_price ? override_price : '', product_id);
-    }
-
     /**
      * 
+     * @param {Object} $e
      * @returns {undefined}
      */
     function checkbox_click($e) {
 
+      //log('checkbox_click() ');
+
       var td = $(this);
 
-      log(td);
+      //log(td);
 
       if (!td.is('td')) {
         var label = 'Row Click Error';
@@ -555,7 +554,6 @@
           'urred on the Products page.'
         ].join('');
 
-        $e.stopPropagation();
         screenService.showWarning(label, text);
 
       }
@@ -591,58 +589,32 @@
 
       $http.post(url, param(data))
               .then(function (response) {
+                api().draw(false);
               }, function (err) {
                 log('Error! ' + stringify(err));
               });
     }
 
-    vm.selectAll = function () {
-
-      vm.selected ? rows({page: 'all'}).deselect() :
-              rows({page : 'all'}).select();
-
-      var query = vm.selected ? "?myaction=deselectall" : "?myaction=selectall"
-
-      var url = config.urls.productsTableChecked + query;
-
-      vm.API.rows().every(function (rowIdx, tableLoop, rowLoop) {
-
-        vm.selected ? element('#productsTable tbody tr').eq(rowIdx).removeClass('selected') :
-                element('#productsTable tbody tr').eq(rowIdx).addClass('selected')
-
-        var checkbox = cell(rowIdx, 0);
-
-        checkbox.data(vm.selected ? '0' : '1');
-
-        checkbox.render();
-
+    /**
+     * 
+     * @param {String} sku
+     * @returns {undefined}
+     */
+    function getDuplicateSkuStyle(sku) {
+      var found = false;
+      var foundAgain = false;
+      vm.skus.forEach(function (val, index, array) {
+        if (eq(sku, val)) {
+          if (!found) {
+            found = true;
+          } else if (found) {
+            foundAgain = true;
+          }
+        }
       });
-
-      vm.selected = !vm.selected;
-
-      var data = {
-
-        'salesperson': getSalesAttrId(),
-
-        'customer': storage('customer_id')
-
-      };
-
-      $http.post(url, param(data))
-
-              .then(function (response) {
-
-              }, function (err) {
-
-                log('Error! ' + stringify(err));
-
-              });
-
-    };
-
-    vm.reloadData = function () {
-      vm.dtInstance.rerender();
+      return foundAgain;
     }
+    ;
 
     /**
      * 
@@ -683,7 +655,7 @@
       if (prop('zff_uom')) {
         encodename(params, 'zff_uom');
       }
-      if (prop('zff_saturdayenabled')) {
+      if (eq(vm.zff_saturdayenabled, 'Off') || eq(vm.zff_saturdayenabled, 'On')) {
         encodebool(params, 'zff_saturdayenabled', 'On');
       }
       if (prop('zff_sku')) {
@@ -692,7 +664,7 @@
       if (vm.pageSize && !hidePageParams) {
         encodeunname(params, 'zff_length', 'pageSize');
       }
-      if (vm.status) {
+      if (eq(vm.zff_status, 'Disabled') || eq(vm.zff_status, 'Enabled')) {
         encodebool(params, 'zff_status', 'Enabled');
       }
 
@@ -732,7 +704,13 @@
       return query;
     }
 
+    /**
+     * 
+     * @param {function} cb
+     * @returns {undefined}
+     */
     function searchpdf(cb) {
+
       var url = searchUsers(true);
 
       url += '&zff_page=0';
@@ -753,9 +731,17 @@
       });
     }
 
+    /**
+     * 
+     * @param {String} sSource
+     * @param {array} aoData
+     * @param {function} fnCallback
+     * @param {Object} oSettings
+     * @returns {undefined}
+     */
     function search(sSource, aoData, fnCallback, oSettings) {
       screenService.showOverlay();
-      oSettings.jqXHR = ajax({
+      ajax({
         'dataType': 'json',
         'type': 'POST',
         'url': searchUsers(),
@@ -764,6 +750,29 @@
           //local stuff.
           vm.recordsTotal = data.recordsTotal;
           vm.recordsFiltered = data.recordsFiltered;
+          if (data.skus) {
+            vm.skus = [];
+            for (var i = 0; i < data.skus.length; i++) {
+              vm.skus.push(data.skus[i]);
+            }
+          }
+          if (data.products) {
+            vm.products = [];
+            for (var i = 0; i < data.products.length; i++) {
+              var value = data.products[i].substr(0, data.products[i].indexOf('-') + 1);
+              if (vm.products.indexOf(value) === -1) {
+                vm.products.push(value);
+              }
+            }
+          }
+          if (data.uoms) {
+            vm.uoms = [];
+            for (var i = 0; i < data.uoms.length; i++) {
+              if (vm.uoms.indexOf(data.uoms[i]) === -1) {
+                vm.uoms.push(data.uoms[i]);
+              }
+            }
+          }
           vm.start = data.start;
           $scope.$apply();
           fnCallback(data, textStatus, jqXHR);
@@ -966,7 +975,7 @@
                 } else {
 
                   vm.pdfrows = data.data;
-                  vm.API.button(0).trigger();
+                  api().button(0).trigger();
                 }
               };
 
@@ -989,59 +998,24 @@
       ];
     }
 
-    vm.dtInstanceCallback = function (instance) {
-      vm.dtInstance = instance;
-    };
-
-    vm.resetFilters = function () {
-      resetVmProps();
-      vm.reloadData();
-    };
-
-    vm.selectSaturdayEnabled = function (saturdayenabled) {
-
-      if (saturdayenabled !== vm.zff_saturdayenabled) {
-
-        vm.zff_saturdayenabled = saturdayenabled;
-
-        vm.reloadData();
-      }
-    };
-
-    vm.selectStatus = function (status) {
-
-      if (status !== vm.status) {
-
-        vm.status = status;
-
-        vm.reloadData();
-      }
-    };
-
-    vm.selectPageSize = function (size) {
-
-      if (size !== vm.pageSize) {
-
-        vm.pageSize = size;
-
-        vm.reloadData();
-      }
-    };
-
+    /**
+     * 
+     * @returns {undefined}
+     */
     function resetVmProps() {
 
       var vmdeletes = [
         'zff_productname',
         'zff_description',
-        'status',
-        'comment',
-        'option',
-        'wholesale',
-        'retail',
-        'override',
-        'uom',
-        'sku',
-        'saturdayenabled'
+        'zff_status',
+        'zff_comment',
+        'zff_option',
+        'zff_wholesale',
+        'zff_retail',
+        'zff_override',
+        'zff_uom',
+        'zff_sku',
+        'zff_saturdayenabled'
       ];
 
       var vmzeros = [
@@ -1060,9 +1034,15 @@
         vm[val] = 0;
       });
 
-      vm.pageSize = config.pageSize;
+      vm.pageSize = localStorageService.get(vm.productTablePageSize) ?
+              localStorageService.get(vm.productTablePageSize) :
+              config.pageSize;
     }
 
+    /**
+     * 
+     * @returns {undefined}
+     */
     function activate() {
 
       resetVmProps();
@@ -1073,6 +1053,254 @@
       };
 
     }
+
+    /**
+     * 
+     * @param {String} scenario
+     * @param {int} id
+     * @param {int} product_id
+     * @param {number} overrideprice
+     * @param {int} sales_attr_id
+     * @param {int} customer_id
+     * @param {function} resultHandler
+     * @param {function} finalHandler
+     * @returns {undefined}
+     */
+    function addOverridePrice(scenario, id, product_id, overrideprice, sales_attr_id, customer_id,
+            resultHandler, finalHandler) {
+
+      screenService.showOverlay();
+
+      var data = {
+        id: id,
+        product_id: product_id,
+        overrideprice: overrideprice,
+        sales_attr_id: sales_attr_id,
+        customer_id: customer_id,
+        scenario: scenario
+      };
+
+
+      $http
+              .post(config.urls.productsTableOverride, param(data))
+
+              .then(function (response) {
+
+                if (typeof resultHandler === "function") {
+
+                  resultHandler(response);
+                }
+
+                if (typeof finalHandler === "function") {
+                  finalHandler();
+                }
+
+              }, function () {
+
+                if (typeof finalHandler === "function") {
+                  finalHandler();
+                }
+              });
+    }
+
+    /**
+     * 
+     * @param {int} customer_id
+     * @param {int} sales_attr_id
+     * @param {String} product
+     * @param {String} description
+     * @param {String} comment
+     * @param {String} overrideprice
+     * @param {String} uom
+     * @param {String} sku
+     * @param {function} resultHandler
+     * @param {function} finalHandler
+     * @returns {undefined}
+     */
+    function addProduct(customer_id, sales_attr_id, product, description, comment, overrideprice, uom, sku,
+            resultHandler, finalHandler) {
+
+      screenService.showOverlay();
+
+      var data = {
+        customer_id: customer_id,
+        sales_attr_id: sales_attr_id,
+        product: product,
+        description: description,
+        comment: comment,
+        overrideprice: overrideprice,
+        uom: uom,
+        sku: sku
+      };
+
+
+      $http
+              .post(config.urls.productsTableProduct, param(data))
+
+              .then(function (response) {
+
+                if (typeof resultHandler === "function") {
+
+                  resultHandler(response);
+                }
+
+                if (typeof finalHandler === "function") {
+                  finalHandler();
+                }
+
+              }, function () {
+
+                if (typeof finalHandler === "function") {
+                  finalHandler();
+                }
+              });
+    }
+
+    /**
+     * 
+     * @param {array} data
+     * @returns {undefined}
+     */
+    function report(data) {
+
+      var post = {
+        sales_attr_id: getSalesAttrId(),
+        customer_id: storage('customer_id'),
+        rows: data
+      };
+
+      var resultHandler = function (response) {
+
+        if (!response.success) {
+          screenService.showWarning('Report Error Occurred', 'Please Contact IT.');
+        }
+      }
+
+      var errorHandler = function () {
+        screenService.showWarning('Report Error Occurred', 'Please Contact IT. ' +
+                (arguments[0] ? stringify(arguments[0]) : ''));
+      };
+
+
+      $http
+              .post(config.urls.productsTableReport, param(post))
+
+              .then(function (response) {
+
+                if (typeof resultHandler === "function") {
+
+                  resultHandler(response.data, data);
+                }
+
+              }, function () {
+
+                if (typeof errorHandler === "function") {
+                  errorHandler();
+                }
+              });
+    }
+
+    //Public API
+
+    vm.tableTitle = function () {
+      var total = vm.recordsTotal;
+      var filtered = vm.recordsFiltered;
+      if (eq(total, filtered)) {
+        return filtered + ' Total Records';
+      } else {
+        return filtered + ' Filtered Records';
+      }
+    };
+
+    vm.selectAll = function () {
+
+      var query = vm.selected ? "?myaction=deselectall" : "?myaction=selectall"
+
+      var url = config.urls.productsTableChecked + query;
+
+      api().rows().every(function (rowIdx, tableLoop, rowLoop) {
+
+        vm.selected ? element('#productsTable tbody tr').eq(rowIdx).removeClass('selected') :
+                element('#productsTable tbody tr').eq(rowIdx).addClass('selected')
+
+        var checkbox = cell(rowIdx, 0);
+
+        checkbox.data(vm.selected ? '0' : '1');
+
+        checkbox.render();
+
+      });
+
+      vm.selected = !vm.selected;
+
+      var data = {
+
+        'salesperson': getSalesAttrId(),
+
+        'customer': storage('customer_id')
+
+      };
+
+      $http.post(url, param(data))
+
+              .then(function (response) {
+                api().draw(false);
+              }, function (err) {
+
+                log('Error! ' + stringify(err));
+
+              });
+
+    };
+
+    vm.reloadData = function () {
+      $timeout(function () {//$timeout forces async
+          vm.dtInstance.rerender();
+                    }, 0);
+    }
+
+    vm.dtInstanceCallback = function (instance) {
+      vm.dtInstance = instance;
+    };
+
+    vm.resetFilters = function () {
+      resetVmProps();
+      vm.reloadData();
+    };
+
+    vm.selectSaturdayEnabled = function (saturdayenabled) {
+
+      if (saturdayenabled !== vm.zff_saturdayenabled) {
+
+        vm.zff_saturdayenabled = saturdayenabled;
+        
+          vm.reloadData();
+     
+      }
+    };
+
+    vm.selectStatus = function (status) {
+
+      if (status !== vm.zff_status) {
+
+        vm.zff_status = status;
+
+          vm.reloadData();
+
+      }
+    };
+
+    vm.selectPageSize = function (size) {
+
+      if (size !== vm.pageSize) {
+
+        vm.pageSize = size;
+
+        localStorageService.set(vm.productTablePageSize, size);
+
+        vm.reloadData();
+      }
+    };
 
     vm.confirmDeleteAddedProduct = function (productId) {
 
@@ -1164,19 +1392,17 @@
       });
 
       modalInstance.result.then(function (vmc) {
-        
-        var vars = JSON.parse(vmc.$value);
 
-        var customer_id = vars.customer_id,
-                sales_attr_id = vars.sales_attr_id,
-                product = vars.product,
-                description = vars.description,
-                comment = vars.comment,
-                overrideprice = vars.overrideprice,
-                uom = vars.uom,
-                sku = vars.sku;
-                
-                modalInstance = null;
+        var customer_id = vmc.$value.customer_id,
+                sales_attr_id = vmc.$value.sales_attr_id,
+                product = vmc.$value.product,
+                description = vmc.$value.description,
+                comment = vmc.$value.comment,
+                overrideprice = vmc.$value.overrideprice,
+                uom = vmc.$value.uom,
+                sku = vmc.$value.sku;
+
+        modalInstance = null;
 
         var resultHandler = function (data) {
           vm.reloadData();
@@ -1196,46 +1422,6 @@
       });
 
     };
-
-
-    function addProduct(customer_id, sales_attr_id, product, description, comment, overrideprice, uom, sku,
-            resultHandler, finalHandler) {
-              
-              screenService.showOverlay();
-
-      var data = {
-        customer_id: customer_id,
-        sales_attr_id: sales_attr_id,
-        product: product,
-        description: description,
-        comment: comment,
-        overrideprice: overrideprice,
-        uom: uom,
-        sku: sku
-      };
-
-
-      $http
-              .post(config.urls.productsTableProduct, param(data))
-
-              .then(function (response) {
-
-                if (typeof resultHandler === "function") {
-
-                  resultHandler(response);
-                }
-
-                if (typeof finalHandler === "function") {
-                  finalHandler();
-                }
-
-              }, function () {
-
-                if (typeof finalHandler === "function") {
-                  finalHandler();
-                }
-              });
-    }
 
     vm.addOverridePrice = function (overrideprice, product_id) {
 
@@ -1263,23 +1449,19 @@
           },
           overrideprice: function () {
 
-            return overrideprice;
+            return overrideprice ? overrideprice : '';
           }
         }
       });
 
       modalInstance.result.then(function (vmc) {
 
-        var vars = JSON.parse(vmc.$value);
-
-        var customer_id = vars.customer_id,
-                scenario = vars.scenario,
-                sales_attr_id = vars.sales_attr_id,
-                id = vars.id,
-                product_id = vars.product_id,
-                overrideprice = vars.overrideprice;
-                
-                //modalInstance = null;
+        var customer_id = vmc.$value.customer_id,
+                scenario = vmc.$value.scenario,
+                sales_attr_id = vmc.$value.sales_attr_id,
+                id = vmc.$value.id,
+                product_id = vmc.$value.product_id,
+                overrideprice = vmc.$value.overrideprice;
 
         var resultHandler = function (data) {
 
@@ -1291,7 +1473,7 @@
         };
 
         addOverridePrice(scenario, id, product_id, overrideprice, sales_attr_id, customer_id, resultHandler, finalHandler);
-        
+
 
       }, function (dismissed) {
 
@@ -1300,83 +1482,6 @@
       });
 
     };
-
-
-    function addOverridePrice(scenario, id, product_id, overrideprice, sales_attr_id, customer_id,
-            resultHandler, finalHandler) {
-              
-              screenService.showOverlay();
-
-      var data = {
-        id: id,
-        product_id: product_id,
-        overrideprice: overrideprice,
-        sales_attr_id: sales_attr_id,
-        customer_id: customer_id,
-        scenario: scenario
-      };
-
-
-      $http
-              .post(config.urls.productsTableOverride, param(data))
-
-              .then(function (response) {
-
-                if (typeof resultHandler === "function") {
-
-                  resultHandler(response);
-                }
-
-                if (typeof finalHandler === "function") {
-                  finalHandler();
-                }
-
-              }, function () {
-
-                if (typeof finalHandler === "function") {
-                  finalHandler();
-                }
-              });
-    }
-
-    function report(data) {
-
-      var post = {
-        sales_attr_id: getSalesAttrId(),
-        customer_id: storage('customer_id'),
-        rows: data
-      };
-
-      var resultHandler = function (response) {
-
-        if (!response.success) {
-          screenService.showWarning('Report Error Occurred', 'Please Contact IT.');
-        }
-      }
-
-      var errorHandler = function () {
-        screenService.showWarning('Report Error Occurred', 'Please Contact IT. ' +
-                (arguments[0] ? stringify(arguments[0]) : ''));
-      };
-
-
-      $http
-              .post(config.urls.productsTableReport, param(post))
-
-              .then(function (response) {
-
-                if (typeof resultHandler === "function") {
-
-                  resultHandler(response.data, data);
-                }
-
-              }, function () {
-
-                if (typeof errorHandler === "function") {
-                  errorHandler();
-                }
-              });
-    }
 
     activate();
 

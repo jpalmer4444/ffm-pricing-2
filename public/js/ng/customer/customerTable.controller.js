@@ -3,9 +3,9 @@
 
   angular
           .module('customer')
-          .controller('CustomerTableController', ['$scope', '$filter', '$compile', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', 'localStorageService', CustomerTableController]);
+          .controller('CustomerTableController', ['$timeout', '$scope', '$filter', '$compile', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', 'localStorageService', CustomerTableController]);
 
-  function CustomerTableController($scope, $filter, $compile, $window, DTOptionsBuilder, DTColumnBuilder, config, screenService, localStorageService) {
+  function CustomerTableController($timeout, $scope, $filter, $compile, $window, DTOptionsBuilder, DTColumnBuilder, config, screenService, localStorageService) {
 
     //screenService.showOverlay();
 
@@ -14,6 +14,12 @@
      * @type this
      */
     var vm = this;
+
+    vm.companies = [];
+    vm.emails = [];
+    vm.names = [];
+
+    vm.customerTablePageSize = 'customerTablePageSize';
 
     vm.db_synced_once = false;
     vm.start;
@@ -66,7 +72,7 @@
             .withOption('createdRow', createdRow)
             .withOption('rowCallback', rowCallback)
             .withOption('headerCallback', function (thead, data, start, end, display) {
-              
+
             });
 
     //build columns
@@ -79,7 +85,7 @@
       DTColumnBuilder.newColumn(5).withTitle('Updated'),
       DTColumnBuilder.newColumn(6).withTitle('Actions').renderWith(renderActions)
     ];
-    
+
     /**
      * @returns {String}
      */
@@ -100,8 +106,8 @@
 
     //initialize
     activate();
-    
-    vm.clickProducts = function(company, name, id){
+
+    vm.clickProducts = function (company, name, id) {
       localStorageService.set('company', company);
       localStorageService.set('name', name);
       localStorageService.set('customer_id', id);
@@ -132,7 +138,9 @@
     }
 
     vm.reloadData = function () {
-      vm.dtInstance.rerender();
+      $timeout(function () {//$timeout forces async
+        vm.dtInstance.rerender();
+      }, 0);
     }
 
     function searchUsers() {
@@ -167,12 +175,12 @@
       }
       params.push('zff_page=' + encodeURIComponent(vm.page));
 
-      var sales_attr_id = localStorageService.get('sales_attr_id') ? 
-      localStorageService.get('sales_attr_id') : 
+      var sales_attr_id = localStorageService.get('sales_attr_id') ?
+              localStorageService.get('sales_attr_id') :
               config.salesAttrId;
-      
+
       //always add sales_attr_id
-      
+
       params.push('zff_sales_attr_id=' + encodeURIComponent(sales_attr_id));
 
       var query = config.urls.customersTableAjax + (params.length ? '?' + params.join('&') : '');
@@ -196,6 +204,24 @@
           vm.recordsTotal = data.recordsTotal;
           vm.recordsFiltered = data.recordsFiltered;
           vm.start = data.start;
+          if (data.companies) {
+            vm.companies = [];
+            for (var i = 0; i < data.companies.length; i++) {
+              vm.companies.push(data.companies[i]);
+            }
+          }
+          if (data.names) {
+            vm.names = [];
+            for (var i = 0; i < data.names.length; i++) {
+              vm.names.push(data.names[i]);
+            }
+          }
+          if (data.emails) {
+            vm.emails = [];
+            for (var i = 0; i < data.emails.length; i++) {
+              vm.emails.push(data.emails[i]);
+            }
+          }
           localStorageService.set('salesperson_phone', data.salesperson_phone);
           localStorageService.set('salesperson_email', data.salesperson_email);
           $scope.$apply();
@@ -224,6 +250,7 @@
     vm.selectPageSize = function (size) {
       if (size !== vm.pageSize) {
         vm.pageSize = size;
+        localStorageService.set(vm.customerTablePageSize, size);
         vm.reloadData();
       }
     };
@@ -269,10 +296,13 @@
       vm.zff_created_open = false;
       delete vm.zff_updated_open;
       vm.zff_updated_open = false;
+      vm.pageSize = localStorageService.get(vm.customerTablePageSize) ?
+              localStorageService.get(vm.customerTablePageSize) :
+              config.pageSize;
     }
 
     function activate() {
-      
+
 
       //if salesperson_name is null (and this can only be when an Admin is a Salesperson 
       //and they click the Customers link directly.) - then look it up on the data-ffm-salesperson 

@@ -68,10 +68,10 @@
         <div class="btn-group bootstrap-select itemPerPage form-control" uib-dropdown>
 
             <button class="btn dropdown-toggle btn-default" type="button" 
-                    uib-dropdown-toggle ng-title="productCtrl.pageSize" >
+                    uib-dropdown-toggle title="Set Page Size" >
 
-                <span class="filter-option pull-left"> 
-                    {{productCtrl.pageSize}}
+                <span class="filter-option pull-left" ng-bind="productCtrl.pageSize"> 
+                   
                 </span>
 
                 <span class="caret"></span>
@@ -108,7 +108,7 @@
                 previous-text="‹" next-text="›" 
                 items-per-page="productCtrl.pageSize" ng-change="productCtrl.reloadData()"
                 rotate="true" 
-                max-size="5" boundary-link-numbers="true" 
+                max-size="10" boundary-link-numbers="true" 
                 class="pagination">
             </ul>
         </div>

@@ -24,7 +24,14 @@ class CustomerController extends BaseController {
     private $userService;
 
     public function __construct(
-    EntityManager $entityManager, Logger $logger, array $config, AuthManager $authManager, SSPJoin $sspJoin, CustomerService $customerService, RestService $restService, UserService $userService
+            EntityManager $entityManager, 
+            Logger $logger, 
+            array $config, 
+            AuthManager $authManager, 
+            SSPJoin $sspJoin, 
+            CustomerService $customerService, 
+            RestService $restService, 
+            UserService $userService
     ) {
 
         parent::__construct($authManager, $config);
@@ -133,7 +140,7 @@ class CustomerController extends BaseController {
         );
 
         $this->sspJoin->setColumnSearchValue(
-                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'created'), $this->params()->fromQuery('zff_updated')
+                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, 'updated'), $this->params()->fromQuery('zff_updated')
         );
 
         $zff_length = $this->params()->fromQuery('zff_length');
@@ -155,7 +162,7 @@ class CustomerController extends BaseController {
         }
 
         $this->sspJoin->reset();
-        $joinStatement = "SELECT `customers`.`id`, `customers`.`company`, `customers`.`name`, `customers`.`email`, `customers`.`created`, `customers`.`updated`,`customers`.`id` FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id` ";
+        $joinStatement = "SELECT `customers`.`id`, `customers`.`company`, `customers`.`name`, `customers`.`email`, `customers`.`created`, `customers`.`updated`, `customers`.`id` FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id` ";
         $joinCountStatement = "SELECT COUNT(`customers`.`id`) FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id` ";
         $this->sspJoin->setJoinStatement($joinStatement);
         $this->sspJoin->setJoinCountStatement($joinCountStatement);
