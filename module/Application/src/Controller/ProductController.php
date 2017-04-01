@@ -339,17 +339,20 @@ class ProductController extends BaseController {
     }
 
     public function productTableAction() {
-
-        if ((int) $this->params()->fromQuery('zff_sync') == 1) {
+        
+        (int) $zff_sync = $this->params()->fromPost('zff_sync');
+        if(empty($zff_sync)){
+            (int) $zff_sync = $this->params()->fromQuery('zff_sync');
+        }
+        
+        if ($zff_sync == 1) {
             $this->logger->log(Logger::INFO, "Syncing DB.");
             $this->syncDB();
         } else {
             $this->logger->log(Logger::INFO, "DB Sync Skipped on subsequent ajax.");
         }
 
-        $jsonData = json_decode($this->params()->fromPost('jsonData'));
-
-        //product, description, comment, option, wholesale, retail, override, uom, status, saturday, sku
+        $jsonArgs = $this->params()->fromPost();
 
         $columns = $this->configValue('columns');
 
@@ -364,55 +367,6 @@ class ProductController extends BaseController {
             'db' => $this->config['doctrine']['connection']['orm_default']['params']['dbname'],
             'host' => $this->config['doctrine']['connection']['orm_default']['params']['host']
         );
-
-        $jsonArgs = Server::buildArrayFromJson($jsonData);
-
-        $argvs = [
-            'productname' => $this->params()->fromQuery('zff_productname'),
-            'description' => $this->params()->fromQuery('zff_description'),
-            'comment' => $this->params()->fromQuery('zff_comment'),
-            'option' => $this->params()->fromQuery('zff_option'),
-            'wholesale' => $this->params()->fromQuery('zff_wholesale'),
-            'retail' => $this->params()->fromQuery('zff_retail'),
-            'override' => $this->params()->fromQuery('zff_override'),
-            'uom' => $this->params()->fromQuery('zff_uom'),
-            'sku' => $this->params()->fromQuery('zff_sku'),
-            'status' => $this->params()->fromQuery('zff_status'),
-            'saturdayenabled' => $this->params()->fromQuery('zff_saturdayenabled')
-        ];
-
-        foreach ($argvs as $key => $value) {
-            switch ($key) {
-                case 'status' :
-                case 'saturdayenabled' :
-                    if ($value == '1' || $value == '0') {
-                        $this->sspJoin->setColumnSearchValue(
-                                $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, $key), $value);
-                    }
-                    break;
-                default:
-                    $this->sspJoin->setColumnSearchValue(
-                            $jsonArgs, $this->sspJoin->pluckColumnIndex($columns, $key), $value);
-            }
-        }
-
-        $zff_length = $this->params()->fromQuery('zff_length');
-
-        if (!empty($zff_length)) {
-
-            $jsonArgs['length'] = $zff_length;
-
-            //check page now
-            $zff_page = $this->params()->fromQuery('zff_page');
-
-            if (empty($zff_page)) {
-                $zff_page = 1;
-            }
-
-            $zff_page--; //make zero based
-
-            $jsonArgs['start'] = $zff_page ? ($zff_page * $zff_length) : ($zff_page);
-        }
 
         $cust_id = $this->params()->fromQuery('zff_customer_id');
 

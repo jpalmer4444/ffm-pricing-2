@@ -132,6 +132,10 @@
                     ->appendFile($this->basePath('js/ng/customer/customer.module.js?v='.$version))
                     ->appendFile($this->basePath('js/ng/customer/customerTable.controller.js?v='.$version))
                     
+                    //common module
+                    ->appendFile($this->basePath('js/ng/common/common.module.js?v='.$version))
+                    ->appendFile($this->basePath('js/ng/common/table.service.js?v='.$version))
+                    
                     //ffm module
                     ->appendFile($this->basePath('js/ng/ffm/ffm.module.js?v='.$version))
                     ->appendFile($this->basePath('js/ng/ffm/ffm-enter.directive.js?v='.$version))
