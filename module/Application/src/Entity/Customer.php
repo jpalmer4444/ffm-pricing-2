@@ -170,6 +170,7 @@ class Customer
      */
     
     public function getAllProducts() {
+
     return array_merge($this->getProducts(), $this->getAddedProducts()); 
   }
   

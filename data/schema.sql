@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS `user_product_preferences`;
 DROP TABLE IF EXISTS `user_customer`;
 DROP TABLE IF EXISTS `customer_product`;
 DROP TABLE IF EXISTS `products`;
-DROP TABLE IF EXISTS `row_plus_items_page`;
+DROP TABLE IF EXISTS `added_product`;
 DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `user_role`;
 drop table if exists `role_permission`;
@@ -33,7 +33,7 @@ CREATE TABLE `users` (
   `salespersonname` VARCHAR(100) DEFAULT NULL,
   `phone1` varchar(100) NOT NULL,
   `sales_attr_id` INTEGER DEFAULT NULL,
-  `last_login` TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `last_login` TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `KEY_USERS_SALESPERSONNAME` (`salespersonname`),
   UNIQUE KEY `UNIQKEY_USERS_SALES_ATTR_ID` (`sales_attr_id`),

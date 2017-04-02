@@ -31,7 +31,7 @@
     ];
 
     //do not change after constructor is called
-    vm.db_synced_once = false;
+    vm.db_synced = 0;
     vm.selected = false;
     vm.callbacksAdded = false;
 
@@ -66,54 +66,7 @@
               url: '/product/product-table?zff_sales_attr_id=' + getSalesAttrId() + '&zff_customer_id=' + storage('customer_id'),
               type: 'POST',
               cache: false,
-              data: function (data, dtInstance) {
-
-                screenService.showOverlay();
-
-                if (!vm.db_synced_once) {
-                  data['zff_sync'] = 1;
-                  vm.db_synced_once = true;
-                } else {
-                  data['zff_sync'] = 0;
-                }
-
-                var props = [
-                  ['Product', 'zff_productname'],
-                  ['Description', 'zff_description'],
-                  ['Comment', 'zff_comment'],
-                  ['Option', 'zff_option'],
-                  ['Wholesale', 'zff_wholesale'],
-                  ['Retail', 'zff_retail'],
-                  ['Override', 'zff_override'],
-                  ['UOM', 'zff_uom'],
-                  ['SKU', 'zff_sku']
-                ];
-
-                for (var i = 0; i < props.length; i++) {
-                  var prop = props[i];
-                  data['columns'][columnindex(prop[0])]['search']['value'] = vm[prop[1]];
-                }
-
-                if (eq(vm.zff_status, 'Disabled') || eq(vm.zff_status, 'Enabled')) {
-                  data['columns'][columnindex("Status")]['search']['value'] = eq(vm.zff_status, 'Disabled') ? '0' : '1';
-                }
-
-                if (eq(vm.zff_saturdayenabled, 'Off') || eq(vm.zff_saturdayenabled, 'On')) {
-                  //encodebool(params, 'zff_saturdayenabled', 'On');
-                  data['columns'][columnindex("Saturday Enabled")]['search']['value'] = eq(vm.zff_saturdayenabled, 'Off') ? '0' : '1';
-                }
-
-
-                if (vm.pageSize && !vm.hidePageParams) {
-                  //encodeunname(params, 'zff_length', 'pageSize');
-                  data['length'] = vm.pageSize;
-                }
-
-                data['start'] = (vm.page ? --vm.page : 0) * vm.pageSize;
-
-                data['zff_sync'] = 0;
-
-              }
+              data: data
             })
             .withDataProp('data')
             .withDOM('t')
@@ -127,26 +80,7 @@
             .withButtons(buttons())
             .withOption('createdRow', createdRow)
             .withOption('drawCallback', draw)
-            .withOption('initComplete', initComplete)
-            .withOption('headerCallback', function (thead, data, start, end, display) {
-              if (!vm.callbacksAdded) {
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("ID") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Product") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Description") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Comment") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Option") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Wholesale") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Retail") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Override") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("UOM") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Status") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("Saturday Enabled") + 1) + ')', checkbox_click);
-                element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (columnindex("SKU") + 1) + ')', checkbox_click);
-                vm.callbacksAdded = true;
-                screenService.hideOverlay();
-              }
-            });
+            .withOption('initComplete', initComplete);
 
     vm.columns = [
       '', 'ID', 'Product', 'Description', 'Comment', 'Option', 'Wholesale',
@@ -170,9 +104,73 @@
       DTColumnBuilder.newColumn(columnindex("Actions")).withTitle(vm.columns[columnindex("Actions")]).renderWith(renderActions).notSortable()
     ];
 
-    //Private API
+    function data(data, dtInstance) {
 
-    function draw(settings) {
+      screenService.showOverlay();
+
+      if (!vm.db_synced) {
+        
+        data['zff_sync'] = '1';
+
+        vm.db_synced++;
+      } else {
+        
+        data['zff_sync'] = '0';
+      }
+
+      var props = [
+        ['Product', 'zff_productname'],
+        ['Description', 'zff_description'],
+        ['Comment', 'zff_comment'],
+        ['Option', 'zff_option'],
+        ['Wholesale', 'zff_wholesale'],
+        ['Retail', 'zff_retail'],
+        ['Override', 'zff_override'],
+        ['UOM', 'zff_uom'],
+        ['SKU', 'zff_sku']
+      ];
+
+      var setDTProp = function (data, prop) {
+
+        data['columns'][columnindex(prop[0])]['search']['value'] = vm[prop[1]];
+      }
+
+      for (var i = 0; i < props.length; i++) {
+
+        setDTProp(data, props[i]);
+      }
+
+      if (eq(vm.zff_status, 'Disabled') || eq(vm.zff_status, 'Enabled')) {
+
+        data['columns'][columnindex("Status")]['search']['value'] = eq(vm.zff_status, 'Disabled') ? '0' : '1';
+      }
+
+      if (eq(vm.zff_saturdayenabled, 'Off') || eq(vm.zff_saturdayenabled, 'On')) {
+
+        data['columns'][columnindex("Saturday Enabled")]['search']['value'] = eq(vm.zff_saturdayenabled, 'Off') ? '0' : '1';
+      }
+
+
+      if (vm.pageSize && !vm.hidePageParams) {
+
+        data['length'] = vm.pageSize;
+      }
+
+      data['start'] = (vm.page ? --vm.page : 0) * vm.pageSize;
+
+    }
+
+    function columnClicks() {
+      if (!vm.callbacksAdded) {
+        for (var i = 1; i < vm.columns.length; i++) {
+          element('#productsTable tbody').on('click', 'tr > td:nth-child(' + (i) + ')', checkbox_click);
+        }
+        vm.callbacksAdded = true;
+        screenService.hideOverlay();
+      }
+    }
+
+    function draw() {
       var data = api().ajax.json();
       handleData(data);
     }
@@ -180,44 +178,32 @@
     function handleData(data) {
       vm.recordsTotal = data.recordsTotal;
       vm.recordsFiltered = data.recordsFiltered;
-      if (data.skus) {
-        vm.skus = [];
-        for (var i = 0; i < data.skus.length; i++) {
-          vm.skus.push(data.skus[i]);
-        }
-      }
-      if (data.products) {
-        vm.products = [];
-        for (var i = 0; i < data.products.length; i++) {
-          var value = data.products[i].substr(0, data.products[i].indexOf('-') + 1);
-          if (vm.products.indexOf(value) === -1) {
-            vm.products.push(value);
+      var handle = function (prop, sub) {
+        if (data[prop]) {
+          vm[prop] = [];
+          for (var i = 0; i < data[prop].length; i++) {
+            var value = sub ? data[prop][i].substr(0, data[prop][i].indexOf('-') + 1) : data[prop][i];
+            vm[prop].push(value);
           }
         }
-      }
-      if (data.uoms) {
-        vm.uoms = [];
-        for (var i = 0; i < data.uoms.length; i++) {
-          if (vm.uoms.indexOf(data.uoms[i]) === -1) {
-            vm.uoms.push(data.uoms[i]);
-          }
-        }
-      }
+      };
+      handle('skus');
+      handle('products', true);
+      handle('uoms');
       vm.start = data.start;
     }
 
     function initComplete(settings, data) {
-      var button = element('.dt-buttons')
-              .children('a')
-              .eq(1);
-      button.removeClass('hide')
-              .addClass('table-header-btn reset-filters-btn btn-accent')
-              .attr('title', 'Download PDF')
-              .insertAfter(element('#add_product_button'));
+      var dnld = 'Download PDF';
+      var id = 'add_product_button';
+      var clazz = 'table-header-btn reset-filters-btn btn-accent';
+      var button = element('.dt-buttons').children('a').eq(1);
+      button.removeClass('hide').addClass(clazz).attr('title', dnld).insertAfter(element('#' + id));
       element('<i/>', {
         'class': 'ion-arrow-down-c'
       }).appendTo(button);
       handleData(data);
+      columnClicks();
       api().rows().every(function (index, ele) {
         var tr = element(this.node());
         if (getDuplicateSkuStyle(celldata(index, columnindex('SKU')))) {
@@ -230,26 +216,6 @@
 
     function api() {
       return vm.dtInstance.DataTable;
-    }
-
-    function aodata() {
-      var draw = {"name": "draw", value: 1};
-      var columns = {name: "columns", value: []};
-      for (var i = 0; i < vm.dtColumns.length; i++) {
-        var dt = vm.dtColumns[i];
-        var column = {
-          data: dt.mData,
-          name: '',
-          searchable: true,
-          orderable: dt.bSortable,
-          search: {
-            value: '',
-            regex: false
-          }
-        };
-        columns['value'].push(column);
-      }
-      return [draw, columns, api().order()];
     }
 
     function columnindex(columnname) {
@@ -536,52 +502,6 @@
       screenService.showOverlay();
       var params = [
       ];
-      if (!vm.db_synced_once) {
-        params.push('zff_sync=1');
-        vm.db_synced_once = true;
-      } else {
-        params.push('zff_sync=0');
-      }
-
-      if (prop('zff_productname')) {
-        encodename(params, 'zff_productname');
-      }
-      if (prop('zff_description')) {
-        encodename(params, 'zff_description');
-      }
-      if (prop('zff_comment')) {
-        encodename(params, 'zff_comment');
-      }
-      if (prop('zff_option')) {
-        encodename(params, 'zff_option');
-      }
-      if (prop('zff_wholesale')) {
-        encodename(params, 'zff_wholesale');
-      }
-      if (prop('zff_retail')) {
-        encodename(params, 'zff_retail');
-      }
-      if (prop('zff_override')) {
-        encodename(params, 'zff_override');
-      }
-      if (prop('zff_uom')) {
-        encodename(params, 'zff_uom');
-      }
-      if (eq(vm.zff_saturdayenabled, 'Off') || eq(vm.zff_saturdayenabled, 'On')) {
-        encodebool(params, 'zff_saturdayenabled', 'On');
-      }
-      if (prop('zff_sku')) {
-        encodename(params, 'zff_sku');
-      }
-      if (vm.pageSize && !vm.hidePageParams) {
-        encodeunname(params, 'zff_length', 'pageSize');
-      }
-      if (eq(vm.zff_status, 'Disabled') || eq(vm.zff_status, 'Enabled')) {
-        encodebool(params, 'zff_status', 'Enabled');
-      }
-
-      if (!vm.hidePageParams)
-        encodename(params, 'zff_page', true)
 
       var sales_attr_id = getSalesAttrId();
       params.push('zff_sales_attr_id=' + sales_attr_id);
@@ -613,27 +533,25 @@
 
       var query = config.urls.productsTableAjax + (params.length ? '?' + params.join('&') : '');
 
-      console.log(query);
-
       return query;
     }
 
     function searchpdf(cb) {
 
       vm.hidePageParams = true;
-      var url = searchUsers(true);
+      var url = searchUsers();
       vm.hidePageParams = false;
 
-      url += '&zff_page=0';
-      url += '&zff_length=1000';
-
+      var postData = api().ajax.params();
+      postData.start = 0;
+      postData.length = 10000;
+      
       ajax({
         'dataType': 'json',
         'type': 'POST',
         'url': url,
-        'data': stringify(aodata()),
+        'data': postData,
         'success': function (data, textStatus, jqXHR) {
-          //local stuff.
           cb(null, data);
         },
         'error': function (error) {
@@ -1031,14 +949,14 @@
 
     vm.selectAll = function () {
 
-      var query = vm.selected ? "?myaction=deselectall" : "?myaction=selectall"
+      var query = vm.selected ? "?myaction=deselectall" : "?myaction=selectall";
 
       var url = config.urls.productsTableChecked + query;
 
       api().rows().every(function (rowIdx, tableLoop, rowLoop) {
 
         vm.selected ? element('#productsTable tbody tr').eq(rowIdx).removeClass('selected') :
-                element('#productsTable tbody tr').eq(rowIdx).addClass('selected')
+                element('#productsTable tbody tr').eq(rowIdx).addClass('selected');
 
         var checkbox = cell(rowIdx, 0);
 
@@ -1136,9 +1054,9 @@
     vm.deleteAddedProduct = function (productId) {
 
       var sales_attr_id = getSalesAttrId();
-      
+
       var customer_id = storage('customer_id');
-      
+
       var params = {
         'product_id': productId,
         'sales_attr_id': sales_attr_id,
@@ -1155,9 +1073,9 @@
               }, function () {
 
                 var title = 'Override Price Error';
-                
+
                 var text = 'Sorry, there was a problem removing the override price from the product. Please inform IT.';
-                
+
                 screenService.showWarning(title, text);
               });
 
@@ -1176,42 +1094,42 @@
         controller: 'AddProductModalController',
         controllerAs: 'vmc',
         resolve: {
-          
+
           customer_id: function () {
 
             return storage('customer_id');
           },
-          
+
           sales_attr_id: function () {
 
             return getSalesAttrId();
           },
-          
+
           product: function () {
 
             return '';
           },
-          
+
           description: function () {
 
             return '';
           },
-          
+
           comment: function () {
 
             return '';
           },
-          
+
           overrideprice: function () {
 
             return '';
           },
-          
+
           uom: function () {
 
             return '';
           },
-          
+
           sku: function () {
 
             return '';
@@ -1233,12 +1151,12 @@
         modalInstance = null;
 
         var resultHandler = function (data) {
-          
+
           vm.reloadData();
         };
-        
+
         var finalHandler = function () {
-          
+
           screenService.hideOverlay();
         };
 
@@ -1265,22 +1183,22 @@
         controller: 'AddOverridePriceModalController',
         controllerAs: 'vmc',
         resolve: {
-          
+
           customer_id: function () {
 
             return storage('customer_id');
           },
-          
+
           sales_attr_id: function () {
 
             return getSalesAttrId();
           },
-          
+
           product_id: function () {
 
             return product_id;
           },
-          
+
           overrideprice: function () {
 
             return overrideprice ? overrideprice : '';

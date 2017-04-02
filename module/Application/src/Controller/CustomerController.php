@@ -67,7 +67,7 @@ class CustomerController extends BaseController {
     public function customerTableAction() {
         
         if((int)$this->params()->fromQuery('zff_sync') == 1){
-            $this->logger->log(Logger::INFO, "Syncing DB.");
+            $this->logger->log(Logger::INFO, "Syncing DB. Customer Controller");
             $this->syncDB();
         }else{
             $this->logger->log(Logger::INFO, "DB Sync Skipped on subsequent ajax.");

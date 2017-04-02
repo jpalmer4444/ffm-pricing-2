@@ -341,12 +341,12 @@ class ProductController extends BaseController {
     public function productTableAction() {
         
         (int) $zff_sync = $this->params()->fromPost('zff_sync');
-        if(empty($zff_sync)){
-            (int) $zff_sync = $this->params()->fromQuery('zff_sync');
-        }
+        
+        
+        $this->logger->log(Logger::INFO, "zff_sync: " . $zff_sync);
         
         if ($zff_sync == 1) {
-            $this->logger->log(Logger::INFO, "Syncing DB.");
+            $this->logger->log(Logger::INFO, "Syncing DB. Products Controller");
             $this->syncDB();
         } else {
             $this->logger->log(Logger::INFO, "DB Sync Skipped on subsequent ajax.");
@@ -550,7 +550,9 @@ class ProductController extends BaseController {
                  */
                 if (!array_key_exists($restItem['id'], $productMap)) {
 
+                    $this->logger->log(Logger::INFO, "PROCESSING: Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']}");
                     $productMap[$restItem['id']] = $restItem['id'];
+                    
                 } else {
                     $this->logger->log(Logger::INFO, "SKIPPING: Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']}");
                     continue;
@@ -571,6 +573,7 @@ class ProductController extends BaseController {
                     $product = $this->createProduct($restItem, $customer, $user);
                     $productsInserted++;
                     $some = TRUE;
+                    
                 } else {
 
                     $some = $this->updateProduct($some, $product, $restItem);
@@ -714,14 +717,16 @@ class ProductController extends BaseController {
                     case "id" : {
                             if ($model->getId() == $id) {
                                 return $model;
+                            }else{
+                                break;
                             }
-                            break;
                         }
                     case "json" : {
                             if ($model['id'] == $id) {
                                 return $model;
+                            }else{
+                                break;
                             }
-                            break;
                         }
                     case "product" :
                     default : {
@@ -972,12 +977,12 @@ class ProductController extends BaseController {
         $checkboxes->add($checkbox);
         $product->setCheckboxes($checkboxes);
 
-
         $userProducts = $customer->getProducts();
 
         if (empty($userProducts)) {
             $userProducts = new ArrayCollection();
         }
+        
         $userProducts->add($product);
 
         $customer->setProducts($userProducts);

@@ -33,7 +33,7 @@ return [
         array('db' => '`products`.`status`', 'dt' => 10),
         array('db' => '`products`.`saturdayenabled`', 'dt' => 11),
         array('db' => '`products`.`sku`', 'dt' => 12),
-        array('db' => '`products`.`id`', 'dt' => 13),
+        array('db' => 'null', 'dt' => 13),
     ),
     
     'columnsPost' => array(
@@ -41,16 +41,16 @@ return [
         array('db' => '`added_product`.`id`', 'dt' => 1),
         array('db' => '`added_product`.`productname`', 'dt' => 2),
         array('db' => '`added_product`.`description`', 'dt' => 3),
-        array('db' => '`added_product`.`comment`', 'dt' => 4), //this would be comment, but it doesnt exist in this query
-        array('db' => '`added_product`.`option`', 'dt' => 5), //this would be option, but it doesnt exist in this query
-        array('db' => '`added_product`.`wholesale`', 'dt' => 6), //this would be wholesale, but it doesnt exist in this query
-        array('db' => '`added_product`.`retail`', 'dt' => 7), //this would be retail, but it doesnt exist in this query
+        array('db' => '`added_product`.`comment`', 'dt' => 4),
+        array('db' => 'null', 'dt' => 5), //this would be option, but it doesnt exist in this query
+        array('db' => 'null', 'dt' => 6), //this would be wholesale, but it doesnt exist in this query
+        array('db' => 'null', 'dt' => 7), //this would be retail, but it doesnt exist in this query
         array('db' => '`added_product`.`overrideprice`', 'dt' => 8),
         array('db' => '`added_product`.`uom`', 'dt' => 9),
         array('db' => '`added_product`.`status`', 'dt' => 10),
-        array('db' => '`added_product`.`id`', 'dt' => 11),
+        array('db' => 'null', 'dt' => 11), //this would be saturdayenabled, but it doesnt exist in this query
         array('db' => '`added_product`.`sku`', 'dt' => 12),
-        array('db' => '`added_product`.`id`', 'dt' => 13),
+        array('db' => 'null', 'dt' => 13),
     ),
     
     'selectPre' => "SELECT "
