@@ -64,6 +64,7 @@
             .withOption('processing', true)
             .withOption('scrollY', config.scrollY)
             .withOption('scrollX', true)
+            .withOption('order', [[1, 'asc']])
             .withOption('scrollCollapse', true)
             .withOption('serverSide', true)
             .withOption('createdRow', createdRow)

@@ -63,7 +63,7 @@
     //build table options
     vm.dtOptions = DTOptionsBuilder.newOptions()
             .withOption('ajax', {
-              url: '/product/product-table?zff_sales_attr_id=' + getSalesAttrId() + '&zff_customer_id=' + storage('customer_id'),
+              url: datatableurl(),
               type: 'POST',
               cache: false,
               data: data
@@ -103,6 +103,16 @@
       DTColumnBuilder.newColumn(columnindex("SKU")).withTitle(vm.columns[columnindex("SKU")]),
       DTColumnBuilder.newColumn(columnindex("Actions")).withTitle(vm.columns[columnindex("Actions")]).renderWith(renderActions).notSortable()
     ];
+    
+    function datatableurl(){
+      var url = [
+        '/product/product-table?zff_sales_attr_id=', 
+        getSalesAttrId(), 
+        '&zff_customer_id=',  
+        storage('customer_id')
+      ];
+      return url.join('');
+    }
 
     function data(data, dtInstance) {
 
@@ -988,7 +998,7 @@
 
     };
 
-    vm.reloadData = function () {
+    vm.reloadData = function (resetPaging) {
       var resetPaging = false;
       vm.dtInstance.reloadData(servercallback, resetPaging);
     }
@@ -1068,7 +1078,10 @@
 
               .then(function (response) {
 
+                
                 vm.reloadData();
+                var data = api().data();
+                initComplete(null, data);
 
               }, function () {
 
@@ -1153,6 +1166,8 @@
         var resultHandler = function (data) {
 
           vm.reloadData();
+          var data = api().data();
+          initComplete(null, data);
         };
 
         var finalHandler = function () {

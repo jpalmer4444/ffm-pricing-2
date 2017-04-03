@@ -326,6 +326,7 @@ INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(23, 'product/product', 
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(25, 'product/report', 'Product Report Action');
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(24, 'product/override', 'Product Override Action');
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(19, 'product/productTable', 'Product Product Table');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(26, 'product/productFormTypeahead', 'Product ProductForm Typeahead');
 
 # Admin Permissions
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 1); # admin user/add (Add User)
@@ -353,6 +354,7 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 23); # admi
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 24); # admin product/override (Product Override Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 25); # admin product/report (Product Report Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 19); # admin product/productTable (Product Product Table)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 26); # admin product/productFormTypeahead (Product ProductForm Typeahead)
 
 # User Permissions
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 9);    # sales user/usersTable (Ajax Users Table Action)
@@ -368,3 +370,4 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 23);   # sa
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 24);   # sales product/override (Product Override Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 25);   # sales product/report (Product Report Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 19);   # sales product/productTable (Product Product Table)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 26);   # sales product/productFormTypeahead (Product ProductForm Typeahead)

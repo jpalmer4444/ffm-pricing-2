@@ -38,6 +38,7 @@
             salesAttrId = '<?= $this->user ? $this->user->getSales_attr_id() : ''; ?>',
             usersTableAjax = '<?= $this->url('users', ['action' => 'users-table']); ?>';
             productsTableAjax = '<?= $this->url('product', ['action' => 'product-table']); ?>';
+            productsFormTypeahead = '<?= $this->url('product', ['action' => 'product-form-typeahead']); ?>';
             customersTableAjax = '<?= $this->url('customer', ['action' => 'customer-table']); ?>';
             salespeopleTableAjax = '<?= $this->url('salespeople', ['action' => 'salespeople-table']); ?>';
             addSalespersonUrl = '<?= $this->url('salespeople', ['action' => 'add']); ?>';
@@ -81,7 +82,7 @@
 //add angular files for appropriate pages.
         if ($this->ngPage) {
             
-            $version = 5;
+            $version = 6;
             //$this->inlineScript()->appendFile($this->basePath('js/dist/angular-app-files.js?v='.
             //1));
 

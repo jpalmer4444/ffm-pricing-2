@@ -4,7 +4,7 @@
   "description": "this is the list of packages for gulp",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "packages"
+    "test": "karma start karma.conf.js"
   },
   "author": "jpalmer",
   "license": "ISC",
@@ -13,5 +13,17 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-uglify": "^1.5.4"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.6.4",
+    "jasmine": "^2.5.3",
+    "karma": "^1.5.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-requirejs": "^1.1.0",
+    "karma-safari-launcher": "^1.0.0",
+    "require": "^2.4.20",
+    "requirejs": "^2.3.3"
   }
 }

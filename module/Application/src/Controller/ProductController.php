@@ -417,6 +417,35 @@ class ProductController extends BaseController {
                         $response
         );
     }
+    
+    public function productFormTypeaheadAction() {
+        
+        $search = '%' . $this->params()->fromPost('term') . '%';
+
+        $sql = 'SELECT `products`.`productname` as \'productname\', `products`.`description` as \'description\', `products`.`sku` as \'sku\', `products`.`uom` as \'uom\', `products`.`retail` as \'retail\' FROM products WHERE `products`.`productname` LIKE ? OR `products`.`description` LIKE ? ORDER BY `products`.`productname` ASC LIMIT 0, 10';
+
+        $stmt = $this->entityManager->getConnection()->executeQuery(
+                $sql, [
+                    $search,
+                    $search
+                ]
+        );
+
+        $results = [];
+
+        while ($row = $stmt->fetch()) {
+
+            $results[] = [
+                    'productname' => $row['productname'],
+                    'description' => $row['description'],
+                    'sku' => $row['sku'],
+                    'uom' => $row['uom'],
+                    'retail' => $row['retail']
+            ];
+        }
+        
+        return $this->jsonResponse($results);
+    }
 
     private function createReportProduct($id, $customerid, $sales_attr_id, $override, $retail) {
         $isAddedProduct = $id[0] == 'A';
@@ -436,29 +465,6 @@ class ProductController extends BaseController {
             $report->setProduct($product);
         }
         $this->entityManager->persist($report);
-    }
-
-    private function lookupCheckbox($id, $sales_attr_id, $customerid) {
-        $salesperson = $this->entityManager->getRepository(User::class)->
-                findOneBy(['sales_attr_id' => $sales_attr_id]);
-
-        return $this->entityManager->getRepository(Checkbox::class)
-                        ->findOneBy([
-                            $id[0] == 'P' ? 'product' : 'addedProduct' => substr($id, 1),
-                            'salesperson' => $salesperson->getId(),
-                            'customer' => $customerid
-        ]);
-    }
-
-    private function lookupCheckboxes($sales_attr_id, $customerid) {
-        $salesperson = $this->entityManager->getRepository(User::class)->
-                findOneBy(['sales_attr_id' => $sales_attr_id]);
-
-        return $this->entityManager->getRepository(Checkbox::class)
-                        ->findBy([
-                            'salesperson' => $salesperson->getId(),
-                            'customer' => $customerid
-        ]);
     }
 
     private function syncDB() {

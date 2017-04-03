@@ -20,7 +20,9 @@
       var salespeopleTableAjax = (typeof window.salespeopleTableAjax !== "undefined" ? window.salespeopleTableAjax : '');
       var usersTableUpdateStatusAjax = (typeof window.usersTableUpdateStatusAjax !== "undefined" ? window.usersTableUpdateStatusAjax : '');
       var addSalespersonUrl = (typeof window.addSalespersonUrl !== "undefined" ? window.addSalespersonUrl : '');
-      //console.log('loginUrl: '+loginUrl);
+      var productsFormTypeahead = (typeof window.productsFormTypeahead !== "undefined" ? window.productsFormTypeahead : '');
+//productsFormTypeahead
+//console.log('loginUrl: '+loginUrl);
       //addSalespersonUrl
       var dynHeight = $(document).height() - 250;
       if(dynHeight < 350){
@@ -31,6 +33,7 @@
         username: username,
         urls: {
           login : loginUrl,
+          productsFormTypeahead: productsFormTypeahead,
           addSalespersonUrl : addSalespersonUrl,
           usersTableAjax : usersTableAjax,
           productsTableAjax : productsTableAjax,
