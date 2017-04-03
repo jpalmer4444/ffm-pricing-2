@@ -353,6 +353,10 @@ class ProductController extends BaseController {
         }
 
         $jsonArgs = $this->params()->fromPost();
+        
+        if($jsonArgs['order'][0]['column'] == 0){
+            $jsonArgs['order'][0]['column'] = 2;
+        }
 
         $columns = $this->configValue('columns');
 

@@ -73,9 +73,7 @@
             .withOption('processing', true)
             .withOption('scrollY', config.scrollY)
             .withOption('scrollX', true)
-            .withOption('order', [[2, 'asc']])
             .withOption('scrollCollapse', true)
-            .withOption('serverSide', true)
             .withOption('serverSide', true)
             .withButtons(buttons())
             .withOption('createdRow', createdRow)
@@ -183,6 +181,7 @@
     function draw() {
       var data = api().ajax.json();
       handleData(data);
+      screenService.hideOverlay();
     }
 
     function handleData(data) {
@@ -486,8 +485,7 @@
 
       $http.post(url, param(data))
               .then(function (response) {
-                //this should not be necessary, but it is because of a bug - fix it!
-                //api().draw(false);
+                //
               }, function (err) {
                 log('Error! ' + stringify(err));
               });
@@ -989,7 +987,7 @@
       $http.post(url, param(data))
 
               .then(function (response) {
-                //api().draw(false);
+                //
               }, function (err) {
 
                 log('Error! ' + stringify(err));

@@ -99,7 +99,10 @@
 
     function createdRow(row, data, dataIndex) {
       // Recompiling so we can bind Angular directive to the DT
-      $compile(angular.element(row).contents())($scope);
+      $timeout(function(){
+        $compile(angular.element(row).contents())($scope);
+      }, 0);
+      
     }
 
     //initialize
@@ -222,7 +225,7 @@
           }
           localStorageService.set('salesperson_phone', data.salesperson_phone);
           localStorageService.set('salesperson_email', data.salesperson_email);
-          $scope.$apply();
+          //$scope.$apply();
           fnCallback(data, textStatus, jqXHR);
           screenService.hideOverlay();
         }
