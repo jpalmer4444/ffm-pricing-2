@@ -1,5 +1,5 @@
 // Karma configuration
-// Generated on Sun Apr 02 2017 16:45:26 GMT-0500 (CDT)
+// Generated on Wed Apr 05 2017 18:39:45 GMT-0500 (CDT)
 
 module.exports = function(config) {
   config.set({
@@ -15,9 +15,27 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'js/jquery.min.js',
+      'js/jquery.dataTables.min.js',
+      'js/vendor-orders/dataTables.select.min.js',
+      'js/vendor-orders/dataTables.buttons.min.js',
+      'js/vendor-orders/buttons.html5.min.js',
+      'js/vendor-orders/buttons.flash.min.js',
+      'js/vendor-orders/pdfmake.min.js',
+      'js/vendor-orders/vfs_fonts.js',
+      'js/vendor-orders/dataTables.fixedColumns.js',
       'js/ng/vendor/angular.min.js',
+      'js/ng/vendor/select.min.js',
+      'js/ng/vendor/ui-bootstrap-tpls.min.js',
+      'js/ng/vendor/angular-sanitize.min.js',
+      'js/ng/vendor/angular-local-storage.min.js',
+      'js/ng/vendor/angular-datatables/angular-datatables.js',
+      'js/ng/vendor/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js',
+      'js/ng/vendor/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js',
+      'js/ng/vendor/angular-datatables/plugins/select/angular-datatables.select.min.js',
       'node_modules/angular-mocks/angular-mocks.js',
-      'node_modules/jasmine',
+      //'js/ng/**/*.js',
+      'js/ng/common/*.js',
       'test/**/*Spec.js'
     ],
 
@@ -53,12 +71,12 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Safari'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode

@@ -29,55 +29,88 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
                         <!-- ID -->
                     </th>
                     <th>
-                        <!-- COMPANY 
-                        <input name="zff_company" ffm-enter="customerCtrl.reloadData()" ng-model="customerCtrl.zff_company" class="filter form-control" value="" type="text">
-                        -->
+                        <div class='input-group'>
                         <input type="text" 
                                name="zff_company" 
+                               placeholder="Company"
                                ffm-enter="customerCtrl.reloadData()" 
                                typeahead-on-select="customerCtrl.reloadData()"
                                ng-model="customerCtrl.zff_company" 
                                uib-typeahead="company for company in customerCtrl.companies | filter:$viewValue" 
                                typeahead-append-to-body="true"
                                class="filter form-control">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
-                        <!-- NAME 
-                        <input name="zff_name" ffm-enter="customerCtrl.reloadData()" ng-model="customerCtrl.zff_name" class="filter form-control" value="" type="text">
-                        -->
+                        <div class='input-group'>
                         <input type="text" 
                                name="zff_name" 
+                               placeholder="Name"
                                ffm-enter="customerCtrl.reloadData()" 
                                typeahead-on-select="customerCtrl.reloadData()"
                                ng-model="customerCtrl.zff_name" 
                                uib-typeahead="name for name in customerCtrl.names | filter:$viewValue" 
                                typeahead-append-to-body="true"
                                class="filter form-control">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
-                        <!-- EMAIL 
-                        <input name="zff_email" ffm-enter="customerCtrl.reloadData()" ng-model="customerCtrl.zff_email" class="filter form-control" value="" type="text">
-                        -->
+                        <div class="input-group">
                         <input type="text" 
                                name="zff_email" 
+                               placeholder="Email"
                                ffm-enter="customerCtrl.reloadData()" 
                                typeahead-on-select="customerCtrl.reloadData()"
                                ng-model="customerCtrl.zff_email" 
                                uib-typeahead="email for email in customerCtrl.emails | filter:$viewValue" 
                                typeahead-append-to-body="true"
                                class="filter form-control">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
                         <!-- CREATED -->
                         <label ng-click="customerCtrl.zff_created_open = true" class="cursor-pointer date-picker-table">
-                            <input name="zff_created" ng-change="customerCtrl.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{customerCtrl.dateformat}}" ng-model="customerCtrl.zff_created" is-open="customerCtrl.zff_created_open" datepicker-options="customerCtrl.dateOptions" alt-input-formats="customerCtrl.altInputFormats" />
+                            <input 
+                                name="zff_created" 
+                                ng-change="customerCtrl.reloadData()" 
+                                readonly 
+                                placeholder="Created"
+                                datepicker-append-to-body="true" 
+                                type="text" 
+                                class="form_datetime filter form-control" 
+                                uib-datepicker-popup="{{customerCtrl.dateformat}}" 
+                                ng-model="customerCtrl.zff_created" 
+                                is-open="customerCtrl.zff_created_open" 
+                                datepicker-options="customerCtrl.dateOptions" 
+                                alt-input-formats="customerCtrl.altInputFormats" />
                             <i class="ion-calendar" ></i>
                         </label>
                     </th>
                     <th>
                         <!-- UPDATED -->
                         <label ng-click="customerCtrl.zff_updated_open = true" class="cursor-pointer date-picker-table">
-                            <input name="zff_updated" ng-change="customerCtrl.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{customerCtrl.dateformat}}" ng-model="customerCtrl.zff_updated" is-open="customerCtrl.zff_updated_open" datepicker-options="customerCtrl.dateOptions" alt-input-formats="customerCtrl.altInputFormats" />
+                            <input 
+                                name="zff_updated" 
+                                ng-change="customerCtrl.reloadData()" 
+                                readonly 
+                                datepicker-append-to-body="true" 
+                                type="text" 
+                                placeholder="Updated"
+                                class="form_datetime filter form-control" 
+                                uib-datepicker-popup="{{customerCtrl.dateformat}}" 
+                                ng-model="customerCtrl.zff_updated" 
+                                is-open="customerCtrl.zff_updated_open" 
+                                datepicker-options="customerCtrl.dateOptions" 
+                                alt-input-formats="customerCtrl.altInputFormats" />
                             <i class="ion-calendar" ></i>
                         </label>
                     </th>
@@ -96,17 +129,6 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
                 </tr>
             </thead>
             <tbody></tbody>
-            <tfoot>
-                <tr>
-                    <th>ID</th>
-                    <th>Company</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Created</th>
-                    <th>Updated</th>
-                    <th>Actions</th>
-                </tr>
-            </tfoot>
         </table>
     </div>
 </div>

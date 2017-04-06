@@ -15,12 +15,13 @@
     "gulp-uglify": "^1.5.4"
   },
   "devDependencies": {
-    "angular-mocks": "^1.6.4",
+    "angular-mocks": "1.5.9",
     "jasmine": "^2.5.3",
-    "karma": "^1.5.0",
+    "karma": "^1.6.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4",
     "karma-requirejs": "^1.1.0",
     "karma-safari-launcher": "^1.0.0",
     "require": "^2.4.20",

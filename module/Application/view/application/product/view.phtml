@@ -24,7 +24,7 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
     /* Ensure that the table scrolls */
     #productsTable_wrapper th,
     #productsTable_wrapper td {
-        
+
     }
     #productsTable_wrapper.dataTables_wrapper {
         width: 100%;
@@ -35,11 +35,11 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
 <div class="around_datatables" ng-controller="ProductTableController as productCtrl">
 
     <script type="text/ng-template" id="addProductModal.html">
-        <?= $this->partial('partial/add-product-modal-tplt') ?>
+<?= $this->partial('partial/add-product-modal-tplt') ?>
     </script>
-    
+
     <script type="text/ng-template" id="addOverridePriceModal.html">
-        <?= $this->partial('partial/override-price-modal-tplt') ?>
+<?= $this->partial('partial/override-price-modal-tplt') ?>
     </script>
 
     <?= $this->partial('partial/product-table-header-tplt') ?>
@@ -48,7 +48,11 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
         <table id="productsTable" datatable dt-instance="productCtrl.dtInstanceCallback" dt-options="productCtrl.dtOptions" dt-columns="productCtrl.dtColumns" style="width: 100%;" class="table-bordered table-condensed table-hover table-striped">
             <thead>
                 <tr class="no-padding">
-                    <th ng-class="{ 'selected' : productCtrl.selected }" title="{{ productCtrl.selected ? 'Click to unselect all products' : 'Click to select all products' }}"
+                    <th ng-class="{ 'selected' : productCtrl.selected }"
+                        uib-popover="{{ productCtrl.selected ? 'Click to unselect all products' : 'Click to select all products' }}" 
+                        popover-placement="right" 
+                        popover-trigger="'mouseenter'"
+                        popover-append-to-body='true'
                         ng-click="productCtrl.selectAll()">
                         <!-- CHECKBOX -->
                         <i ng-class="{'ion': true, 'ion-android-checkbox-outline-blank' : !productCtrl.selected, 'ion-android-checkbox-outline' : productCtrl.selected}" class="checker-header"></i>
@@ -57,50 +61,121 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
                         <!-- ID -->
                     </th>
                     <th>
-                        <!-- PRODUCTNAME -->
-                        <input type="text" 
-                               name="zff_productname" 
-                               ffm-enter="productCtrl.reloadData()" 
-                               typeahead-on-select="productCtrl.reloadData()"
-                               ng-model="productCtrl.zff_productname" 
-                               uib-typeahead="productname for productname in productCtrl.products | filter:$viewValue" 
-                               typeahead-append-to-body="true"
-                               class="filter form-control">
+                        <div class="input-group">
+                            <input type="text" 
+                                   placeholder="Product"
+                                   name="zff_productname" 
+                                   ffm-enter="productCtrl.reloadData()" 
+                                   typeahead-on-select="productCtrl.reloadData()"
+                                   ng-model="productCtrl.zff_productname" 
+                                   uib-typeahead="productname for productname in productCtrl.products | filter:$viewValue" 
+                                   typeahead-append-to-body="true"
+                                   class="filter form-control">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
                         <!-- DESCRIPTION -->
-                        <input name="zff_description" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_description" class="filter form-control" value="" type="text">
+                        <div class='input-group'>
+                            <input name="zff_description" 
+                                   ffm-enter="productCtrl.reloadData()" 
+                                   ng-model="productCtrl.zff_description" 
+                                   class="filter form-control" 
+                                   placeholder="Description"
+                                   type="text">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
                         <!-- COMMENT -->
-                        <input name="zff_comment" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_comment" class="filter form-control" value="" type="text">
+                        <div class='input-group'>
+                            <input name="zff_comment" 
+                                   ffm-enter="productCtrl.reloadData()" 
+                                   ng-model="productCtrl.zff_comment" 
+                                   class="filter form-control" 
+                                   placeholder="Comment" 
+                                   type="text">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
                         <!-- OPTION -->
-                        <input name="zff_option" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_option" class="filter form-control" value="" type="text">
+                        <div class="input-group">
+                             <input name="zff_option" 
+                               ffm-enter="productCtrl.reloadData()" 
+                               ng-model="productCtrl.zff_option" 
+                               class="filter form-control" 
+                               placeholder="Option"
+                               type="text">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
                         <!-- WHOLESALE -->
-                        <input name="zff_wholesale" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_wholesale" class="filter form-control" value="" type="text">
+                        <div class="input-group">
+                            <input name="zff_wholesale" 
+                                   ffm-enter="productCtrl.reloadData()" 
+                                   ng-model="productCtrl.zff_wholesale" 
+                                   class="filter form-control" 
+                                   placeholder="Wholesale" 
+                                   type="text">
+                            <span class="input-group-addon">
+                                <span class="ion ion-social-usd-outline"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
                         <!-- RETAIL -->
-                        <input name="zff_retail" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_retail" class="filter form-control" value="" type="text">
+                        <div class='input-group'>
+                            <input name="zff_retail" 
+                                   ffm-enter="productCtrl.reloadData()" 
+                                   ng-model="productCtrl.zff_retail" 
+                                   class="filter form-control" 
+                                   placeholder="Retail" 
+                                   type="text">
+                            <span class="input-group-addon">
+                                <span class="ion ion-social-usd-outline"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
                         <!-- OVERRIDE -->
-                        <input name="zff_override" ffm-enter="productCtrl.reloadData()" ng-model="productCtrl.zff_override" class="filter form-control" value="" type="text">
+                        <div class='input-group'>
+                            <input name="zff_override" 
+                                   ffm-enter="productCtrl.reloadData()" 
+                                   ng-model="productCtrl.zff_override" 
+                                   class="filter form-control" 
+                                   placeholder="Override" 
+                                   type="text">
+                            <span class="input-group-addon">
+                                <span class="ion ion-social-usd-outline"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
                         <!-- UOM -->
-                        <input type="text" 
-                               name="zff_uom" 
-                               ffm-enter="productCtrl.reloadData()" 
-                               typeahead-on-select="productCtrl.reloadData()"
-                               ng-model="productCtrl.zff_uom" 
-                               uib-typeahead="uom for uom in productCtrl.uoms | filter:$viewValue" 
-                               typeahead-append-to-body="true"
-                               class="filter form-control">
+                        <div class='input-group'>
+                            <input type="text" 
+                                   name="zff_uom" 
+                                   ffm-enter="productCtrl.reloadData()" 
+                                   typeahead-on-select="productCtrl.reloadData()"
+                                   ng-model="productCtrl.zff_uom" 
+                                   uib-typeahead="uom for uom in productCtrl.uoms | filter:$viewValue" 
+                                   typeahead-append-to-body="true"
+                                   placeholder="UOM"
+                                   class="filter form-control">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <!--STATUS-->
                     <th>
@@ -148,16 +223,21 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
 
                     <th>
                         <!-- SKU -->
-                        
+                        <div class='input-group'>
                             <input type="text" 
-                               name="zff_sku" 
-                               ffm-enter="productCtrl.reloadData()" 
-                               typeahead-on-select="productCtrl.reloadData()"
-                               ng-model="productCtrl.zff_sku" 
-                               uib-typeahead="sku for sku in productCtrl.skus | filter:$viewValue" 
-                               typeahead-append-to-body="true"
-                               class="filter form-control">
-                        
+                                   name="zff_sku" 
+                                   ffm-enter="productCtrl.reloadData()" 
+                                   typeahead-on-select="productCtrl.reloadData()"
+                                   ng-model="productCtrl.zff_sku" 
+                                   uib-typeahead="sku for sku in productCtrl.skus | filter:$viewValue" 
+                                   typeahead-append-to-body="true"
+                                   placeholder="SKU"
+                                   class="filter form-control">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
+
                     </th>
 
                     <th>
@@ -182,24 +262,6 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
                 </tr>
             </thead>
             <tbody></tbody>
-            <tfoot>
-                <tr>
-                    <th> </th>
-                    <th>ID</th>
-                    <th>Product</th>
-                    <th>Description</th>
-                    <th>Comment</th>
-                    <th>Option</th>
-                    <th>Wholesale</th>
-                    <th>Retail</th>
-                    <th>Override</th>
-                    <th>UOM</th>
-                    <th>Status</th>
-                    <th>Saturday Enabled</th>
-                    <th>SKU</th>
-                    <th>Actions</th>
-                </tr>
-            </tfoot>
         </table>
     </div>
 </div>

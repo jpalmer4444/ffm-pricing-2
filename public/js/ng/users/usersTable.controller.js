@@ -3,9 +3,9 @@
 
   angular
           .module('users')
-          .controller('UsersTableController', ['$scope', 'localStorageService', '$filter', '$compile', '$http', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', UsersTableController]);
+          .controller('UsersTableController', ['$scope', 'localStorageService', '$filter', '$compile', '$http', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', 'tableService', UsersTableController]);
 
-  function UsersTableController($scope, localStorageService, $filter, $compile, $http, DTOptionsBuilder, DTColumnBuilder, config, screenService) {
+  function UsersTableController($scope, localStorageService, $filter, $compile, $http, DTOptionsBuilder, DTColumnBuilder, config, screenService, tableService) {
 
     //screenService.showOverlay();
 
@@ -92,7 +92,8 @@
       //wrapping div
       var bootstrapSelect = angular.element('<div/>', {
         class: 'btn-group bootstrap-select filter form-control',
-        'uib-dropdown': true
+        'uib-dropdown': true,
+        'dropdown-append-to-body':true
       });
 
       //ul
@@ -216,9 +217,7 @@
       }
       params.push('zff_page=' + encodeURIComponent(vm.page));
 
-      var query = config.urls.usersTableAjax + (params.length ? '?' + params.join('&') : '');
-
-      return query;
+      return tableService.getTableUrl('Users', config, params);
     }
 
     function prop(key) {

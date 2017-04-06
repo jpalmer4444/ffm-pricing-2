@@ -3,9 +3,9 @@
 
   angular
           .module('salespeople')
-          .controller('SalespeopleTableController', ['$rootScope', '$scope', '$filter', '$compile', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', '$uibModal', '$http', 'config', 'screenService', 'localStorageService', SalespeopleTableController]);
+          .controller('SalespeopleTableController', ['$rootScope', '$scope', '$filter', '$compile', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', '$uibModal', '$http', 'config', 'screenService', 'tableService', 'localStorageService', SalespeopleTableController]);
 
-  function SalespeopleTableController($rootScope, $scope, $filter, $compile, $window, DTOptionsBuilder, DTColumnBuilder, $uibModal, $http, config, screenService, localStorageService) {
+  function SalespeopleTableController($rootScope, $scope, $filter, $compile, $window, DTOptionsBuilder, DTColumnBuilder, $uibModal, $http, config, screenService, tableService, localStorageService) {
 
     //screenService.showOverlay();
 
@@ -184,9 +184,7 @@
       }
       params.push('zff_page=' + encodeURIComponent(vm.page));
 
-      var query = config.urls.salespeopleTableAjax + (params.length ? '?' + params.join('&') : '');
-
-      return query;
+      return tableService.getTableUrl('Salespeople', config, params);
     }
 
     function prop(key) {

@@ -4011,6 +4011,7 @@ select.mobile-device {
 .ion-android-checkbox-outline-blank:before,
 .ion-android-contact:before,
 .ion-android-download:before,
+.ion-android-search:before,
 .ion-android-unlock:before,
 .ion-arrow-down-c:before,
 .ion-arrow-right-a:before,
@@ -4031,10 +4032,13 @@ select.mobile-device {
 .ion-ios-close-outline:before,
 .ion-ios-eye:before,
 .ion-ios-eye-outline:before,
+.ion-ios-search:before,
+.ion-ios-search-strong:before,
 .ion-person:before,
 .ion-plus:before,
 .ion-printer:before,
 .ion-refresh:before,
+.ion-search:before,
 .ion-social-usd:before,
 .ion-social-usd-outline:before,
 .ion-trash-a:before {
@@ -4064,6 +4068,9 @@ select.mobile-device {
 
 .ion-android-download:before {
   content: ""; }
+
+.ion-android-search:before {
+  content: ""; }
 
 .ion-android-unlock:before {
   content: ""; }
@@ -4125,6 +4132,12 @@ select.mobile-device {
 .ion-ios-eye-outline:before {
   content: ""; }
 
+.ion-ios-search:before {
+  content: ""; }
+
+.ion-ios-search-strong:before {
+  content: ""; }
+
 .ion-person:before {
   content: ""; }
 
@@ -4136,6 +4149,9 @@ select.mobile-device {
 
 .ion-refresh:before {
   content: ""; }
+
+.ion-search:before {
+  content: ""; }
 
 .ion-social-usd:before {
   content: ""; }

@@ -3,9 +3,36 @@
 
   angular
           .module('product')
-          .controller('ProductTableController', ['$timeout', '$scope', '$filter', '$uibModal', '$compile', '$http', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', 'localStorageService', ProductTableController]);
+          .controller('ProductTableController', [
+            '$scope',
+            '$filter',
+            '$uibModal',
+            '$compile',
+            '$http',
+            '$window',
+            'DTOptionsBuilder',
+            'DTColumnBuilder',
+            'config',
+            'screenService',
+            'tableService',
+            'localStorageService',
+            ProductTableController
+          ]);
 
-  function ProductTableController($timeout, $scope, $filter, $uibModal, $compile, $http, $window, DTOptionsBuilder, DTColumnBuilder, config, screenService, localStorageService) {
+  function ProductTableController(
+          $scope,
+          $filter,
+          $uibModal,
+          $compile,
+          $http,
+          $window,
+          DTOptionsBuilder,
+          DTColumnBuilder,
+          config,
+          screenService,
+          tableService,
+          localStorageService
+          ) {
 
     /*
      * controllerAs syntax
@@ -60,56 +87,12 @@
     //get a reference to the table
     vm.dtInstance = {};
 
-    //build table options
-    vm.dtOptions = DTOptionsBuilder.newOptions()
-            .withOption('ajax', {
-              url: datatableurl(),
-              type: 'POST',
-              cache: false,
-              data: data
-            })
-            .withDataProp('data')
-            .withDOM('t')
-            .withOption('processing', true)
-            .withOption('scrollY', config.scrollY)
-            .withOption('scrollX', true)
-            .withOption('scrollCollapse', true)
-            .withOption('serverSide', true)
-            .withButtons(buttons())
-            .withOption('createdRow', createdRow)
-            .withOption('drawCallback', draw)
-            .withOption('initComplete', initComplete);
-
-    vm.columns = [
-      '', 'ID', 'Product', 'Description', 'Comment', 'Option', 'Wholesale',
-      'Retail', 'Override', 'UOM', 'Status', 'Saturday Enabled', 'SKU', 'Actions'
-    ];
-
-    vm.dtColumns = [
-      DTColumnBuilder.newColumn(columnindex("")).withTitle(vm.columns[columnindex("")]).renderWith(renderCheckbox).notSortable(),
-      DTColumnBuilder.newColumn(columnindex("ID")).withTitle(vm.columns[columnindex("ID")]),
-      DTColumnBuilder.newColumn(columnindex("Product")).withTitle(vm.columns[columnindex("Product")]).withOption('width', '300px'),
-      DTColumnBuilder.newColumn(columnindex("Description")).withTitle(vm.columns[columnindex("Description")]),
-      DTColumnBuilder.newColumn(columnindex("Comment")).withTitle(vm.columns[columnindex("Comment")]),
-      DTColumnBuilder.newColumn(columnindex("Option")).withTitle(vm.columns[columnindex("Option")]),
-      DTColumnBuilder.newColumn(columnindex("Wholesale")).withTitle(vm.columns[columnindex("Wholesale")]).renderWith(renderWholesale),
-      DTColumnBuilder.newColumn(columnindex("Retail")).withTitle(vm.columns[columnindex("Retail")]).renderWith(renderRetail),
-      DTColumnBuilder.newColumn(columnindex("Override")).withTitle(vm.columns[columnindex("Override")]).renderWith(renderMoney),
-      DTColumnBuilder.newColumn(columnindex("UOM")).withTitle(vm.columns[columnindex("UOM")]).withOption('width', '25px'),
-      DTColumnBuilder.newColumn(columnindex("Status")).withTitle(vm.columns[columnindex("Status")]).renderWith(renderStatus),
-      DTColumnBuilder.newColumn(columnindex("Saturday Enabled")).withTitle(vm.columns[columnindex("Saturday Enabled")]).renderWith(renderSaturdayEnabled),
-      DTColumnBuilder.newColumn(columnindex("SKU")).withTitle(vm.columns[columnindex("SKU")]),
-      DTColumnBuilder.newColumn(columnindex("Actions")).withTitle(vm.columns[columnindex("Actions")]).renderWith(renderActions).notSortable()
-    ];
-    
-    function datatableurl(){
-      var url = [
-        '/product/product-table?zff_sales_attr_id=', 
-        getSalesAttrId(), 
-        '&zff_customer_id=',  
-        storage('customer_id')
-      ];
-      return url.join('');
+    function datatableurl() {
+      
+      return tableService.getTableUrl('Products', config, {
+                sales_attr_id: getSalesAttrId(), 
+                customer_id: storage('customer_id')}
+              );
     }
 
     function data(data, dtInstance) {
@@ -117,12 +100,12 @@
       screenService.showOverlay();
 
       if (!vm.db_synced) {
-        
+
         data['zff_sync'] = '1';
 
         vm.db_synced++;
       } else {
-        
+
         data['zff_sync'] = '0';
       }
 
@@ -140,17 +123,30 @@
 
       var setDTProp = function (data, prop) {
 
+        var property = vm[prop[1]];
+        if (eq(prop[0], 'Wholesale') || eq(prop[0], 'Retail') || eq(prop[0], 'Override')) {
+          
+          property = vm[prop[1]] && vm[prop[1]].indexOf('$') === 0 ? 
+                  vm[prop[1]].substr(1, vm[prop[1]].length) : 
+                  vm[prop[1]];
+          
+          data['columns'][columnindex(prop[0])]['search']['value'] = property;
+          return;
+        }
+        
         data['columns'][columnindex(prop[0])]['search']['value'] = vm[prop[1]];
       }
 
       for (var i = 0; i < props.length; i++) {
 
         setDTProp(data, props[i]);
+        
       }
 
       if (eq(vm.zff_status, 'Disabled') || eq(vm.zff_status, 'Enabled')) {
 
         data['columns'][columnindex("Status")]['search']['value'] = eq(vm.zff_status, 'Disabled') ? '0' : '1';
+        
       }
 
       if (eq(vm.zff_saturdayenabled, 'Off') || eq(vm.zff_saturdayenabled, 'On')) {
@@ -162,6 +158,7 @@
       if (vm.pageSize && !vm.hidePageParams) {
 
         data['length'] = vm.pageSize;
+        
       }
 
       data['start'] = (vm.page ? --vm.page : 0) * vm.pageSize;
@@ -244,7 +241,6 @@
     }
 
     function createdRow(row, data, dataIndex) {
-      log('createdRow');
       if (eq(data[columnindex("Status")], '0')) {
         element(row).addClass('disabled');
       }
@@ -313,23 +309,6 @@
 
     function getSalesAttrId() {
       return storage('sales_attr_id') ? storage('sales_attr_id') : config.salesAttrId;
-    }
-
-    function encodename(params, name, stripzff) {
-      stripzff ? params.push(name + '=' + encodeURIComponent(vm[name.substr(4)])) :
-              params.push(name + '=' + encodeURIComponent(vm[name]));
-    }
-
-    function encodeunname(params, name, vmname) {
-      params.push(name + '=' + encodeURIComponent(vm[vmname]));
-    }
-
-    function encodebool(params, name, test) {
-      params.push(name + '=' + encodeURIComponent(vm[name] === test ? 1 : 0));
-    }
-
-    function prop(key) {
-      return vm[key];
     }
 
     function renderMoney(data, type, full) {
@@ -434,11 +413,7 @@
 
     function checkbox_click($e) {
 
-      //log('checkbox_click() ');
-
       var td = $(this);
-
-      //log(td);
 
       if (!td.is('td')) {
         var label = 'Row Click Error';
@@ -507,11 +482,13 @@
     }
 
     function searchUsers() {
+
       screenService.showOverlay();
-      var params = [
-      ];
+
+      var params = [];
 
       var sales_attr_id = getSalesAttrId();
+
       params.push('zff_sales_attr_id=' + sales_attr_id);
 
       var customer_id = storage('customer_id');
@@ -553,7 +530,7 @@
       var postData = api().ajax.params();
       postData.start = 0;
       postData.length = 10000;
-      
+
       ajax({
         'dataType': 'json',
         'type': 'POST',
@@ -822,9 +799,50 @@
               config.pageSize;
     }
 
-    function activate() {
+    function ngInit() {
 
       resetVmProps();
+      //build table options
+      vm.dtOptions = DTOptionsBuilder.newOptions()
+              .withOption('ajax', {
+                url: datatableurl(),
+                type: 'POST',
+                cache: false,
+                data: data
+              })
+              .withDataProp('data')
+              .withDOM('t')
+              .withOption('processing', true)
+              .withOption('scrollY', config.scrollY)
+              .withOption('scrollX', true)
+              .withOption('scrollCollapse', true)
+              .withOption('serverSide', true)
+              .withButtons(buttons())
+              .withOption('createdRow', createdRow)
+              .withOption('drawCallback', draw)
+              .withOption('initComplete', initComplete);
+
+      vm.columns = [
+        '', 'ID', 'Product', 'Description', 'Comment', 'Option', 'Wholesale',
+        'Retail', 'Override', 'UOM', 'Status', 'Saturday Enabled', 'SKU', 'Actions'
+      ];
+
+      vm.dtColumns = [
+        DTColumnBuilder.newColumn(columnindex("")).withTitle(vm.columns[columnindex("")]).renderWith(renderCheckbox).notSortable(),
+        DTColumnBuilder.newColumn(columnindex("ID")).withTitle(vm.columns[columnindex("ID")]),
+        DTColumnBuilder.newColumn(columnindex("Product")).withTitle(vm.columns[columnindex("Product")]).withOption('width', '300px'),
+        DTColumnBuilder.newColumn(columnindex("Description")).withTitle(vm.columns[columnindex("Description")]),
+        DTColumnBuilder.newColumn(columnindex("Comment")).withTitle(vm.columns[columnindex("Comment")]),
+        DTColumnBuilder.newColumn(columnindex("Option")).withTitle(vm.columns[columnindex("Option")]),
+        DTColumnBuilder.newColumn(columnindex("Wholesale")).withTitle(vm.columns[columnindex("Wholesale")]).renderWith(renderWholesale),
+        DTColumnBuilder.newColumn(columnindex("Retail")).withTitle(vm.columns[columnindex("Retail")]).renderWith(renderRetail),
+        DTColumnBuilder.newColumn(columnindex("Override")).withTitle(vm.columns[columnindex("Override")]).renderWith(renderMoney),
+        DTColumnBuilder.newColumn(columnindex("UOM")).withTitle(vm.columns[columnindex("UOM")]).withOption('min-width', '60px'),
+        DTColumnBuilder.newColumn(columnindex("Status")).withTitle(vm.columns[columnindex("Status")]).renderWith(renderStatus),
+        DTColumnBuilder.newColumn(columnindex("Saturday Enabled")).withTitle(vm.columns[columnindex("Saturday Enabled")]).renderWith(renderSaturdayEnabled),
+        DTColumnBuilder.newColumn(columnindex("SKU")).withTitle(vm.columns[columnindex("SKU")]),
+        DTColumnBuilder.newColumn(columnindex("Actions")).withTitle(vm.columns[columnindex("Actions")]).renderWith(renderActions).notSortable()
+      ];
 
     }
 
@@ -948,11 +966,7 @@
     vm.tableTitle = function () {
       var total = vm.recordsTotal;
       var filtered = vm.recordsFiltered;
-      if (eq(total, filtered)) {
-        return filtered + ' Total Records';
-      } else {
-        return filtered + ' Filtered Records';
-      }
+      return tableService.tableTitle(total, filtered);
     };
 
     vm.selectAll = function () {
@@ -1076,7 +1090,7 @@
 
               .then(function (response) {
 
-                
+
                 vm.reloadData();
                 var data = api().data();
                 initComplete(null, data);
@@ -1248,7 +1262,9 @@
 
     };
 
-    activate();
+    if (!config.unittest) {
+      ngInit()
+    }
 
   }
 })();

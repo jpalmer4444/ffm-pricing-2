@@ -3,9 +3,9 @@
 
   angular
           .module('customer')
-          .controller('CustomerTableController', ['$timeout', '$scope', '$filter', '$compile', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', 'localStorageService', CustomerTableController]);
+          .controller('CustomerTableController', ['$timeout', '$scope', '$filter', '$compile', '$window', 'DTOptionsBuilder', 'DTColumnBuilder', 'config', 'screenService', 'tableService', 'localStorageService', CustomerTableController]);
 
-  function CustomerTableController($timeout, $scope, $filter, $compile, $window, DTOptionsBuilder, DTColumnBuilder, config, screenService, localStorageService) {
+  function CustomerTableController($timeout, $scope, $filter, $compile, $window, DTOptionsBuilder, DTColumnBuilder, config, screenService, tableService, localStorageService) {
 
     //screenService.showOverlay();
 
@@ -90,11 +90,7 @@
     vm.tableTitle = function () {
       var total = vm.recordsTotal;
       var filtered = vm.recordsFiltered;
-      if ((total === filtered)) {
-        return filtered + ' Total Records';
-      } else {
-        return filtered + ' Filtered Records';
-      }
+      return tableService.tableTitle(total, filtered);
     };
 
     function createdRow(row, data, dataIndex) {
@@ -184,9 +180,7 @@
 
       params.push('zff_sales_attr_id=' + encodeURIComponent(sales_attr_id));
 
-      var query = config.urls.customersTableAjax + (params.length ? '?' + params.join('&') : '');
-
-      return query;
+      return tableService.getTableUrl('Customers', config, params);
     }
 
     function prop(key) {

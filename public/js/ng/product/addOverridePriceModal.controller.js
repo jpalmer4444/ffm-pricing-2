@@ -25,8 +25,7 @@
     var vm = this;
     
     vm.scenario = !overrideprice ? 'create' : 'edit';
-
-
+    
     vm.product_id = product_id;
     
     vm.sales_attr_id = sales_attr_id;

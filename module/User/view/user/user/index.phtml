@@ -22,12 +22,31 @@ $this->pageBreadcrumbs()->setItems([
                         <!-- ID -->
                     </th>
                     <th>
-                        <!-- USERNAME -->
-                        <input name="zff_username" ffm-enter="userCtrl.reloadData()" ng-model="userCtrl.zff_username" class="filter form-control" value="" type="text">
+                        <div class="input-group">
+                            <input name="zff_username" 
+                                   ffm-enter="userCtrl.reloadData()" 
+                                   ng-model="userCtrl.zff_username" 
+                                   class="filter form-control" 
+                                   placeholder="Username" 
+                                   type="text">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
-                        <!-- EMAIL -->
-                        <input name="zff_email" ffm-enter="userCtrl.reloadData()" ng-model="userCtrl.zff_email" class="filter form-control" value="" type="text">
+                        <div class="input-group">
+                        <input 
+                            name="zff_email" 
+                            ffm-enter="userCtrl.reloadData()" 
+                            ng-model="userCtrl.zff_email" 
+                            class="filter form-control" 
+                            placeholder="Email" 
+                            type="text">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
                         <div class="btn-group bootstrap-select filter form-control" uib-dropdown dropdown-append-to-body="true">
@@ -51,20 +70,54 @@ $this->pageBreadcrumbs()->setItems([
 
                     </th>
                     <th>
-                        <!-- FULL NAME -->
-                        <input name="zff_fullname" ffm-enter="userCtrl.reloadData()" ng-model="userCtrl.zff_fullname" class="filter form-control" value="" type="text">
+                        <div class='input-group'>
+                        <input 
+                            name="zff_fullname" 
+                            ffm-enter="userCtrl.reloadData()" 
+                            ng-model="userCtrl.zff_fullname" 
+                            class="filter form-control" 
+                            placeholder="Full Name" 
+                            type="text">
+                            <span class="input-group-addon">
+                                <span class="ion ion-search"></span>
+                            </span>
+                        </div>
                     </th>
                     <th>
                         <!-- CREATED -->
                         <label ng-click="userCtrl.zff_createddate_open = true" class="cursor-pointer date-picker-table">
-                            <input name="zff_createdDate" ng-change="userCtrl.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{userCtrl.dateformat}}" ng-model="userCtrl.zff_createddate" is-open="userCtrl.zff_createddate_open" datepicker-options="userCtrl.dateOptions" alt-input-formats="userCtrl.altInputFormats" />
+                            <input 
+                                name="zff_createdDate" 
+                                ng-change="userCtrl.reloadData()" 
+                                readonly 
+                                placeholder='Created'
+                                datepicker-append-to-body="true" 
+                                type="text" 
+                                class="form_datetime filter form-control" 
+                                uib-datepicker-popup="{{userCtrl.dateformat}}" 
+                                ng-model="userCtrl.zff_createddate" 
+                                is-open="userCtrl.zff_createddate_open" 
+                                datepicker-options="userCtrl.dateOptions" 
+                                alt-input-formats="userCtrl.altInputFormats" />
                             <i class="ion-calendar" ></i>
                         </label>
                     </th>
                     <th>
                         <!-- LAST LOGIN -->
                         <label ng-click="userCtrl.zff_lastlogindate_open = true" class="cursor-pointer date-picker-table">
-                            <input name="zff_lastLogin" ng-change="userCtrl.reloadData()" readonly datepicker-append-to-body="true" type="text" class="form_datetime filter form-control" uib-datepicker-popup="{{userCtrl.dateformat}}" ng-model="userCtrl.zff_lastlogindate" is-open="userCtrl.zff_lastlogindate_open" datepicker-options="userCtrl.dateOptions" alt-input-formats="userCtrl.altInputFormats" />
+                            <input 
+                                name="zff_lastLogin" 
+                                ng-change="userCtrl.reloadData()" 
+                                readonly 
+                                placeholder='Last Login'
+                                datepicker-append-to-body="true" 
+                                type="text" 
+                                class="form_datetime filter form-control" 
+                                uib-datepicker-popup="{{userCtrl.dateformat}}" 
+                                ng-model="userCtrl.zff_lastlogindate" 
+                                is-open="userCtrl.zff_lastlogindate_open" 
+                                datepicker-options="userCtrl.dateOptions" 
+                                alt-input-formats="userCtrl.altInputFormats" />
                             <i class="ion-calendar" ></i>
                         </label>
                     </th>
@@ -84,18 +137,6 @@ $this->pageBreadcrumbs()->setItems([
                 </tr>
             </thead>
             <tbody></tbody>
-            <tfoot>
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Fullname</th>
-                    <th>Created</th>
-                    <th>Last Login</th>
-                    <th>Actions</th>
-                </tr>
-            </tfoot>
         </table>
     </div>
 </div>

@@ -16,14 +16,6 @@
     vm.linkToCustomers = function(){
       
     };
-    
-    function setSalesAttrId(sales_attr_id){
-      localStorageService.set(vm.key.sales_attr_id, sales_attr_id);
-    }
-    
-    function getSalesAttrId(){
-      localStorageService.get(vm.key.sales_attr_id);
-    }
 
     activate();
 
