@@ -375,4 +375,26 @@ class Customer extends \Application\Entity\Customer implements \Doctrine\ORM\Pro
         return parent::setAddedProducts($addedProducts);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getAllProducts()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAllProducts', []);
+
+        return parent::getAllProducts();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFilteredProducts($criteria)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFilteredProducts', [$criteria]);
+
+        return parent::getFilteredProducts($criteria);
+    }
+
 }
