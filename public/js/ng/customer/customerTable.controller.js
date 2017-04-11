@@ -80,8 +80,7 @@
       DTColumnBuilder.newColumn(2).withTitle('Name'),
       DTColumnBuilder.newColumn(3).withTitle('Email'),
       DTColumnBuilder.newColumn(4).withTitle('Created'),
-      DTColumnBuilder.newColumn(5).withTitle('Updated'),
-      DTColumnBuilder.newColumn(6).withTitle('Actions').renderWith(renderActions)
+      DTColumnBuilder.newColumn(5).withTitle('Updated')
     ];
 
     /**
@@ -112,27 +111,6 @@
     }
 
     //actions columns renderer
-    function renderActions(data, type, full) {
-
-      var aroundTableActions = angular.element('<div/>', {
-        class: 'around-table-actions'
-      });
-
-      var viewProductsButton = angular.element('<a/>', {
-        'ng-click': 'customerCtrl.clickProducts("' + full[1] + '","' + full[2] + '", ' + full[0] + ')',
-        class: 'btn btn-default btn-square btn-transparent products-btn',
-        'uib-popover': 'View ' + full[1] + ' Product List',
-        'popover-placement': 'left',
-        'popover-trigger': "'mouseenter'",
-        'popover-append-to-body': "'true'"
-      }).appendTo(aroundTableActions);
-
-      angular.element('<i/>', {
-        class: 'ion ion-eye spin-logo',
-      }).appendTo(viewProductsButton);
-
-      return aroundTableActions.prop('outerHTML');
-    }
 
     vm.reloadData = function () {
       $timeout(function () {//$timeout forces async
