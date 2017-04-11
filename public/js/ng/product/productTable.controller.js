@@ -359,7 +359,7 @@
       });
 
       var addProductButton = element('<a/>', {
-        id: 'addProductButton',
+        id: 'addProductButton' + meta.row,
         'ng-click': 'productCtrl.addProduct()',
         class: 'btn btn-default btn-square btn-transparent',
         'uib-popover': 'Add Product',
@@ -376,7 +376,7 @@
       var product_id = full[columnindex('ID')] ? full[columnindex('ID')] : '';
 
       var overridePriceButton = element('<a/>', {
-        id: 'overridePriceButton',
+        id: 'overridePriceButton' + meta.row,
         'ng-click': 'productCtrl.addOverridePrice("' + overrideprice + '", "' + product_id + '")',
         class: 'btn btn-default btn-square btn-transparent',
         'uib-popover': 'Override Price',
@@ -394,7 +394,7 @@
       if (firstLetterOfId === 'A') {
 
         var removeAddedProductButton = element('<a/>', {
-          id: 'removeAddedProductButton',
+          id: 'removeAddedProductButton' + meta.row,
           'ng-click': 'productCtrl.confirmDeleteAddedProduct("' + full[columnindex('ID')] + '")',
           class: 'btn btn-default btn-square btn-transparent',
           'uib-popover': 'Remove Added Product',
@@ -801,6 +801,7 @@
 
     function ngInit() {
 
+      unloadScrollBars();
       resetVmProps();
       //build table options
       vm.dtOptions = DTOptionsBuilder.newOptions()
@@ -1261,6 +1262,11 @@
       });
 
     };
+    
+    function unloadScrollBars() {
+    document.documentElement.style.overflow = 'hidden';  // firefox, chrome
+    document.body.scroll = "no"; // ie only
+}
 
     if (!config.unittest) {
       ngInit()

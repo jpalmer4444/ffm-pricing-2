@@ -120,7 +120,7 @@
 
       var viewProductsButton = angular.element('<a/>', {
         'ng-click': 'customerCtrl.clickProducts("' + full[1] + '","' + full[2] + '", ' + full[0] + ')',
-        class: 'btn btn-default btn-square btn-transparent',
+        class: 'btn btn-default btn-square btn-transparent products-btn',
         'uib-popover': 'View ' + full[1] + ' Product List',
         'popover-placement': 'left',
         'popover-trigger': "'mouseenter'",

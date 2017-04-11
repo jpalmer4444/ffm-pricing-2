@@ -128,7 +128,7 @@
       //link to customers
       var linkButton = angular.element('<a/>', {
         'ng-click': 'salespeopleCtrl.clickCustomers(' + data + ', "' + full[4] + '")',
-        class: 'btn btn-default btn-square btn-transparent',
+        class: 'btn btn-default btn-square btn-transparent salespeople-btn',
         'uib-popover': 'View ' + full[4] + '\'s Customers',
         'popover-placement': 'left',
         'popover-trigger': "'mouseenter'",
@@ -197,7 +197,7 @@
         var clazzed = false;
         for (var j = 0; j < vm.missingFromWebServiceSalespeople.length; j++) {
           //array of objects -- match ids to identify
-          //coerse both to string
+          //co-erse both to string
           var idwebservice = vm.missingFromWebServiceSalespeople[j]['id'] + '';
           var idrows = rows[i][0] + '';
           if (idwebservice === idrows) {
@@ -257,13 +257,7 @@
     vm.manageUsers = function (id) {
       $window.location.href = '';
     }
-
-    /**
-     * 
-     * @param string type type (missingFromWebServiceSalespeople | missingFromDBSalespeople)
-     * @param int index index of object in type array
-     * @returns undefined
-     */
+    
     vm.addSalesperson = function (type, index) {
 
       var modalInstance;
@@ -355,9 +349,7 @@
 
     };
 
-
-    function addSalesperson(scenario, role, id, password, password_verify, email, username, full_name, phone1, status, salesAttrId,
-            resultHandler, finalHandler) {
+    function addSalesperson(scenario, role, id, password, password_verify, email, username, full_name, phone1, status, salesAttrId, resultHandler, finalHandler) {
 
       var data = {
         id: id,
@@ -394,7 +386,6 @@
                 }
               });
     }
-
 
     vm.selectStatus = function (status) {
       if (status !== vm.status) {

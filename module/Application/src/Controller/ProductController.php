@@ -426,11 +426,10 @@ class ProductController extends BaseController {
         
         $search = '%' . $this->params()->fromPost('term') . '%';
 
-        $sql = 'SELECT `products`.`productname` as \'productname\', `products`.`description` as \'description\', `products`.`sku` as \'sku\', `products`.`uom` as \'uom\', `products`.`retail` as \'retail\' FROM products WHERE `products`.`productname` LIKE ? OR `products`.`description` LIKE ? ORDER BY `products`.`productname` ASC LIMIT 0, 10';
+        $sql = 'SELECT `products`.`productname` as \'productname\', `products`.`description` as \'description\', `products`.`sku` as \'sku\', `products`.`uom` as \'uom\', `products`.`retail` as \'retail\' FROM products WHERE `products`.`productname` LIKE ? ORDER BY `products`.`productname` ASC LIMIT 0, 25';
 
         $stmt = $this->entityManager->getConnection()->executeQuery(
                 $sql, [
-                    $search,
                     $search
                 ]
         );

@@ -24,6 +24,7 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-requirejs": "^1.1.0",
     "karma-safari-launcher": "^1.0.0",
+    "phantomjs": "^2.1.7",
     "require": "^2.4.20",
     "requirejs": "^2.3.3"
   }
