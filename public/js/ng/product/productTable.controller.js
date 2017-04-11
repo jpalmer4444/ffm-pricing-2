@@ -695,14 +695,16 @@
                 row.push(tablerow[vm.columns.indexOf('Product')]);
                 row.push(tablerow[vm.columns.indexOf('Description')]);
                 row.push(tablerow[vm.columns.indexOf('Comment')]);
-                row.push(tablerow[vm.columns.indexOf('UOM')]);
-                row.push(tablerow[vm.columns.indexOf('SKU')]);
                 var override = tablerow[vm.columns.indexOf('Override')];
                 if (override) {
                   row.push(tablerow[vm.columns.indexOf('Override')]);
                 } else {
                   row.push(tablerow[vm.columns.indexOf('Retail')]);
                 }
+                
+                row.push(tablerow[vm.columns.indexOf('UOM')]);
+                row.push(tablerow[vm.columns.indexOf('SKU')]);
+                
                 if (override || tablerow[vm.columns.indexOf('Status')] === '1') {
                   newRowData.push(row);
                   var postrow = [tablerow[vm.columns.indexOf('ID')], tablerow[vm.columns.indexOf('Retail')], tablerow[vm.columns.indexOf('Override')]];
@@ -713,7 +715,7 @@
 
             delete vm.pdfrows;
 
-            docDefinition.content[1].table.body.push(['Product', 'Description', 'Comment', 'UOM', 'SKU', 'Price']);
+            docDefinition.content[1].table.body.push(['Product', 'Description', 'Comment', 'Price', 'UOM', 'SKU']);
             newRowData.forEach(function (currentValue) {
               docDefinition.content[1].table.body.push(currentValue);
             });
