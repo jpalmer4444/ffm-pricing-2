@@ -127,7 +127,7 @@
         return response.data;
       });
 
-    }
+    };
     
     vm.selectProduct = function(){
       
@@ -136,7 +136,7 @@
       vm.product.uom = vm.typeaheadProduct.uom;
       vm.product.sku = vm.typeaheadProduct.sku;
       
-    }
+    };
 
   }
 })();

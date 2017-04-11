@@ -470,7 +470,7 @@
       var found = false;
       var foundAgain = false;
       vm.skus.forEach(function (val, index, array) {
-        if (eq(sku, val)) {
+        if (sku && eq(sku, val)) {
           if (!found) {
             found = true;
           } else if (found) {
