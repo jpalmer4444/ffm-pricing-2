@@ -79,12 +79,10 @@
         </footer>
 
         <?php
-//add angular files for appropriate pages.
+            //add angular files for appropriate pages.
         if ($this->ngPage) {
             
             $version = 23;
-            //$this->inlineScript()->appendFile($this->basePath('js/dist/angular-app-files.js?v='.
-            //1));
 
             $this->inlineScript()->appendFile($this->basePath('js/jquery.min.js'))
                     ->appendFile($this->basePath('js/jquery.dataTables.min.js'))
@@ -150,7 +148,6 @@
                     ->appendFile($this->basePath('js/ng/screen/opened.directive.js?v='.$version))
                     ->appendFile($this->basePath('js/ng/screen/select-on-focus.directive.js?v='.$version))
                     ->appendFile($this->basePath('js/ng/screen/warningModal.controller.js?v='.$version));
-            
             
                     //global angular modals.
                     

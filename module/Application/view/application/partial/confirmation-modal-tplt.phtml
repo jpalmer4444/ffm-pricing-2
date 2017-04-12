@@ -2,7 +2,7 @@
     <div class="modal-header">
         <div class="container">
             <div class="row">
-                <h3 class="pull-left confirmationTitle">{{ vmc.title }}</h3>
+                <h3 class="pull-left confirmationTitle" ng-bind=“vmc.title”></h3>
                 <a class="pull-right modal-icon ion-ios-close-outline" data-dismiss="modal" ng-click="vmc.dismiss()"></a>
             </div>
         </div>
@@ -11,7 +11,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <p class="confirmationText">{{ vmc.text }}</p>
+                    <p class="confirmationText" ng-bind=“vmc.text”></p>
                 </div>
             </div>
         </div>
@@ -19,8 +19,8 @@
     <div class="modal-footer">
         <div class="container">
             <div class="row">
-                <button type="button" class="btn reset-btn" data-dismiss="modal" ng-click="vmc.dismiss()">{{ vmc.dismissLabel }}</button>
-                <button id="confirmationModalBtn" class="btn btn-primary" ng-click="vmc.confirm()">{{ vmc.confirmLabel }}</button>
+                <button type="button" class="btn reset-btn" data-dismiss="modal" ng-click="vmc.dismiss()" ng-bind=“vmc.dismissLabel”></button>
+                <button id="confirmationModalBtn" class="btn btn-primary" ng-click="vmc.confirm()" ng-bind=“vmc.confirmLabel”></button>
             </div>
         </div>
     </div>

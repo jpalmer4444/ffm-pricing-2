@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="pull-left col-md-11 col-lg-11 col-sm-11">
-                    <h3>{{vmc.scenario === 'create' ? 'Add Override Price' : 'Edit Override Product'}}</h3>
+                    <h3 ng-bind="vmc.scenario === 'create' ? 'Add Override Price' : 'Edit Override Product'"></h3>
                 </div>
                 <a class="pull-right modal-icon ion-ios-close-outline" data-dismiss="modal" ng-click="vmc.cancel()"></a>
             </div>
@@ -17,7 +17,7 @@
                     <div class="col-sm-12 ion col-md-12 col-lg-12 row">
                         <!--Override Price-->
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
-                            <label class="control-label">{{ vmc.label.overrideprice}}</label>
+                            <label class="control-label" ng-bind="vmc.label.overrideprice"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addOverridePriceForm.overrideprice.$valid && addOverridePriceForm.overrideprice.$touched}">
                                 <input class="form-control" ng-required="false" ng-pattern="vmc.pattern.money" ng-model="vmc.overrideprice" placeholder="Override Price" name="overrideprice" type="text" select-on-focus>
                             </div>

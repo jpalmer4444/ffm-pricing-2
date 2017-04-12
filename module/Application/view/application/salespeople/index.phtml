@@ -60,7 +60,7 @@ $this->pageBreadcrumbs()->setItems([
                             </ul>
                             <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle >
                                 <span ng-if="!salespeopleCtrl.status" class="filter-option pull-left">- Select -</span>
-                                <span ng-if="salespeopleCtrl.status" class="filter-option pull-left">{{salespeopleCtrl.status}}</span>
+                                <span ng-if="salespeopleCtrl.status" class="filter-option pull-left" ng-bind="salespeopleCtrl.status"></span>
                                 &nbsp;
                                 <span class="caret"></span>
                             </button>

@@ -18,7 +18,7 @@
                     <div class="col-sm-12 col-md-6 col-lg-6 row">
                         <!--Product-->
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
-                            <label class="control-label">{{ vmc.label.product}}</label>
+                            <label class="control-label" ng-bind="vmc.label.product"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addProductForm.product.$valid && addProductForm.product.$touched}">
 
                                 <!--<input class="form-control" ng-required="true" ng-model="vmc.product" placeholder="Product" name="product" type="text" select-on-focus>-->
@@ -37,14 +37,14 @@
                         </div>
                         <!--Description-->
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
-                            <label class="control-label">{{ vmc.label.description}}</label>
+                            <label class="control-label" ng-bind="vmc.label.description"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addProductForm.description.$valid && addProductForm.description.$touched}">
                                 <input class="form-control" ng-model="vmc.product.description" placeholder="Description" name="description" type="text" select-on-focus>
                             </div>
                         </div>
                         <!--Comment-->
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
-                            <label class="control-label">{{ vmc.label.comment}}</label>
+                            <label class="control-label" ng-bind="vmc.label.comment"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addProductForm.comment.$valid && addProductForm.comment.$touched}">
                                 <input class="form-control" ng-model="vmc.comment" placeholder="Comment" name="comment" type="text" select-on-focus>
                             </div>
@@ -59,21 +59,21 @@
                             overrideprice record (set to Inactive)
                         -->
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
-                            <label class="control-label">{{ vmc.label.overrideprice}}</label>
+                            <label class="control-label" ng-bind="vmc.label.overrideprice"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addProductForm.overrideprice.$valid && addProductForm.overrideprice.$touched}">
                                 <input class="form-control" ng-pattern="vmc.pattern.money" ng-model="vmc.product.retail" placeholder="Override Price" name="overrideprice" type="text" select-on-focus>
                             </div>
                         </div>
                         <!--UOM-->
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
-                            <label class="control-label">{{ vmc.label.uom}}</label>
+                            <label class="control-label" ng-bind="vmc.label.uom"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addProductForm.uom.$valid && addProductForm.uom.$touched}">
                                 <input class="form-control" ng-required="true" ng-model="vmc.product.uom" placeholder="Unit of Measure" name="uom" type="text" select-on-focus>
                             </div>
                         </div>
                         <!--SKU-->
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}" >
-                            <label class="control-label">{{ vmc.label.sku}}</label>
+                            <label class="control-label" ng-bind="vmc.label.sku"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addProductForm.sku.$valid && addProductForm.sku.$touched}">
                                 <input class="form-control" ng-pattern="vmc.pattern.sku" ng-model="vmc.product.sku" placeholder="SKU" name="sku" type="text" select-on-focus>
                             </div>

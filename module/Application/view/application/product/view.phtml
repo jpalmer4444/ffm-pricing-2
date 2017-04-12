@@ -190,7 +190,7 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
                             </ul>
                             <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle >
                                 <span ng-if="productCtrl.zff_status === ''" class="filter-option pull-left">- Select -</span>
-                                <span ng-if="productCtrl.zff_status !== ''" class="filter-option pull-left">{{productCtrl.zff_status}}</span>
+                                <span ng-if="productCtrl.zff_status !== ''" class="filter-option pull-left" ng-bind="productCtrl.zff_status"></span>
                                 &nbsp;
                                 <span class="caret"></span>
                             </button>
@@ -212,7 +212,7 @@ if (!empty($this->permissions()->isGranted('Application\Controller\SalespeopleCo
                             </ul>
                             <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle >
                                 <span ng-if="!productCtrl.zff_saturdayenabled" class="filter-option pull-left">- Select -</span>
-                                <span ng-if="productCtrl.zff_saturdayenabled" class="filter-option pull-left">{{productCtrl.zff_saturdayenabled}}</span>
+                                <span ng-if="productCtrl.zff_saturdayenabled" class="filter-option pull-left" ng-bind="productCtrl.zff_saturdayenabled"></span>
                                 &nbsp;
                                 <span class="caret"></span>
                             </button>
