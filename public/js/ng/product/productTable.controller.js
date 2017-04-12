@@ -54,7 +54,7 @@
       'Description', 'Comment', 'Option',
       'Wholesale', 'Retail', 'Override',
       'UOM', 'Status', 'Saturday Enabled',
-      'SKU'
+      'SKU', 'Actions'
     ];
 
     //do not change after constructor is called
@@ -352,6 +352,37 @@
       return rendered;
     }
 
+    function renderActions(data, type, full, meta) {
+
+      var aroundTableActions = element('<div/>', {
+        class: 'around-table-actions'
+      });
+
+      var firstLetterOfId = full[1][0];
+
+      if (firstLetterOfId === 'A') {
+
+        var removeAddedProductButton = element('<a/>', {
+          id: 'removeAddedProductButton' + meta.row,
+          'ng-click': 'productCtrl.confirmDeleteAddedProduct("' + full[columnindex('ID')] + '")',
+          class: 'btn btn-default btn-square btn-transparent',
+          'uib-popover': 'Remove Added Product',
+          'popover-placement': 'left',
+          'popover-trigger': "'mouseenter'",
+          'popover-append-to-body': "'true'"
+        }).appendTo(aroundTableActions);
+
+        element('<i/>', {
+          class: 'ion ion-close'
+        }).appendTo(removeAddedProductButton);
+        
+        return aroundTableActions.prop('outerHTML');
+      } else {
+        
+        return '';
+      }
+    }
+
     function checkbox_click($e) {
 
       var td = $(this);
@@ -378,11 +409,11 @@
         //do nothing - not an actionable column
         return;
       } else if (eq(column, columnindex("Override"))) {
-        
+
         var price = celldata(rowindex, column);
         var product_id = celldata(rowindex, columnindex("ID"));
         return vm.addOverridePrice(price, product_id);
-        
+
       }
 
       var selected = tr.hasClass('selected');
@@ -609,7 +640,8 @@
                 'UOM': array[j++],
                 'Status': array[j++],
                 'Saturday Enabled': array[j++],
-                'SKU': array[j++]
+                'SKU': array[j++],
+                'Actions': array[j++]
               };
               pdfrowobjects.push(product);
             }
@@ -633,7 +665,8 @@
                 pdfrow['UOM'],
                 pdfrow['Status'],
                 pdfrow['Saturday Enabled'],
-                pdfrow['SKU']
+                pdfrow['SKU'],
+                pdfrow['Actions']
               ]);
             });
 
@@ -777,7 +810,7 @@
 
       vm.columns = [
         '', 'ID', 'Product', 'Description', 'Comment', 'Option', 'Wholesale',
-        'Retail', 'Override', 'UOM', 'Status', 'Saturday Enabled', 'SKU'
+        'Retail', 'Override', 'UOM', 'Status', 'Saturday Enabled', 'SKU', 'Actions'
       ];
 
       vm.dtColumns = [
@@ -793,7 +826,8 @@
         DTColumnBuilder.newColumn(columnindex("UOM")).withTitle(vm.columns[columnindex("UOM")]).withOption('min-width', '60px'),
         DTColumnBuilder.newColumn(columnindex("Status")).withTitle(vm.columns[columnindex("Status")]).renderWith(renderStatus),
         DTColumnBuilder.newColumn(columnindex("Saturday Enabled")).withTitle(vm.columns[columnindex("Saturday Enabled")]).renderWith(renderSaturdayEnabled),
-        DTColumnBuilder.newColumn(columnindex("SKU")).withTitle(vm.columns[columnindex("SKU")])
+        DTColumnBuilder.newColumn(columnindex("SKU")).withTitle(vm.columns[columnindex("SKU")]),
+        DTColumnBuilder.newColumn(columnindex("Actions")).withTitle(vm.columns[columnindex("Actions")]).withOption('className', 'dt-center').renderWith(renderActions).notSortable()
       ];
 
     }
@@ -1128,7 +1162,7 @@
         modalInstance = null;
 
         var resultHandler = function (d) {
-          
+
           vm.reloadData();
           var data = api().data();
           initComplete(null, data);

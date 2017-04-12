@@ -83,8 +83,7 @@
       DTColumnBuilder.newColumn(3).withTitle('Status').renderWith(renderStatus),
       DTColumnBuilder.newColumn(4).withTitle('Full Name'),
       DTColumnBuilder.newColumn(5).withTitle('Created'),
-      DTColumnBuilder.newColumn(6).withTitle('Last Login'),
-      DTColumnBuilder.newColumn(7).withTitle('Actions').renderWith(renderActions)
+      DTColumnBuilder.newColumn(6).withTitle('Last Login')
     ];
 
     function createdRow(row, data, dataIndex) {
@@ -112,38 +111,6 @@
 
     function missing(row) {
       return row[row.length - 1] === 'missing';
-    }
-
-    //actions columns renderer
-    function renderActions(data, type, full) {
-
-      if (missing(full)) {
-        return '';
-      }
-
-      var aroundTableActions = angular.element('<div/>', {
-        class: 'around-table-actions'
-      });
-
-      //link to customers
-      var linkButton = angular.element('<a/>', {
-        'ng-click': 'salespeopleCtrl.clickCustomers(' + data + ', "' + full[4] + '")',
-        class: 'btn btn-default btn-square btn-transparent salespeople-btn',
-        'uib-popover': 'View ' + full[4] + '\'s Customers',
-        'popover-placement': 'left',
-        'popover-trigger': "'mouseenter'",
-        'popover-append-to-body': "'true'"
-      }).
-              //add button to div
-              appendTo(aroundTableActions);
-
-      angular.element('<i/>', {
-        class: 'ion ion-person spin-logo'
-      }).
-              //add icon to edit user button
-              appendTo(linkButton);
-
-      return aroundTableActions.prop('outerHTML');
     }
 
     vm.reloadData = function () {
