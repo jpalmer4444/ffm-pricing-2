@@ -189,7 +189,7 @@ class SalespersonForm extends Form {
             ];
 
             //add EmailExistsValidator on create only
-            $emailValidators = [
+            $emailValidators [] = [
                 'name' => UserEmailExistsValidator::class,
                 'options' => [
                     'entityManager' => $this->entityManager,

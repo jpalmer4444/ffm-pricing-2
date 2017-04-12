@@ -4,6 +4,7 @@ namespace User\Service;
 
 use Application\Entity\Role;
 use Application\Entity\User;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Math\Rand;
@@ -50,7 +51,7 @@ class UserManager {
         $user->setStatus($data['status']);
         $user->setSales_attr_id($data['salesAttrId']);
 
-        $currentDate = date('Y-m-d H:i:s');
+        $currentDate = new DateTime();
         $user->setDateCreated($currentDate);
 
         //email, username, full_name, password, status, dateCreated, phone1, salesAttrId, AND
@@ -59,10 +60,10 @@ class UserManager {
         $user->setSalespersonname($data['full_name']);
         $user->setPhone1($data['phone1']);
 
-        $role = $this->entityManager->getRepository(Role::class)
-                ->findOneByName($data['role']);
+        $roles = $this->entityManager->getRepository(Role::class)
+                ->findBy(['name' => $data['role']]);
 
-        $user->setRoles([$role]);
+        $user->setRoles($roles);
 
 
         // Add the entity to the entity manager.

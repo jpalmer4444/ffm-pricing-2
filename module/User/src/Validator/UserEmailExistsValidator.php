@@ -1,4 +1,5 @@
 <?php
+
 namespace User\Validator;
 
 use Zend\Validator\AbstractValidator;

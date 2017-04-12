@@ -54,7 +54,7 @@
       'Description', 'Comment', 'Option',
       'Wholesale', 'Retail', 'Override',
       'UOM', 'Status', 'Saturday Enabled',
-      'SKU', 'Actions'
+      'SKU'
     ];
 
     //do not change after constructor is called
@@ -88,11 +88,11 @@
     vm.dtInstance = {};
 
     function datatableurl() {
-      
+
       return tableService.getTableUrl('Products', config, {
-                sales_attr_id: getSalesAttrId(), 
-                customer_id: storage('customer_id')}
-              );
+        sales_attr_id: getSalesAttrId(),
+        customer_id: storage('customer_id')}
+      );
     }
 
     function data(data, dtInstance) {
@@ -125,28 +125,28 @@
 
         var property = vm[prop[1]];
         if (eq(prop[0], 'Wholesale') || eq(prop[0], 'Retail') || eq(prop[0], 'Override')) {
-          
-          property = vm[prop[1]] && vm[prop[1]].indexOf('$') === 0 ? 
-                  vm[prop[1]].substr(1, vm[prop[1]].length) : 
+
+          property = vm[prop[1]] && vm[prop[1]].indexOf('$') === 0 ?
+                  vm[prop[1]].substr(1, vm[prop[1]].length) :
                   vm[prop[1]];
-          
+
           data['columns'][columnindex(prop[0])]['search']['value'] = property;
           return;
         }
-        
+
         data['columns'][columnindex(prop[0])]['search']['value'] = vm[prop[1]];
       }
 
       for (var i = 0; i < props.length; i++) {
 
         setDTProp(data, props[i]);
-        
+
       }
 
       if (eq(vm.zff_status, 'Disabled') || eq(vm.zff_status, 'Enabled')) {
 
         data['columns'][columnindex("Status")]['search']['value'] = eq(vm.zff_status, 'Disabled') ? '0' : '1';
-        
+
       }
 
       if (eq(vm.zff_saturdayenabled, 'Off') || eq(vm.zff_saturdayenabled, 'On')) {
@@ -158,10 +158,10 @@
       if (vm.pageSize && !vm.hidePageParams) {
 
         data['length'] = vm.pageSize;
-        
+
       }
 
-      data['start'] = (vm.page ? vm.page-1 : 0) * (vm.pageSize);
+      data['start'] = (vm.page ? vm.page - 1 : 0) * (vm.pageSize);
 
     }
 
@@ -352,68 +352,10 @@
       return rendered;
     }
 
-    function renderActions(data, type, full, meta) {
-
-      var aroundTableActions = element('<div/>', {
-        class: 'around-table-actions'
-      });
-
-      var addProductButton = element('<a/>', {
-        id: 'addProductButton' + meta.row,
-        'ng-click': 'productCtrl.addProduct()',
-        class: 'btn btn-default btn-square btn-transparent',
-        'uib-popover': 'Add Product',
-        'popover-placement': 'left',
-        'popover-trigger': "'mouseenter'",
-        'popover-append-to-body': "'true'"
-      }).appendTo(aroundTableActions);
-
-      element('<i/>', {
-        class: 'ion ion-plus spin-logo'
-      }).appendTo(addProductButton);
-
-      var overrideprice = full[columnindex('Override')] ? full[columnindex('Override')] : '';
-      var product_id = full[columnindex('ID')] ? full[columnindex('ID')] : '';
-
-      var overridePriceButton = element('<a/>', {
-        id: 'overridePriceButton' + meta.row,
-        'ng-click': 'productCtrl.addOverridePrice("' + overrideprice + '", "' + product_id + '")',
-        class: 'btn btn-default btn-square btn-transparent',
-        'uib-popover': 'Override Price',
-        'popover-placement': 'left',
-        'popover-trigger': "'mouseenter'",
-        'popover-append-to-body': "'true'"
-      }).appendTo(aroundTableActions);
-
-      element('<i/>', {
-        class: 'ion ion-social-usd spin-logo'
-      }).appendTo(overridePriceButton);
-
-      var firstLetterOfId = full[1][0];
-
-      if (firstLetterOfId === 'A') {
-
-        var removeAddedProductButton = element('<a/>', {
-          id: 'removeAddedProductButton' + meta.row,
-          'ng-click': 'productCtrl.confirmDeleteAddedProduct("' + full[columnindex('ID')] + '")',
-          class: 'btn btn-default btn-square btn-transparent',
-          'uib-popover': 'Remove Added Product',
-          'popover-placement': 'left',
-          'popover-trigger': "'mouseenter'",
-          'popover-append-to-body': "'true'"
-        }).appendTo(aroundTableActions);
-
-        element('<i/>', {
-          class: 'ion ion-close spin-logo'
-        }).appendTo(removeAddedProductButton);
-
-      }
-      return aroundTableActions.prop('outerHTML');
-    }
-
     function checkbox_click($e) {
 
       var td = $(this);
+      var column = td.index();
 
       if (!td.is('td')) {
         var label = 'Row Click Error';
@@ -431,6 +373,17 @@
 
       var tr = $(this).parent('tr'),
               rowindex = tr.index();
+
+      if (!eq(column, columnindex("")) && !eq(column, columnindex("Override"))) {
+        //do nothing - not an actionable column
+        return;
+      } else if (eq(column, columnindex("Override"))) {
+        
+        var price = celldata(rowindex, column);
+        var product_id = celldata(rowindex, columnindex("ID"));
+        return vm.addOverridePrice(price, product_id);
+        
+      }
 
       var selected = tr.hasClass('selected');
 
@@ -656,8 +609,7 @@
                 'UOM': array[j++],
                 'Status': array[j++],
                 'Saturday Enabled': array[j++],
-                'SKU': array[j++],
-                'Actions': array[j++]
+                'SKU': array[j++]
               };
               pdfrowobjects.push(product);
             }
@@ -681,8 +633,7 @@
                 pdfrow['UOM'],
                 pdfrow['Status'],
                 pdfrow['Saturday Enabled'],
-                pdfrow['SKU'],
-                pdfrow['Actions']
+                pdfrow['SKU']
               ]);
             });
 
@@ -701,10 +652,10 @@
                 } else {
                   row.push(tablerow[vm.columns.indexOf('Retail')]);
                 }
-                
+
                 row.push(tablerow[vm.columns.indexOf('UOM')]);
                 row.push(tablerow[vm.columns.indexOf('SKU')]);
-                
+
                 if (override || tablerow[vm.columns.indexOf('Status')] === '1') {
                   newRowData.push(row);
                   var postrow = [tablerow[vm.columns.indexOf('ID')], tablerow[vm.columns.indexOf('Retail')], tablerow[vm.columns.indexOf('Override')]];
@@ -803,7 +754,6 @@
 
     function ngInit() {
 
-      unloadScrollBars();
       resetVmProps();
       //build table options
       vm.dtOptions = DTOptionsBuilder.newOptions()
@@ -827,7 +777,7 @@
 
       vm.columns = [
         '', 'ID', 'Product', 'Description', 'Comment', 'Option', 'Wholesale',
-        'Retail', 'Override', 'UOM', 'Status', 'Saturday Enabled', 'SKU', 'Actions'
+        'Retail', 'Override', 'UOM', 'Status', 'Saturday Enabled', 'SKU'
       ];
 
       vm.dtColumns = [
@@ -843,8 +793,7 @@
         DTColumnBuilder.newColumn(columnindex("UOM")).withTitle(vm.columns[columnindex("UOM")]).withOption('min-width', '60px'),
         DTColumnBuilder.newColumn(columnindex("Status")).withTitle(vm.columns[columnindex("Status")]).renderWith(renderStatus),
         DTColumnBuilder.newColumn(columnindex("Saturday Enabled")).withTitle(vm.columns[columnindex("Saturday Enabled")]).renderWith(renderSaturdayEnabled),
-        DTColumnBuilder.newColumn(columnindex("SKU")).withTitle(vm.columns[columnindex("SKU")]),
-        DTColumnBuilder.newColumn(columnindex("Actions")).withTitle(vm.columns[columnindex("Actions")]).renderWith(renderActions).notSortable()
+        DTColumnBuilder.newColumn(columnindex("SKU")).withTitle(vm.columns[columnindex("SKU")])
       ];
 
     }
@@ -1016,7 +965,7 @@
     vm.reloadData = function (resetPaging) {
       var resetPaging = false;
       vm.dtInstance.reloadData(servercallback, resetPaging);
-    }
+    };
 
     vm.dtInstanceCallback = function (instance) {
       vm.dtInstance = instance;
@@ -1178,8 +1127,8 @@
 
         modalInstance = null;
 
-        var resultHandler = function (data) {
-
+        var resultHandler = function (d) {
+          
           vm.reloadData();
           var data = api().data();
           initComplete(null, data);
@@ -1264,14 +1213,9 @@
       });
 
     };
-    
-    function unloadScrollBars() {
-    document.documentElement.style.overflow = 'hidden';  // firefox, chrome
-    document.body.scroll = "no"; // ie only
-}
 
     if (!config.unittest) {
-      ngInit()
+      ngInit();
     }
 
   }

@@ -307,7 +307,7 @@
             //currently pluck the first one, but if we ever need to support 
             //multiple roles or inheritance for Roles
             //this will become a bug.
-            return vm[type][index]['roles'] ? vm[type][index]['roles'][0] : 'sales';
+            return vm[type][index]['roles'] ? vm[type][index]['roles'][0] : 'user';
           }
         }
       });

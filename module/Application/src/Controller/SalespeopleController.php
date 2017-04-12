@@ -94,7 +94,7 @@ class SalespeopleController extends BaseController {
 
         if ($this->getRequest()->isXmlHttpRequest()) {
 
-            $form = new SalespersonForm($this->params()->fromPost('scenario'), $this->entityManager);
+            $form = new SalespersonForm($this->params()->fromPost('scenario'), $this->entityManager, $this->authManager->getLoggedInUser());
 
             if ($this->getRequest()->isPost()) {
                 
@@ -113,6 +113,7 @@ class SalespeopleController extends BaseController {
                         $data['role'] = $this->params()->fromPost('role');
                         //pass along non-form data salesAttrId.
                         $data['salesAttrId'] = $this->params()->fromPost('salesAttrId');
+                        //$this->logger->log(Logger::INFO, $data);
                         $user = $this->userManager->addUser($data);
                         
                     } else {
