@@ -65,7 +65,7 @@
     vm.start;
     vm.pageSize;
     vm.pageSizes = config.pageSizes;
-    vm.page = 1; //not zero based.
+    vm.page = 0; //not zero based.
     vm.zff_status = ''; //string status eg. Enabled or Disabled
     vm.recordsTotal;
     vm.salesperson = localStorageService.get('salesperson_name'); //set on Customer page.
@@ -161,7 +161,7 @@
         
       }
 
-      data['start'] = (vm.page ? --vm.page : 0) * vm.pageSize;
+      data['start'] = (vm.page ? vm.page-1 : 0) * (vm.pageSize);
 
     }
 

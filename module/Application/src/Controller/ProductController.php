@@ -342,7 +342,6 @@ class ProductController extends BaseController {
         
         (int) $zff_sync = $this->params()->fromPost('zff_sync');
         
-        
         $this->logger->log(Logger::INFO, "zff_sync: " . $zff_sync);
         
         if ($zff_sync == 1) {
