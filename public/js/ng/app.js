@@ -2,7 +2,7 @@
   "use strict";
 
   angular
-    .module("app", ["header", "users", "screen", "ffm", "customer", "product", "salespeople", "common", "ngSanitize", "LocalStorageModule"])
+    .module("app", ["header", "users", "screen", "ffm", "customer", "product", "salespeople", "common", "ngSanitize", "LocalStorageModule", "ngMessages"])
     .config(["$httpProvider", "$provide", "$compileProvider", "localStorageServiceProvider", configApp])
     .constant("config", (function() {
       //console.log('Init config');

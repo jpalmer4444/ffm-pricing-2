@@ -210,7 +210,7 @@
       }).appendTo(button);
       handleData(data);
       columnClicks();
-      api().rows().every(function (index, ele) {
+      api().rows({page: 'all'}).every(function (index, ele) {
         var tr = element(this.node());
         if (getDuplicateSkuStyle(celldata(index, columnindex('SKU')))) {
           if (!tr.hasClass('skus-match')) {
@@ -533,6 +533,11 @@
       screenService.hideOverlay();
     }
 
+    function replaceBreaks(val){
+      var regex = /<br\s*[\/]?>/gi;
+      return val ? val.replace(regex, ''): val;
+    }
+
     function buttons() {
       return [{
           extend: 'pdfHtml5',
@@ -643,6 +648,7 @@
                 'SKU': array[j++],
                 'Actions': array[j++]
               };
+              product['Description'] = replaceBreaks(product['Description']);
               pdfrowobjects.push(product);
             }
 
@@ -677,6 +683,7 @@
               if (tablerow && tablerow[0] === '1') {
                 var row = [];
                 row.push(tablerow[vm.columns.indexOf('Product')]);
+                
                 row.push(tablerow[vm.columns.indexOf('Description')]);
                 row.push(tablerow[vm.columns.indexOf('Comment')]);
                 var override = tablerow[vm.columns.indexOf('Override')];
@@ -1057,7 +1064,7 @@
 
       screenService.showConfirmation(title, text, dismissLabel, confirmLabel, confirmFnc);
 
-    }
+    };
 
     vm.deleteAddedProduct = function (productId) {
 

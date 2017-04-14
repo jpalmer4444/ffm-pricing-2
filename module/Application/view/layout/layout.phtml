@@ -82,7 +82,7 @@
             //add angular files for appropriate pages.
         if ($this->ngPage) {
             
-            $version = 23;
+            $version=25;
 
             $this->inlineScript()->appendFile($this->basePath('js/jquery.min.js'))
                     ->appendFile($this->basePath('js/jquery.dataTables.min.js'))
@@ -97,14 +97,13 @@
                     ->appendFile($this->basePath('js/ng/vendor/select.min.js'))
                     ->appendFile($this->basePath('js/ng/vendor/ui-bootstrap-tpls.min.js'))
                     ->appendFile($this->basePath('js/ng/vendor/angular-sanitize.min.js'))
+                    ->appendFile($this->basePath('js/ng/vendor/angular-messages.min.js'))
                     ->appendFile($this->basePath('js/ng/vendor/angular-local-storage.min.js'))
                     ->appendFile($this->basePath('js/ng/vendor/angular-datatables/angular-datatables.js'))
                     ->appendFile($this->basePath('js/ng/vendor/angular-datatables/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js'))
                     ->appendFile($this->basePath('js/ng/vendor/angular-datatables/plugins/buttons/angular-datatables.buttons.min.js'))
                     ->appendFile($this->basePath('js/ng/vendor/angular-datatables/plugins/select/angular-datatables.select.min.js'))
                     
-                    
-
                     //app
                     ->appendFile($this->basePath('js/ng/app.js?v='.$version))
 
@@ -138,6 +137,7 @@
                     //ffm module
                     ->appendFile($this->basePath('js/ng/ffm/ffm.module.js?v='.$version))
                     ->appendFile($this->basePath('js/ng/ffm/ffm-enter.directive.js?v='.$version))
+                    ->appendFile($this->basePath('js/ng/ffm/ffm-validate-money.directive.js?v='.$version))
                     ->appendFile($this->basePath('js/ng/ffm/ffm-pw-check.directive.js?v='.$version))
 
                     //screen module

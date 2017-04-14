@@ -43,7 +43,7 @@ $this->pageBreadcrumbs()->setItems([
             </tr>
             <tr>
                 <th>Date Created:</th>
-                <td><?= $this->escapeHtml($user->getDateCreated()) ?></td>
+                <td><?= $this->escapeHtml(date_format($user->getDateCreated(), 'm/d/Y')) ?></td>
             </tr>
         </table>
 

@@ -22,27 +22,27 @@ $this->pageBreadcrumbs()->setItems([
         <table class="table table-striped table-bordered">
              <tr>
                 <th>ID:</th>
-                <td><?= $this->escapeHtml($user->getId()) ?></th>
+                <th><?= $this->escapeHtml($user->getId()) ?></th>
             </tr>
             <tr>
                 <th>Username:</th>
-                <td><?= $this->escapeHtml($user->getUsername()) ?></th>
+                <th><?= $this->escapeHtml($user->getUsername()) ?></th>
             </tr>
             <tr>
                 <th>E-mail:</th>
-                <td><?= $this->escapeHtml($user->getEmail()) ?></th>
+                <th><?= $this->escapeHtml($user->getEmail()) ?></th>
             </tr>
             <tr>
                 <th>Full Name:</th>
-                <td><?= $this->escapeHtml($user->getFullName()) ?></th>
+                <th><?= $this->escapeHtml($user->getFullName()) ?></th>
             </tr>
             <tr>
                 <th>Date Created:</th>
-                <td><?= $this->escapeHtml($user->getDateCreated()) ?></th>
+                <th><?= $this->escapeHtml(date_format($user->getDateCreated(), 'm/d/Y')) ?></th>
             </tr>
             <tr>
                 <th>Status:</th>
-                <td><?= $this->escapeHtml($user->getStatusAsString()) ?></th>
+                <th><?= $this->escapeHtml($user->getStatusAsString()) ?></th>
             </tr>
         </table>
     </div>
