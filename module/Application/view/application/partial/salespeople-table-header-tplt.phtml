@@ -17,7 +17,7 @@
         </a>
         
         <a ng-if="salespeopleCtrl.missingFromDBSalespeople.length > 0" ng-repeat="salesperson in salespeopleCtrl.missingFromDBSalespeople track by $index" 
-           class="table-header-btn reset-filters-btn btn-accent" uib-popover="{{salesperson['full_name']}} inactive salesperson returned by Web Service" popover-placement="bottom" popover-trigger="'mouseenter'" ng-click="salespeopleCtrl.addSalesperson('missingFromDBSalespeople', $index)"
+           class="table-header-btn reset-filters-btn btn-accent" uib-popover="{{salesperson['title']}}" popover-placement="bottom" popover-trigger="'mouseenter'" ng-click="salespeopleCtrl.addSalesperson('missingFromDBSalespeople', $index)"
            ng-bind="salesperson['full_name']">
             <i class="ion-plus"></i>
         </a>

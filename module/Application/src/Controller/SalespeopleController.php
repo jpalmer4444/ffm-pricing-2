@@ -323,6 +323,18 @@ class SalespeopleController extends BaseController {
                     $salespeople [] = $user;
                 }
             }
+            
+            $usersInactive = $this->entityManager->getRepository(User::class)->findBy(['status' => '0']);
+
+            $salespeopleInactive = array();
+
+            foreach ($usersInactive as $user) {
+                //only removed for development
+                //must make sure to remove non-sales users.
+                if (!empty($user->getSales_attr_id())) {
+                    $salespeopleInactive [] = $user;
+                }
+            }
 
             $salespeopleCountFromDB = count($salespeople);
 
@@ -353,9 +365,13 @@ class SalespeopleController extends BaseController {
             //look for salespeople missing from DB.
             foreach ($json['salespeople'] as $salesperson1) {
                 if (!$this->salespeople($salespeople, $salesperson1['id'])) {
+                    //if we find this salesperson in Inactive array then title should be
+                    //Full Name inactive salesperson returned by Web Service
+                    $title = $this->getMissingFromDBTitle($salespeopleInactive, $salesperson1['id'], $salesperson1['salesperson']);
                     $arr = [
                         'salesAttrId' => $salesperson1['id'],
-                        'full_name' => $salesperson1['salesperson']
+                        'full_name' => $salesperson1['salesperson'],
+                        'title' => $title
                     ];
                     $results['missingFromDBSalespeople'][] = $arr;
                     if ($this->isDebug()) {
@@ -372,6 +388,15 @@ class SalespeopleController extends BaseController {
         $this->log('Salespeople REST/DB Sync Test Results: ' . $scenario);
 
         return $results;
+    }
+    
+    private function getMissingFromDBTitle(array $salespeopleInactive, $id, $fullname){
+        foreach($salespeopleInactive as $salesperson){
+            if($salesperson->getSales_attr_id == $id){
+                return $fullname  . ' inactive salesperson returned by Web Service';
+            }
+        }
+        return $fullname  . ' not found in Database';
     }
 
     private function salespeople($salespeople, $salespersonid) {
