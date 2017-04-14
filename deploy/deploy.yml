@@ -58,7 +58,7 @@
           
       - name: Restart Apache
         shell: |
-            apachectl configtest == 'Syntax OK' && service httpd restart
+            apachectl configtest == 'Syntax OK' && service httpd reload
             
       
 
