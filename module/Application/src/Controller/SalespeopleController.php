@@ -393,7 +393,7 @@ class SalespeopleController extends BaseController {
     private function getMissingFromDBTitle(array $salespeopleInactive, $id, $fullname){
         foreach($salespeopleInactive as $salesperson){
             if($salesperson->getSales_attr_id() == $id){
-                return $fullname  . ' inactive salesperson returned by Web Service';
+                return $fullname  . ' Inactive in Database';
             }
         }
         return $fullname  . ' not found in Database';
