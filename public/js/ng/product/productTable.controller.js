@@ -193,7 +193,6 @@
           }
         }
       };
-      handle('skus');
       handle('products', true);
       handle('uoms');
       vm.start = data.start;
@@ -1082,10 +1081,9 @@
       $http.post(config.urls.productsTableProduct, param(params))
 
               .then(function (response) {
-
-
+                
                 vm.reloadData();
-                var data = api().data();
+                var data = api().ajax.json();
                 initComplete(null, data);
 
               }, function () {
@@ -1171,7 +1169,7 @@
         var resultHandler = function (d) {
 
           vm.reloadData();
-          var data = api().data();
+          var data = api().ajax.json();
           initComplete(null, data);
         };
 
@@ -1254,6 +1252,13 @@
       });
 
     };
+    
+    element('#productsTable')
+    .on('xhr.dt', function ( e, settings, json, xhr ) {
+        if(json.skus){
+          vm.skus = json.skus;
+        }
+    } );
 
     if (!config.unittest) {
       ngInit();

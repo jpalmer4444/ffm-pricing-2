@@ -328,11 +328,11 @@ class SalespeopleController extends BaseController {
 
             $salespeopleInactive = array();
 
-            foreach ($usersInactive as $user) {
+            foreach ($usersInactive as $inactiveuser) {
                 //only removed for development
                 //must make sure to remove non-sales users.
-                if (!empty($user->getSales_attr_id())) {
-                    $salespeopleInactive [] = $user;
+                if (!empty($inactiveuser->getSales_attr_id())) {
+                    $salespeopleInactive [] = $inactiveuser;
                 }
             }
 
@@ -392,7 +392,7 @@ class SalespeopleController extends BaseController {
     
     private function getMissingFromDBTitle(array $salespeopleInactive, $id, $fullname){
         foreach($salespeopleInactive as $salesperson){
-            if($salesperson->getSales_attr_id == $id){
+            if($salesperson->getSales_attr_id() == $id){
                 return $fullname  . ' inactive salesperson returned by Web Service';
             }
         }

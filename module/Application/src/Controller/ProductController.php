@@ -173,7 +173,7 @@ class ProductController extends BaseController {
                 $addedProduct->setActive(0);
                 $this->entityManager->merge($addedProduct);
                 $this->entityManager->flush();
-                return $this->jsonResponse(['success' => true]);
+                return $this->jsonResponse(['success' => true, 'sku' => $addedProduct->getSku()]);
             }
 
             $form = new ProductForm();
@@ -195,7 +195,7 @@ class ProductController extends BaseController {
                     //create an Added Product
                     $addedProduct = $this->createAddedProduct($data, $customer, $salesperson);
 
-                    return $this->jsonResponse(['success' => true, 'id' => $addedProduct->getId()]);
+                    return $this->jsonResponse(['success' => true, 'id' => $addedProduct->getId(), 'sku' => $addedProduct->getSku()]);
                 } else {
 
                     $this->log("Form Invalid Form Data: " . print_r($data, TRUE));
