@@ -60,6 +60,8 @@ class AuthController extends AbstractActionController {
         if (strlen($redirectUrl) > 2048) {
             throw new Exception("Too long redirectUrl argument passed");
         }
+        
+        $loginErrorMessage = NULL;
 
         // Create login form
         $form = new LoginForm();
@@ -110,8 +112,11 @@ class AuthController extends AbstractActionController {
                 } else {
                     foreach ($result->getMessages() as $msg) {
                         $this->plugin('flashmessenger')->addMessage($msg);
+                        //$this->logger->log(Logger::INFO, "Adding Login Error: $msg");
+                        $loginErrorMessage = $msg;
                     }
                     $isLoginError = true;
+                    
                 }
             } else {
                 $isLoginError = true;
@@ -144,6 +149,7 @@ class AuthController extends AbstractActionController {
         return new ViewModel([
             'form' => $form,
             'isLoginError' => $isLoginError,
+            'loginErrorMessage' => $loginErrorMessage,
             'redirectUrl' => $redirectUrl
         ]);
     }

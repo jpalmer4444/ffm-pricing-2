@@ -14,7 +14,7 @@
        
       - name: Increment Version
         shell: |
-            perl -pi -e 's/\$version=\K([0-9]+)/1+$1/e' /u/local/jasonpalmer/ffmpricing/module/Application/view/layout/layout.phtml
+            perl -pi -e 's/\$version=\K([0-9]+)/1+$1/e' {{ lookup('env','PROJECT_HOME_DIR') }}/ffmpricing/module/Application/view/layout/layout.phtml
         
       - name: Zip pricing V2
         shell: |

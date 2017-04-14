@@ -73,9 +73,9 @@ $form->get('remember_me')->setAttributes([
 
     echo $this->form()->closeTag();
     
-    echo $this->flashMessenger()->render('default', ['alert', 'alert-danger']);
-    
-    ?>
+    if (!empty($this->loginErrorMessage)) :
+                echo '<div class="alert alert-danger"><ul><li>' . $this->loginErrorMessage . '</li></ul></div>';
+                endif; ?>
     
     
 </div>
