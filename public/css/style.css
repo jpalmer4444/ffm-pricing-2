@@ -93,6 +93,11 @@ a.btn-square.btn-transparent:hover, a.btn-square.btn-transparent:hover i.spin-lo
     color:white;
 }
 
+.around-table-actions a.btn-square.btn-transparent:hover, .around-table-actions a.btn-square.btn-transparent:hover i.spin-logo:before{
+    background: transparent !important;
+    color: #c60602 !important;
+}
+
 a i.spin-logo::before{
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
@@ -108,10 +113,10 @@ a i.spin-logo::before{
 
 td:nth-child(14) i::before {
     color: red;
-}
+}       
 
-td:nth-child(14) a:hover{
-    color: darkred !important;
+.around-table-actions a:hover i:before{
+	color: darkred;
 }
 
 .btn-square{
