@@ -23,7 +23,7 @@
 
                     var field = scope['ffmValidateSalespersonField'];
                     var scenario = scope['ffmValidateSalespersonScenario'];
-                    var id = scenario === 'edit' ? scope['ffmValidateSalespersonId'] : '';//create has no id
+                    var id = scope['ffmValidateSalespersonId'];
 
                     if (field !== 'email' && field !== 'username') {
                       console.log('Validate Salesperson case: ' + field + ' Case not found. Scenario: ' + scenario);

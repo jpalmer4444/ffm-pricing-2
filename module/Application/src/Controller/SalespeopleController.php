@@ -476,7 +476,13 @@ class SalespeopleController extends BaseController {
                         'title' => $title
                     ];
                     if(!empty($id)){
+                        $email = $this->getMissingFromDBEmail($salespeopleInactive, $salesperson1['id']);
+                        $phone1 = $this->getMissingFromDBPhone($salespeopleInactive, $salesperson1['id']);
+                        $username = $this->getMissingFromDBUsername($salespeopleInactive, $salesperson1['id']);
                         $arr['id'] = $id;
+                        $arr['email'] = $email;
+                        $arr['phone1'] = $phone1;
+                        $arr['username'] = $username;
                     }
                     $results['missingFromDBSalespeople'][] = $arr;
                     if ($this->isDebug()) {
@@ -507,7 +513,34 @@ class SalespeopleController extends BaseController {
     private function getMissingFromDBID(array $salespeopleInactive, $id){
         foreach($salespeopleInactive as $salesperson){
             if($salesperson->getSales_attr_id() == $id){
-                return TRUE;
+                return $id;
+            }
+        }
+        return FALSE;
+    }
+    
+    private function getMissingFromDBEmail(array $salespeopleInactive, $id){
+        foreach($salespeopleInactive as $salesperson){
+            if($salesperson->getSales_attr_id() == $id){
+                return $salesperson->getEmail();
+            }
+        }
+        return FALSE;
+    }
+    
+    private function getMissingFromDBPhone(array $salespeopleInactive, $id){
+        foreach($salespeopleInactive as $salesperson){
+            if($salesperson->getSales_attr_id() == $id){
+                return $salesperson->getPhone1();
+            }
+        }
+        return FALSE;
+    }
+    
+    private function getMissingFromDBUsername(array $salespeopleInactive, $id){
+        foreach($salespeopleInactive as $salesperson){
+            if($salesperson->getSales_attr_id() == $id){
+                return $salesperson->getUsername();
             }
         }
         return FALSE;

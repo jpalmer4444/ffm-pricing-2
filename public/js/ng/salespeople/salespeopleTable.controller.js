@@ -309,7 +309,7 @@
                 message.push(data.messages[m]);
               }
             }
-            //show user
+            //show
             warn('Add Salesperson Failed', message.join(''));
           }
         };

@@ -93,14 +93,14 @@
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
                             <label class="control-label" ng-bind="vmc.label.password"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.password.$valid && addSalespersonForm.password.$touched}">
-                                <input id="password_check" ng-required="vmc.scenario == 'create'" class="form-control" ng-pattern="vmc.pattern.password" ng-model="vmc.password" placeholder="Password" name="password" type="password" select-on-focus>
+                                <input id="password_check" ng-required="vmc.scenario == 'create'" class="form-control" ng-pattern="vmc.pattern.password" ng-model="vmc.password" name="password" type="password" select-on-focus>
                             </div>
                         </div>
                         <!--Verify Password-->
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
                             <label class="control-label" ng-bind="vmc.label.password_verify"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.password_verify.$valid && addSalespersonForm.password_verify.$touched}">
-                                <input class="form-control" ng-required="vmc.scenario == 'create'" ffm-pw-check="password_check" ng-pattern="vmc.pattern.password" ng-model="vmc.password_verify" placeholder="Verify" name="password_verify" type="password" select-on-focus>
+                                <input class="form-control" ng-required="vmc.scenario == 'create'" ffm-pw-check="password_check" ng-pattern="vmc.pattern.password" ng-model="vmc.password_verify" name="password_verify" type="password" select-on-focus>
                             </div>
                         </div>
                     </div>
