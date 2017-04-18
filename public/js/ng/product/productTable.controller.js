@@ -54,7 +54,7 @@
       'Description', 'Comment', 'Option',
       'Wholesale', 'Retail', 'Override',
       'UOM', 'Status', 'Saturday Enabled',
-      'SKU', 'Actions'
+      'SKU', 'Delete'
     ];
 
     //do not change after constructor is called
@@ -645,7 +645,7 @@
                 'Status': array[j++],
                 'Saturday Enabled': array[j++],
                 'SKU': array[j++],
-                'Actions': array[j++]
+                'Delete': array[j++]
               };
               product['Description'] = replaceBreaks(product['Description']);
               pdfrowobjects.push(product);
@@ -671,7 +671,7 @@
                 pdfrow['Status'],
                 pdfrow['Saturday Enabled'],
                 pdfrow['SKU'],
-                pdfrow['Actions']
+                pdfrow['Delete']
               ]);
             });
 
@@ -816,7 +816,7 @@
 
       vm.columns = [
         '', 'ID', 'Product', 'Description', 'Comment', 'Option', 'Wholesale',
-        'Retail', 'Override', 'UOM', 'Status', 'Saturday Enabled', 'SKU', 'Actions'
+        'Retail', 'Override', 'UOM', 'Status', 'Saturday Enabled', 'SKU', 'Delete'
       ];
 
       vm.dtColumns = [
@@ -833,7 +833,7 @@
         DTColumnBuilder.newColumn(columnindex("Status")).withTitle(vm.columns[columnindex("Status")]).renderWith(renderStatus),
         DTColumnBuilder.newColumn(columnindex("Saturday Enabled")).withTitle(vm.columns[columnindex("Saturday Enabled")]).renderWith(renderSaturdayEnabled),
         DTColumnBuilder.newColumn(columnindex("SKU")).withTitle(vm.columns[columnindex("SKU")]),
-        DTColumnBuilder.newColumn(columnindex("Actions")).withTitle(vm.columns[columnindex("Actions")]).withOption('className', 'dt-center').renderWith(renderActions).notSortable()
+        DTColumnBuilder.newColumn(columnindex("Delete")).withTitle(vm.columns[columnindex("Delete")]).withOption('className', 'dt-center').renderWith(renderActions).notSortable()
       ];
 
     }

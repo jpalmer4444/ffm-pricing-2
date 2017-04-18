@@ -318,6 +318,7 @@ INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(15, 'customer/customerT
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(16, 'salespeople/index', 'Salespeople Index Action');
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(21, 'salespeople/add', 'Salespeople Add Action');
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(17, 'salespeople/salespeopleTable', 'Salespeople Salespeople Table');
+INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(27, 'salespeople/validateAddSalesperson', 'Salespeople ValidateAddSalesperson Validation');
 
 # ProductController
 INSERT INTO `permissions` (`id`, `name`, `title`) VALUES(18, 'product/view', 'Product View Action');
@@ -355,6 +356,7 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 24); # admi
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 25); # admin product/report (Product Report Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 19); # admin product/productTable (Product Product Table)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 26); # admin product/productFormTypeahead (Product ProductForm Typeahead)
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(1, 27); # admin salespeople/validateAddSalesperson (Salespeople ValidateAddSalesperson Validation)
 
 # User Permissions
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 9);    # sales user/usersTable (Ajax Users Table Action)

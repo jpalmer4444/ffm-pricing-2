@@ -19,7 +19,7 @@
           mCtrl.$setValidity('boundsLow', true);
         }
         
-        if(value > 29999){
+        if(value > 9999){
           mCtrl.$setValidity('boundsHigh', false);
         }else{
           mCtrl.$setValidity('boundsHigh', true);

@@ -134,20 +134,22 @@ class SalespeopleController extends BaseController {
                     }
                     return $this->jsonResponse(['success' => true]);
                 } else {
+                    $msgs = [];
                     $this->log("User Data: " . $this->my_print_r($data));
                     foreach ($form->getMessages() as $msg) {
                         $this->log("Form Invalid - Message: " . $this->my_print_r($msg));
+                        $msgs [] = $this->my_print_r($msg);
                     }
                     $this->log("salespeople/add form not valid.");
-                    return $this->jsonResponse(['success' => false]);
+                    return $this->jsonResponse(['success' => false, 'messages' => $msgs]);
                 }
             } else {
                 $this->log("salespeople/add called with AJAX - BUT it was NOT a POST and therefore ignored.");
-                return $this->jsonResponse(['success' => false]);
+                return $this->jsonResponse(['success' => false, 'messages' => ['Request was not a POST Request']]);
             }
         } else {
             $this->log("salespeople/add called BUT was not an AJAX call - ignoring.");
-            return $this->jsonResponse(['success' => false]);
+            return $this->jsonResponse(['success' => false, 'messages' => ['Request was not an XHR Request']]);
         }
     }
 
@@ -259,6 +261,105 @@ class SalespeopleController extends BaseController {
         return $this->jsonResponse(
                         $response
         );
+    }
+    
+    /**
+     * Pre-Validates form fields via ajax
+     */
+    public function validateAddSalespersonAction() {
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+
+            if ($this->getRequest()->isPost()) {
+                
+                $validationcase = $this->params()->fromPost("validationcase");
+                $scenario = $this->params()->fromPost("scenario");
+                $id = $this->params()->fromPost("id");
+                
+                switch($validationcase){
+                    
+                    case "email" : {
+                        
+                        if($scenario == 'create'){
+                            
+                            $userEmail = $this->userService->findByEmail($this->params()->fromPost('value'));
+                            if(!empty($userEmail)){
+                                
+                                return $this->jsonResponse(['success' => false, 'messages' => ['Email already in use']]);
+                                
+                            }else{
+                                
+                                return $this->jsonResponse(['success' => true]);
+                            }
+                            
+                        }else if($scenario == 'edit'){
+                            
+                            $user = $this->userService->find($this->params()->fromPost('id'));
+                            $userEmail = $this->userService->findByEmail($this->params()->fromPost('value'));
+                            if($user->getId() != $userEmail->getId()){
+                                
+                                return $this->jsonResponse(['success' => false, 'messages' => ['Email already in use']]);
+                                
+                            }else{
+                                
+                                return $this->jsonResponse(['success' => true]);
+                            }
+                            
+                        }else{
+                            //scenario should not be possible!
+                            return $this->jsonResponse(['success' => false, 'messages' => ['Validation Scenario not found. Please contact IT']]);
+                        }
+                    }
+                    
+                    case "username" : {
+                        
+                        if($scenario == 'create'){
+                            
+                            $userUsername = $this->userService->findByUsername($this->params()->fromPost('value'));
+                            if(!empty($userUsername)){
+                                
+                                return $this->jsonResponse(['success' => false, 'messages' => ['Username already in use']]);
+                                
+                            }else{
+                                
+                                return $this->jsonResponse(['success' => true]);
+                            }
+                            
+                        }else if($scenario == 'edit'){
+                            
+                            //here we should have an ID.
+                            $user = $this->userService->find($this->params()->fromPost('id'));
+                            $userUsername = $this->userService->findByUsername($this->params()->fromPost('value'));
+                            if($user->getId() != $userUsername->getId()){
+                                
+                                return $this->jsonResponse(['success' => false, 'messages' => ['Username already in use']]);
+                                
+                            }else{
+                                
+                                return $this->jsonResponse(['success' => true]);
+                            }
+                            
+                        }else{
+                            //scenario should not be possible!
+                            return $this->jsonResponse(['success' => false, 'messages' => ['Validation Scenario not found. Please contact IT']]);
+                        }
+                    }
+                    
+                    default : {
+                        
+                        return $this->jsonResponse(['success' => false, 'messages' => ['Validation Scenario not found. Please Contact IT']]);
+                    }
+                }
+                
+            } else {
+                $this->log("salespeople/validateAddSalesperson called with AJAX - BUT it was NOT a POST and therefore ignored.");
+                return $this->jsonResponse(['success' => false, 'messages' => ['Request was not a POST Request']]);
+            }
+        } else {
+            $this->log("salespeople/validateAddSalesperson called BUT was not an AJAX call - ignoring.");
+            return $this->jsonResponse(['success' => false, 'messages' => ['Request was not an XHR Request']]);
+        }
+        
     }
 
     /**

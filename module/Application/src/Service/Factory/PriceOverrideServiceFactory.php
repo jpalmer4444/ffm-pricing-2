@@ -2,7 +2,7 @@
 
 namespace Application\Service\Factory;
 
-use Application\Service\ItemPriceOverrideService;
+use Application\Service\PriceOverrideService;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 

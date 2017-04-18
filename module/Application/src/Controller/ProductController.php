@@ -2,7 +2,6 @@
 
 namespace Application\Controller;
 
-use Application\Datatables\Server;
 use Application\Datatables\SSPJoin;
 use Application\Datatables\SSPUnion;
 use Application\Entity\AddedProduct;
@@ -17,8 +16,10 @@ use Application\Form\OverridePriceForm;
 use Application\Form\ProductForm;
 use Application\Service\CheckboxService;
 use Application\Service\CustomerService;
+use Application\Service\PriceOverrideService;
 use Application\Service\RestService;
 use Application\Service\UserService;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\From;
@@ -35,12 +36,22 @@ class ProductController extends BaseController {
     private $sspJoin;
     private $customerService;
     private $userService;
+    private $priceOverrideService;
 
     /** @var $checkboxService \Application\Service\CheckboxService */
     private $checkboxService;
 
     public function __construct(
-    EntityManager $entityManager, Logger $logger, array $config, AuthManager $authManager, SSPJoin $sspJoin, RestService $restService, CustomerService $customerService, UserService $userService, CheckboxService $checkboxService
+    EntityManager $entityManager, 
+            Logger $logger, 
+            array $config, 
+            AuthManager $authManager, 
+            SSPJoin $sspJoin, 
+            RestService $restService, 
+            CustomerService $customerService, 
+            UserService $userService, 
+            CheckboxService $checkboxService,
+            PriceOverrideService $priceOverrideService
     ) {
 
         parent::__construct($authManager, $config);
@@ -58,6 +69,8 @@ class ProductController extends BaseController {
         $this->userService = $userService;
 
         $this->checkboxService = $checkboxService;
+        
+        $this->priceOverrideService = $priceOverrideService;
     }
 
     public function viewAction() {
@@ -85,13 +98,23 @@ class ProductController extends BaseController {
 
                     $customer = $this->customerService->find($this->params()->fromPost('customer_id'));
 
-                    //create or delete based on override data being empty 
+                    //2 possible scenarios... We are dealing with a traditional Web Service Product
+                    // or we could possibly be dealing with an Added Product.
+                    if ($this->params()->fromPost('product_id')[0] == 'A') {
+                        //ADDED PRODUCT
+                        $addedProduct = $this->editOrDeleteAddedProduct($data, 
+                                $this->entityManager->getRepository(AddedProduct::class)->find(substr($this->params()->fromPost('product_id'), 1)));
+                        
+                        return $this->jsonResponse(['success' => true, 'id' => $addedProduct->getId()]);
+                        
+                    } else {
+                        //PRODUCT
+                        $product = $this->entityManager->getRepository(Product::class)->find(substr($this->params()->fromPost('product_id'), 1));
 
-                    $product = $this->entityManager->getRepository(Product::class)->find(substr($this->params()->fromPost('product_id'), 1));
+                        $overridePrice = $this->editCreateOrDeleteOverridePrice($data, $customer, $salesperson, $product);
 
-                    $overridePrice = $this->editCreateOrDeleteOverridePrice($data, $customer, $salesperson, $product);
-
-                    return $this->jsonResponse(['success' => true, 'id' => $overridePrice->getId()]);
+                        return $this->jsonResponse(['success' => true, 'id' => $overridePrice->getId()]);
+                    }
                 } else {
 
                     $this->log("Form Invalid Form Data: " . print_r($data, TRUE));
@@ -257,7 +280,7 @@ class ProductController extends BaseController {
                         'customer' => $customerid
                     ]);
                 }
-                
+
                 $entityManager = $this->entityManager;
 
                 $lookup = function($sales_attr_id, $customerid) use (& $entityManager) {
@@ -308,7 +331,7 @@ class ProductController extends BaseController {
                         'customer' => $customerid
                     ]);
                 }
-                
+
                 $entityManager = $this->entityManager;
 
                 $lookup = function ($id, $sales_attr_id, $customerid) use (& $entityManager) {
@@ -323,10 +346,10 @@ class ProductController extends BaseController {
                     ]);
                 };
 
-                /** @var \Application\Entity\Checkbox $checkbox */
+                /** @var Checkbox $checkbox */
                 $checkbox = $lookup($id, $sales_attr_id, $customerid);
 
-                
+
                 $checkbox->setChecked($type == 'select' ? 1 : 0);
 
                 $this->entityManager->merge($checkbox);
@@ -339,11 +362,11 @@ class ProductController extends BaseController {
     }
 
     public function productTableAction() {
-        
+
         (int) $zff_sync = $this->params()->fromPost('zff_sync');
-        
+
         $this->logger->log(Logger::INFO, "zff_sync: " . $zff_sync);
-        
+
         if ($zff_sync == 1) {
             $this->logger->log(Logger::INFO, "Syncing DB. Products Controller");
             $this->syncDB();
@@ -352,8 +375,8 @@ class ProductController extends BaseController {
         }
 
         $jsonArgs = $this->params()->fromPost();
-        
-        if($jsonArgs['order'][0]['column'] == 0){
+
+        if ($jsonArgs['order'][0]['column'] == 0) {
             $jsonArgs['order'][0]['column'] = 2;
         }
 
@@ -420,16 +443,16 @@ class ProductController extends BaseController {
                         $response
         );
     }
-    
+
     public function productFormTypeaheadAction() {
-        
+
         $search = '%' . $this->params()->fromPost('term') . '%';
 
         $sql = 'SELECT `products`.`productname` as \'productname\', `products`.`description` as \'description\', `products`.`sku` as \'sku\', `products`.`uom` as \'uom\', `products`.`retail` as \'retail\' FROM products WHERE `products`.`productname` LIKE ? ORDER BY `products`.`productname` ASC LIMIT 0, 25';
 
         $stmt = $this->entityManager->getConnection()->executeQuery(
                 $sql, [
-                    $search
+            $search
                 ]
         );
 
@@ -438,14 +461,14 @@ class ProductController extends BaseController {
         while ($row = $stmt->fetch()) {
 
             $results[] = [
-                    'productname' => $row['productname'],
-                    'description' => $row['description'],
-                    'sku' => $row['sku'],
-                    'uom' => $row['uom'],
-                    'retail' => $row['retail']
+                'productname' => $row['productname'],
+                'description' => $row['description'],
+                'sku' => $row['sku'],
+                'uom' => $row['uom'],
+                'retail' => $row['retail']
             ];
         }
-        
+
         return $this->jsonResponse($results);
     }
 
@@ -500,15 +523,22 @@ class ProductController extends BaseController {
         //retrieve customer
         $dql_customer = 'SELECT customer FROM Application\Entity\Customer customer WHERE customer.id = :customerid';
 
-        $customer = $this->customerService->find(
-                $customerid
+        $customer = $this->customerService->findEager(
+                //eagerly instantiate AddedProducts on User objects.
+                ['Application\Entity\AddedProduct' => 'addedProducts'],
+                //pass in parameters for the DQL query
+                ['customerid' => $customerid],
+                //pass in DQL
+                $dql_customer
         );
 
         if (is_array($customer)) {
             $customer = $customer[0];
         }
 
-        $this->logger->log(Logger::INFO, "Customer: " . ($customer ? $customer->getId() : "No Customer Found!!!"));
+        $addedProducts = $customer->getActiveAddedProducts();
+
+        $this->logger->log(Logger::INFO, "Customer: " . ($customer ? $customer->getId() . " has " . count($addedProducts) . " active AddedProducts." : "No Customer Found!!!"));
 
         $dql_salesperson = 'SELECT user FROM Application\Entity\User user WHERE user.sales_attr_id = :sales_attr_id';
 
@@ -558,11 +588,10 @@ class ProductController extends BaseController {
                  */
                 if (!array_key_exists($restItem['id'], $productMap)) {
 
-                    $this->logger->log(Logger::INFO, "PROCESSING: Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']}");
+                    //$this->logger->log(Logger::INFO, "PROCESSING: Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']}");
                     $productMap[$restItem['id']] = $restItem['id'];
-                    
                 } else {
-                    $this->logger->log(Logger::INFO, "SKIPPING: Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']}");
+                    //$this->logger->log(Logger::INFO, "SKIPPING: Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']}");
                     continue;
                 }
 
@@ -581,7 +610,6 @@ class ProductController extends BaseController {
                     $product = $this->createProduct($restItem, $customer, $user);
                     $productsInserted++;
                     $some = TRUE;
-                    
                 } else {
 
                     $some = $this->updateProduct($some, $product, $restItem);
@@ -613,6 +641,50 @@ class ProductController extends BaseController {
                     $some = TRUE;
                 } else {
                     $some = $this->updatePreference($some, $preference, $restItem);
+                }
+
+
+                //now check for AddedProducts with matching SKUs.
+                //when we find an ACTIVE AddedProduct for this customer with a SKU 
+                //that is not null or empty and it matches a SKU from a Web Service Product
+                //Lookup real Product belonging to this Customer that has a matching SKU, 
+                //copy the Override Price from the Added Product to the real product  -   
+                //then inactivate the Added Product.
+                $skuMatchesAddedProduct = $this->find($addedProducts, $restItem['sku'], "sku");
+                if (!empty($skuMatchesAddedProduct)) {
+
+                    $this->log("Matching SKU for AddedProduct SKU: " . $restItem['sku']); //WORKS
+                    //now inactivate the AddedProduct.
+                    $skuMatchesAddedProduct->setActive(0);
+                    
+                    //now make sure there are no existing active price overrides.
+                    $activePriceOverrides = $this->priceOverrideService->findActivePriceOverrides($customer, $product, $user);
+
+                    if(count($activePriceOverrides) > 0){
+                        
+                        foreach($activePriceOverrides as $override){
+                            
+                            $override->setActive(0);
+                            $this->entityManager->merge($override);
+                            
+                        }
+                        $some = true;
+                        //$this->entityManager->flush();
+                        
+                    }
+                    
+                    $priceOverride = new PriceOverride();
+                    $priceOverride->setCreated(new DateTime());
+                    $priceOverride->setCustomer($customer);
+                    $priceOverride->setActive(1);
+                    $priceOverride->setOverrideprice($skuMatchesAddedProduct->getOverrideprice());
+                    $salesperson = $this->entityManager->getRepository(User::class)
+                            ->findOneBy(['sales_attr_id' => $sales_attr_id]);
+                    $priceOverride->setSalesperson($salesperson);
+                    $priceOverride->setProduct($product);
+                    $some = true;
+                    $this->entityManager->merge($skuMatchesAddedProduct);
+                    $this->entityManager->persist($priceOverride);
                 }
             }
 
@@ -668,13 +740,14 @@ class ProductController extends BaseController {
             $thisOne = TRUE;
         }
         if ($thisOne) {
+            $this->logger->log(Logger::INFO, "Updating Preference[ "
+                    . "product =  {$preference->getProduct()->getId()} , "
+                    . "sku =  {$preference->getProduct()->getSku()} , "
+                    . "user = {$preference->getUser()->getUsername()}"
+                    . "]");
             $this->entityManager->merge($preference);
         }
-        $this->logger->log(Logger::INFO, "Updating Preference[ "
-                . "product =  {$preference->getProduct()->getId()} , "
-                . "sku =  {$preference->getProduct()->getSku()} , "
-                . "user = {$preference->getUser()->getUsername()}"
-                . "]");
+
         return $some;
     }
 
@@ -725,14 +798,21 @@ class ProductController extends BaseController {
                     case "id" : {
                             if ($model->getId() == $id) {
                                 return $model;
-                            }else{
+                            } else {
+                                break;
+                            }
+                        }
+                    case "sku" : {
+                            if (!empty($model->getSku()) && $model->getSku() == $id) {
+                                return $model;
+                            } else {
                                 break;
                             }
                         }
                     case "json" : {
                             if ($model['id'] == $id) {
                                 return $model;
-                            }else{
+                            } else {
                                 break;
                             }
                         }
@@ -804,14 +884,15 @@ class ProductController extends BaseController {
             $thisOne = TRUE;
         }
         if ($thisOne) {
+            if ($this->isDebug() && $some) {
+                $this->logger->log(Logger::INFO, "Updating Product[ "
+                        . "id = {$product->getId()}, "
+                        . "sku = {$product->getSku()}, "
+                        . "]");
+            }
             $this->entityManager->merge($product);
         }
-        if ($this->isDebug() && $some) {
-            $this->logger->log(Logger::INFO, "Updating Product[ "
-                    . "id = {$product->getId()}, "
-                    . "sku = {$product->getSku()}, "
-                    . "]");
-        }
+
         return $some;
     }
 
@@ -888,6 +969,37 @@ class ProductController extends BaseController {
         return $addedProduct;
     }
 
+    private function editOrDeleteAddedProduct(array $restItem, AddedProduct $addedProduct) {
+
+        $updated = false;
+
+        if (empty($restItem['overrideprice'])) {
+
+            //delete it
+            $addedProduct->setActive(0);
+            $this->entityManager->merge($addedProduct);
+            $updated = true;
+        } else {
+
+            //edit with new price
+            if (strcmp($addedProduct->getOverrideprice(), $restItem['overrideprice']) != 0) {
+
+
+                $addedProduct->setOverrideprice($restItem['overrideprice']);
+
+                $this->entityManager->merge($addedProduct);
+                $updated = true;
+            }
+        }
+
+        if ($updated) {
+
+            $this->entityManager->flush();
+        }
+
+        return $addedProduct;
+    }
+
     private function editCreateOrDeleteOverridePrice(array $restItem, Customer $customer, User $salesperson, Product $product) {
 
         //based on scenario we know if this is a new override price - or edit existing
@@ -896,7 +1008,23 @@ class ProductController extends BaseController {
         switch ($scenario) {
 
             case "create" : {
+                
+                    //we must lookup any overrideprice rows for this Product that might already exist.
+                    $activePriceOverrides = $this->priceOverrideService->findActivePriceOverrides($customer, $product, $salesperson);
 
+                    if(count($activePriceOverrides) > 0){
+                        
+                        foreach($activePriceOverrides as $override){
+                            
+                            $override->setActive(0);
+                            $this->entityManager->merge($override);
+                            
+                        }
+                        
+                        $this->entityManager->flush();
+                        
+                    }
+                    
                     $overridePrice = new PriceOverride();
                     $overridePrice->setActive(1);
                     $overridePrice->setCustomer($customer);
@@ -990,7 +1118,7 @@ class ProductController extends BaseController {
         if (empty($userProducts)) {
             $userProducts = new ArrayCollection();
         }
-        
+
         $userProducts->add($product);
 
         $customer->setProducts($userProducts);

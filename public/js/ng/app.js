@@ -20,6 +20,7 @@
       var salespeopleTableAjax = (typeof window.salespeopleTableAjax !== "undefined" ? window.salespeopleTableAjax : '');
       var usersTableUpdateStatusAjax = (typeof window.usersTableUpdateStatusAjax !== "undefined" ? window.usersTableUpdateStatusAjax : '');
       var addSalespersonUrl = (typeof window.addSalespersonUrl !== "undefined" ? window.addSalespersonUrl : '');
+      var validateAddSalespersonUrl = (typeof window.validateAddSalespersonUrl !== "undefined" ? window.validateAddSalespersonUrl : '');
       var productsFormTypeahead = (typeof window.productsFormTypeahead !== "undefined" ? window.productsFormTypeahead : '');
 //productsFormTypeahead
 //console.log('loginUrl: '+loginUrl);
@@ -35,6 +36,7 @@
           login : loginUrl,
           productsFormTypeahead: productsFormTypeahead,
           addSalespersonUrl : addSalespersonUrl,
+          validateAddSalespersonUrl : validateAddSalespersonUrl,
           usersTableAjax : usersTableAjax,
           productsTableAjax : productsTableAjax,
           productsTableReport : productsTableReport,

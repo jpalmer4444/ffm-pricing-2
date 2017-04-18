@@ -14,7 +14,7 @@
      * @type this
      */
     var vm = this;
-    
+
     vm.salespeopleTablePageSize = 'salespeopleTablePageSize';
 
     vm.start;
@@ -95,8 +95,8 @@
       $compile(angular.element(row).contents())($scope);
 
     }
-    
-    vm.clickCustomers = function(sales_attr_id, salesperson_name){
+
+    vm.clickCustomers = function (sales_attr_id, salesperson_name) {
       localStorageService.set('salesperson_name', salesperson_name);
       localStorageService.set('sales_attr_id', sales_attr_id);
       $window.location = '/customer/view/' + sales_attr_id;
@@ -224,7 +224,7 @@
     vm.manageUsers = function (id) {
       $window.location.href = '';
     }
-    
+
     vm.addSalesperson = function (type, index) {
 
       var modalInstance;
@@ -296,8 +296,22 @@
                 salesAttrId = vmc.addSalespersonModal.salesAttrId;
 
         var resultHandler = function (data) {
-          //reload data on success
-          vm.reloadData();
+
+          if (data.success) {
+            //reload data on success
+            vm.reloadData();
+          } else {
+            //error on server
+            var message = ['Server Side Error - Please Contact IT'];//default
+            if (data.messages && data.messages.length) {//if server sends back errors
+              message = [];
+              for (var m = 0; m < data.messages.length; m++) {
+                message.push(data.messages[m]);
+              }
+            }
+            //show user
+            warn('Add Salesperson Failed', message.join(''));
+          }
         };
         var finalHandler = function () {
           ///hide overlay regardless
@@ -371,7 +385,7 @@
 
     function rowClickHandler(data) {
       //only allow click when no missing class on the data
-      if (!missing(data)){
+      if (!missing(data)) {
         localStorageService.set('salesperson_name', data[4]);
         localStorageService.set('sales_attr_id', data[7]);
         $window.location = '/customer/view/' + data[7];
@@ -414,7 +428,7 @@
       vm.zff_createddate_open = false;
       delete vm.zff_lastlogindate_open;
       vm.zff_lastlogindate_open = false;
-      
+
       vm.pageSize = localStorageService.get(vm.salespeopleTablePageSize) ?
               localStorageService.get(vm.salespeopleTablePageSize) :
               config.pageSize;

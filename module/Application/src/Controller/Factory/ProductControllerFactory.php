@@ -20,10 +20,11 @@ class ProductControllerFactory extends BaseFactory implements FactoryInterface {
         $customerService = $container->get('Application\Service\CustomerService');
         $userService = $container->get('Application\Service\UserService');
         $checkboxService = $container->get('Application\Service\CheckboxService');
+        $priceOverrideService = $container->get('Application\Service\PriceOverrideService');
         $sspJoin = $container->get('Application\Datatables\SSPJoin');
         $authManager = static::getAuthManager($container);
         $config = $container->get('Config');
-        return new ProductController($entityManager, $logger, $config, $authManager, $sspJoin, $restService, $customerService, $userService, $checkboxService);
+        return new ProductController($entityManager, $logger, $config, $authManager, $sspJoin, $restService, $customerService, $userService, $checkboxService, $priceOverrideService);
     }
 
 }

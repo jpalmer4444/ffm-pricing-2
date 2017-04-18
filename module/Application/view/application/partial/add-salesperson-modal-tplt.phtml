@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row">
                 <div class="pull-left col-md-11 col-lg-11 col-sm-11">
-<h3 ng-bind="vmc.scenario === 'create' ? 'Add Salesperson’ : 'Edit Salesperson’”></h3>
+<h3 ng-bind="vmc.scenario === 'create' ? 'Add Salesperson' : 'Edit Salesperson'"></h3>
                 </div>
                 <a class="pull-right modal-icon ion-ios-close-outline" data-dismiss="modal" ng-click="vmc.cancel()"></a>
             </div>
@@ -20,14 +20,26 @@
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
                             <label class="control-label" ng-bind="vmc.label.username"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.username.$valid && addSalespersonForm.username.$touched}">
-                                <input class="form-control" ng-required="true" ng-pattern="vmc.pattern.username" ng-model="vmc.username" placeholder="Username" name="username" type="text" select-on-focus>
+                                <input class="form-control" ng-required="true" ffm-validate-salesperson ffm-validate-salesperson-scenario="vmc.scenario" ffm-validate-salesperson-id="vmc.id" ffm-validate-salesperson-field="username" ng-pattern="vmc.pattern.username" ng-model="vmc.username" placeholder="Username" name="username" type="text" select-on-focus>
+                                <div ng-hide="addSalespersonForm.username.$valid || addSalespersonForm.username.$pristine">
+                                    &nbsp;
+                                </div>
+                                <div class="alert alert-danger" ng-hide="addSalespersonForm.username.$valid || addSalespersonForm.username.$pristine">
+                                    Username is not valid
+                                </div>
                             </div>
                         </div>
                         <!--Email-->
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
                             <label class="control-label" ng-bind="vmc.label.email"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.email.$valid && addSalespersonForm.email.$touched}">
-                                <input class="form-control" ng-required="true" ng-pattern="vmc.pattern.email" ng-model="vmc.email" placeholder="Email" name="email" type="text" select-on-focus>
+                                <input class="form-control" ng-required="true" ng-pattern="vmc.pattern.email" ffm-validate-salesperson ffm-validate-salesperson-scenario="vmc.scenario" ffm-validate-salesperson-id="vmc.id" ffm-validate-salesperson-field="email" ng-model="vmc.email" placeholder="Email" name="email" type="text" select-on-focus>
+                                <div ng-hide="addSalespersonForm.email.$valid || addSalespersonForm.email.$pristine">
+                                    &nbsp;
+                                </div>
+                                <div class="alert alert-danger" ng-hide="addSalespersonForm.email.$valid || addSalespersonForm.email.$pristine">
+                                    Email is not valid
+                                </div>
                             </div>
                         </div>
                         <!--Full Name-->

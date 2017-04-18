@@ -174,11 +174,28 @@ class Customer
     return array_merge($this->getProducts(), $this->getAddedProducts()); 
   }
   
+  public function getActiveAddedProducts(){
+      $activeAdded = [];
+      foreach($this->getAddedProducts() as $added){
+          if($added->getActive()){
+              $activeAdded [] = $added;
+          }
+      }
+      return $activeAdded;
+  }
+  
   public function getFilteredProducts($criteria) {
         
     //$criteria = Criteria::create()->where(Criteria::expr()->in("id", $ids));
 
     return $this->getProducts()->matching($criteria); 
+  }
+  
+  public function getFilteredAddedProducts($criteria) {
+        
+    //$criteria = Criteria::create()->where(Criteria::expr()->in("id", $ids));
+
+    return $this->getAddedProducts()->matching($criteria); 
   }
     
 }

@@ -1,7 +1,10 @@
 <?php
 namespace Application\Service;
 
+use Application\Entity\Customer;
 use Application\Entity\PriceOverride;
+use Application\Entity\Product;
+use Application\Entity\User;
 use Application\Service\BaseService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -13,7 +16,7 @@ class PriceOverrideService extends BaseService
 {
     
     public function __construct(EntityManager $entityManager, array $config, Logger $logger) {
-        parent::__construct($entityManager, $config, $logger, ItemPriceOverride::class);
+        parent::__construct($entityManager, $config, $logger, PriceOverride::class);
     }
 
     /**
@@ -74,6 +77,11 @@ class PriceOverrideService extends BaseService
     public function find($id)
     {
         return $this->getRepository()->find($id);
+    }
+    
+    public function findActivePriceOverrides(Customer $customer, Product $product, User $salesperson)
+    {
+        return $this->getRepository()->findBy(['customer' => $customer, 'salesperson' => $salesperson, 'product' => $product]);
     }
     
     /**

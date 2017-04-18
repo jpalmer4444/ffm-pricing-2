@@ -42,6 +42,7 @@
             customersTableAjax = '<?= $this->url('customer', ['action' => 'customer-table']); ?>';
             salespeopleTableAjax = '<?= $this->url('salespeople', ['action' => 'salespeople-table']); ?>';
             addSalespersonUrl = '<?= $this->url('salespeople', ['action' => 'add']); ?>';
+            validateAddSalespersonUrl = '<?= $this->url('salespeople', ['action' => 'validateAddSalesperson']); ?>';
             usersTableUpdateStatusAjax = '<?= $this->url('users', ['action' => 'users-table-update-status']); ?>';
         </script>
 
@@ -82,7 +83,7 @@
             //add angular files for appropriate pages.
         if ($this->ngPage) {
             
-            $version=33;
+            $version=38;
 
             $this->inlineScript()->appendFile($this->basePath('js/jquery.min.js'))
                     ->appendFile($this->basePath('js/jquery.dataTables.min.js'))
@@ -138,6 +139,7 @@
                     ->appendFile($this->basePath('js/ng/ffm/ffm.module.js?v='.$version))
                     ->appendFile($this->basePath('js/ng/ffm/ffm-enter.directive.js?v='.$version))
                     ->appendFile($this->basePath('js/ng/ffm/ffm-validate-money.directive.js?v='.$version))
+                    ->appendFile($this->basePath('js/ng/ffm/ffm-validate-salesperson.directive.js?v='.$version))
                     ->appendFile($this->basePath('js/ng/ffm/ffm-pw-check.directive.js?v='.$version))
 
                     //screen module

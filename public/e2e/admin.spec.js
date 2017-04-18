@@ -12,19 +12,19 @@ describe('Navigates from Salespeople to Products', function () {
     var EC = protractor.ExpectedConditions;
     // Waits for the element with class 'salespeople-btn' to be present on the dom.
     //this happens after the table has loaded and returned rows.
-    browser.wait(EC.presenceOf($('.salespeople-btn')), 15000);
+    browser.wait(EC.presenceOf($('tr.odd')), 15000);
 
-    element.all(by.css('.salespeople-btn')).first().click();
+    element.all(by.css('tr.odd td:nth-child(0)')).first().click();
 
     //now we should navigate to Customers page.
     // Waits for the element with class 'products-btn' to be present on the dom.
     //this happens after the table has loaded and returned rows.
-    browser.wait(EC.presenceOf($('.products-btn')), 15000);
+    browser.wait(EC.presenceOf($('tr.odd')), 15000);
     
-    element.all(by.css('.products-btn')).first().click();
+    element.all(by.css('tr.odd  td:nth-child(0)')).first().click();
     
     //now wait up to 15 seconds for the table to load.
-    browser.wait(EC.presenceOf($('.around-table-actions')), 15000);
+    browser.wait(EC.presenceOf($('tr.odd')), 15000);
     
     expect(browser.getCurrentUrl())
     
