@@ -296,7 +296,7 @@ class SalespeopleController extends BaseController {
                             
                             $user = $this->userService->find($this->params()->fromPost('id'));
                             $userEmail = $this->userService->findByEmail($this->params()->fromPost('value'));
-                            if($user->getId() != $userEmail->getId()){
+                            if(!empty($userEmail) && $user->getId() != $userEmail->getId()){
                                 
                                 return $this->jsonResponse(['success' => false, 'messages' => ['Email already in use']]);
                                 
@@ -330,7 +330,7 @@ class SalespeopleController extends BaseController {
                             //here we should have an ID.
                             $user = $this->userService->find($this->params()->fromPost('id'));
                             $userUsername = $this->userService->findByUsername($this->params()->fromPost('value'));
-                            if($user->getId() != $userUsername->getId()){
+                            if(!empty($userUsername) && $user->getId() != $userUsername->getId()){
                                 
                                 return $this->jsonResponse(['success' => false, 'messages' => ['Username already in use']]);
                                 
@@ -469,11 +469,15 @@ class SalespeopleController extends BaseController {
                     //if we find this salesperson in Inactive array then title should be
                     //Full Name inactive salesperson returned by Web Service
                     $title = $this->getMissingFromDBTitle($salespeopleInactive, $salesperson1['id'], $salesperson1['salesperson']);
+                    $id = $this->getMissingFromDBID($salespeopleInactive, $salesperson1['id']);
                     $arr = [
                         'salesAttrId' => $salesperson1['id'],
                         'full_name' => $salesperson1['salesperson'],
                         'title' => $title
                     ];
+                    if(!empty($id)){
+                        $arr['id'] = $id;
+                    }
                     $results['missingFromDBSalespeople'][] = $arr;
                     if ($this->isDebug()) {
                         $this->log(PHP_EOL . "MissingFromDB: " . $salesperson1['id']);
@@ -498,6 +502,15 @@ class SalespeopleController extends BaseController {
             }
         }
         return $fullname  . ' not found in Database';
+    }
+    
+    private function getMissingFromDBID(array $salespeopleInactive, $id){
+        foreach($salespeopleInactive as $salesperson){
+            if($salesperson->getSales_attr_id() == $id){
+                return TRUE;
+            }
+        }
+        return FALSE;
     }
 
     private function salespeople($salespeople, $salespersonid) {
