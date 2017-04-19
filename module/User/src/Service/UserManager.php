@@ -92,7 +92,7 @@ class UserManager {
         $user->setEmail($data['email']);
         $user->setUsername($data['username']);
         $user->setFullName($data['full_name']);
-        $user->setStatus($data['status']);
+        $user->setStatus(($data['status'] == '1' || $data['status'] == 1 || $data['status'] == TRUE) ? User::STATUS_ACTIVE : User::STATUS_INACTIVE);
 
 
         //not every user has a value for salespersonname or sales_attr_id

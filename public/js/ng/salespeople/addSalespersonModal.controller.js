@@ -128,7 +128,6 @@
     };
     
     vm.selectStatus = function (status) {
-      console.log('Status: '+status);
       if (status !== vm.status) {
         vm.status = status;
       }

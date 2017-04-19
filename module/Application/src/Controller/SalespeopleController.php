@@ -93,8 +93,15 @@ class SalespeopleController extends BaseController {
     public function addAction() {
 
         if ($this->getRequest()->isXmlHttpRequest()) {
+            
+            $pw = $this->params()->fromPost('password');
+            
+            $pwv = $this->params()->fromPost('password_verify');
+            
+            //$pw $pwv
+            $passwordRequired = !empty($pw) && !empty($pwv) && (strcmp($pw, $pwv) == 0);
 
-            $form = new SalespersonForm($this->params()->fromPost('scenario'), $this->entityManager, $this->authManager->getLoggedInUser());
+            $form = new SalespersonForm($passwordRequired, $this->params()->fromPost('scenario'), $this->entityManager, $this->authManager->getLoggedInUser());
 
             if ($this->getRequest()->isPost()) {
                 
@@ -513,7 +520,7 @@ class SalespeopleController extends BaseController {
     private function getMissingFromDBID(array $salespeopleInactive, $id){
         foreach($salespeopleInactive as $salesperson){
             if($salesperson->getSales_attr_id() == $id){
-                return $id;
+                return $salesperson->getId();
             }
         }
         return FALSE;

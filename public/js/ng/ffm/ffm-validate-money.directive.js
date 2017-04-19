@@ -13,7 +13,7 @@
     link: function(scope, element, attr, mCtrl) {
       function myValidation(value) {
         
-        if(value < .3){
+        if(value && value < .3){
           mCtrl.$setValidity('boundsLow', false);
         }else{
           mCtrl.$setValidity('boundsLow', true);

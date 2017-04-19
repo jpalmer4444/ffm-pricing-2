@@ -29,6 +29,8 @@ class SalespersonForm extends Form {
      * @var string 
      */
     private $scenario;
+    
+    private $passwordRequired;
 
     /**
      * Entity manager.
@@ -45,9 +47,11 @@ class SalespersonForm extends Form {
     /**
      * Constructor.     
      */
-    public function __construct($scenario = 'create', $entityManager = null, $user = null) {
+    public function __construct($passwordRequired = FALSE, $scenario = 'create', $entityManager = null, $user = null) {
         // Define form name
         parent::__construct('salesperson-form');
+        
+        $this->passwordRequired = $passwordRequired;
 
         // Set POST method for this form
         $this->setAttribute('method', 'post');

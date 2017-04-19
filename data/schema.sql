@@ -19,15 +19,14 @@ DROP TABLE IF EXISTS `user_sessions`;
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
   `version` INTEGER DEFAULT 1,
   `email` VARCHAR(128) NOT NULL,
   `username` VARCHAR(128) NOT NULL,
-  `session_id` VARCHAR(128) DEFAULT NULL,
   `full_name` VARCHAR(512) NOT NULL,
   `password` VARCHAR(256) NOT NULL,
-  `status` INT(11) NOT NULL,
-  `date_created` datetime NOT NULL,
+  `status` BOOLEAN NOT NULL,
+  `date_created` TIMESTAMP NOT NULL,
   `pwd_reset_token` VARCHAR(32) DEFAULT NULL,
   `pwd_reset_token_creation_date` datetime DEFAULT NULL,
   `salespersonname` VARCHAR(100) DEFAULT NULL,
@@ -156,15 +155,14 @@ CREATE TABLE `products` (
 
 
 CREATE TABLE `item_price_override` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `version` int(11) DEFAULT '1',
-  `product` int(11) NOT NULL,
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `version` INTEGER DEFAULT 1,
+  `product` INTEGER NOT NULL,
   `overrideprice` decimal(22,2) DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL,
+  `active` BOOLEAN DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `customer` int(11) NOT NULL,
-  `salesperson` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  `customer` INTEGER NOT NULL,
+  `salesperson` INTEGER NOT NULL,
   KEY `KEY_ITEM_PRICE_OVERRIDE_SALESPERSON` (`salesperson`),
   KEY `KEY_ITEM_PRICE_OVERRIDE_PRODUCT` (`product`),
   KEY `KEY_ITEM_PRICE_OVERRIDE_CUSTOMER` (`customer`),
@@ -175,19 +173,19 @@ CREATE TABLE `item_price_override` (
 
 
 CREATE TABLE `added_product` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `version` int(11) DEFAULT '1',
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `version` INTEGER DEFAULT 1,
   `overrideprice` decimal(22,2) DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL,
-  `sku` varchar(25) DEFAULT NULL,
-  `productname` varchar(255) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `comment` varchar(255) DEFAULT NULL,
-  `uom` varchar(100) NOT NULL,
-  `status` tinyint(1) DEFAULT NULL,
+  `active` BOOLEAN DEFAULT NULL,
+  `sku` VARCHAR(25) DEFAULT NULL,
+  `productname` VARCHAR(255) NOT NULL,
+  `description` VARCHAR(255) DEFAULT NULL,
+  `comment` VARCHAR(255) DEFAULT NULL,
+  `uom` VARCHAR(100) NOT NULL,
+  `status` BOOLEAN DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `customer` int(11) NOT NULL,
-  `salesperson` int(11) NOT NULL,
+  `customer` INTEGER NOT NULL,
+  `salesperson` INTEGER NOT NULL,
   PRIMARY KEY (`id`),
   KEY `KEY_ADDED_PRODUCT_SALESPERSON` (`salesperson`),
   KEY `KEY_ADDED_PRODUCT_CUSTOMER` (`customer`),
@@ -197,13 +195,13 @@ CREATE TABLE `added_product` (
 
 
 CREATE TABLE `item_table_checkbox` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `version` int(11) DEFAULT '1',
-  `product` int(11) DEFAULT NULL,
-  `added_product` int(11) DEFAULT NULL,
-  `checked` tinyint(1) DEFAULT '0',
-  `customer` int(11) NOT NULL,
-  `salesperson` int(11) NOT NULL,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `version` INTEGER DEFAULT 1,
+  `product` INTEGER DEFAULT NULL,
+  `added_product` INTEGER DEFAULT NULL,
+  `checked` BOOLEAN DEFAULT '0',
+  `customer` INTEGER NOT NULL,
+  `salesperson` INTEGER NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `KEY_ITEM_TABLE_CHECKBOX_PRODUCT` (`product`),
@@ -218,15 +216,15 @@ CREATE TABLE `item_table_checkbox` (
 
 
 CREATE TABLE `pricing_override_report` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `version` int(11) DEFAULT '1',
-  `product` int(11) DEFAULT NULL,
-  `added_product` int(11) DEFAULT NULL,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `version` INTEGER DEFAULT 1,
+  `product` INTEGER DEFAULT NULL,
+  `added_product` INTEGER DEFAULT NULL,
   `overrideprice` decimal(22,2) DEFAULT NULL,
   `retail` decimal(22,2) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `customer` int(11) NOT NULL,
-  `salesperson` int(11) NOT NULL,
+  `customer` INTEGER NOT NULL,
+  `salesperson` INTEGER NOT NULL,
   PRIMARY KEY (`id`),
   KEY `KEY_PRICING_OVERRIDE_REPORT_SALESPERSON` (`salesperson`),
   KEY `KEY_PRICING_OVERRIDE_REPORT_PRODUCT` (`product`),
@@ -238,26 +236,26 @@ CREATE TABLE `pricing_override_report` (
 
 
 CREATE TABLE `customer_product` (
-  `customer` int(11) NOT NULL DEFAULT '0',
-  `product` int(11) NOT NULL DEFAULT '0',
+  `customer` INTEGER NOT NULL DEFAULT '0',
+  `product` INTEGER NOT NULL DEFAULT '0',
   PRIMARY KEY (`customer`,`product`),
   CONSTRAINT `FK_CUSTOMER_PRODUCT_PRODUCT` FOREIGN KEY (`product`) REFERENCES `products` (`id`),
   CONSTRAINT `FK_CUSTOMER_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `customer_added_product` (
-  `customer` int(11) NOT NULL,
-  `added_product` int(11) NOT NULL,
+  `customer` INTEGER NOT NULL,
+  `added_product` INTEGER NOT NULL,
   PRIMARY KEY (`customer`,`added_product`),
   CONSTRAINT `FK_CUSTOMER_ADDED_PRODUCT_ADDED_PRODUCT` FOREIGN KEY (`added_product`) REFERENCES `added_product` (`id`),
   CONSTRAINT `FK_CUSTOMER_ADDED_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `user_product_preferences` (
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `product_id` int(11) NOT NULL DEFAULT '0',
-  `version` int(11) DEFAULT '1',
-  `comment` varchar(255) DEFAULT NULL,
+  `user_id` INTEGER NOT NULL DEFAULT '0',
+  `product_id` INTEGER NOT NULL DEFAULT '0',
+  `version` INTEGER DEFAULT '1',
+  `comment` VARCHAR(255) DEFAULT NULL,
   `option` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`,`product_id`),
   CONSTRAINT `FK_USER_PRODUCT_PREFERENCES_PRODUCT` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
@@ -266,15 +264,16 @@ CREATE TABLE `user_product_preferences` (
 
 # INSERTS
 # USERS
-INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) VALUES(1, 'jpalmer', 'Jason Palmer', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', null, null, 'jpalmer@meadedigital.com', '630-999-0139');
-INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) VALUES(2, 'foobarx', 'Foo Bar', 1, NOW(), '$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC', 'Foo Bar X', 247, 'foobar@fultonfishmarket.com', '802-233-9957');
-INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) VALUES(3, 'dtanzer', 'David Tanzer', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', null, null, 'dtanzer@fultonfishmarket.com', '802-233-9957');
-INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1)VALUES(4, 'jdowns', 'Jeff Downs', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', null, null, 'jdowns@fultonfishmarket.com', '802-238-1452');
-INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) VALUES(5, 'cmetallo', 'Cyndi Metallo', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Cyndi Metallo', 183, 'cmetallo@fultonfishmarket.com', '847-809-6512');
-INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) VALUES(6, 'mspindler', 'Mike Spindler', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', null, null, 'mspindler@fultonfishmarket.com', '847-809-6512');
-INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) VALUES(7, 'bzakrinski', 'Bill Zakrinski', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Bill Zakrinski', 206, 'bzak@fultonfishmarket.com', '347-680-2772');
-INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) VALUES(8, 'iderfler', 'Iris Derfler', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Iris Derfler', 181, 'iderfler@fultonfishmarket.com', '847-606-2555');
-INSERT INTO users (id, username, full_name, status, date_created, password, salespersonname, sales_attr_id, email, phone1) VALUES(9, 'jmeade', 'Jody Meade', 1, NOW(), '$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', 'Jody Meade', 180, 'jody@fultonfishmarket.com', '570-335-6484');
+INSERT INTO `customer_pricing_v2`.`users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (1, 'jpalmer',24,'$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC',null,'jpalmer@fultonfishmarket.com','630-999-0139',null,'2017-03-03 18:44:10','2016-12-06 13:09:50', 1, 'Jason Palmer');
+INSERT INTO `customer_pricing_v2`.`users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (2, 'foobarx',1,'$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC','Foo Bar X','foobarx@fultonfishmarket.com','802-233-9957',247,'2016-12-06 13:09:50','2016-12-06 13:09:50', 1, 'Foobar X');
+INSERT INTO `customer_pricing_v2`.`users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (3, 'dtanzer',16,'$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', null,'dtanzer@fultonfishmarket.com','802-233-9957',null,'2017-03-01 22:24:39','2016-12-06 13:09:50', 1, 'David Tanzer');
+INSERT INTO `customer_pricing_v2`.`users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (4, 'jdowns',32,'$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO',null,'jdowns@fultonfishmarket.com','802-238-1452',null,'2017-04-11 18:03:28','2016-12-06 13:09:50', 1, 'Jeff Downs');
+INSERT INTO `customer_pricing_v2`.`users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (5, 'cmetallo',4,'$2y$10$oYayre7c1Ls9mMqNx4Cm0uJs5Dy9f1wESsD4aP2pKBzKNG8WrXVle','Cyndi Metallo','cmetallo@fultonfishmarket.com','847-809-6512',183,'2017-02-22 21:41:51','2016-12-06 13:09:50', 1, 'Cyndi Metallo');
+INSERT INTO `customer_pricing_v2`.`users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (6, 'mspindler',1,'$2y$10$wMxYn7DCLOuW4Yyv48i1queAk5MjYBvDzM11uCF42qKUuQGVVEytW',null,'mspindler@fultonfishmarket.com','847-809-6512',null,'2016-12-06 13:09:50','2016-12-06 13:09:50', 1, 'Mike Spindler');
+INSERT INTO `customer_pricing_v2`.`users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (7, 'bzakrinski',1,'$2y$10$gSZ7jGyuSHBeOrGwE.Pa5uuDlzpdp/VSXU5ObHNaGvhhRrI3I13hK','Bill Zakrinski','bzak@fultonfishmarket.com','347-680-2772',206,'2016-12-06 13:09:51','2016-12-06 13:09:51', 1, 'Bill Zakrinski');
+INSERT INTO `customer_pricing_v2`.`users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (8, 'iderfler',1,'$2y$10$jTgKbfE6bqcivt4fqdVmFufvLoEX0mgtAKbg8g9ejBUnhKB2/GBxW','Iris Derfler','iderfler@fultonfishmarket.com','847-606-2555',181,'2016-12-06 13:09:51','2016-12-06 13:09:51', 1, 'Iris Derfler');
+INSERT INTO `customer_pricing_v2`.`users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (9, 'jmeade',1024,'$2y$10$e5On29MiGz.ctu8zFMVz9.kPx98ZarMlG11ub4O2ilKpjppkBxnHm','Jody Meade','jody@fultonfishmarket.com','570-335-6484',180,'2017-04-18 18:32:56','2016-12-06 13:09:51', 1, 'Jody Meade');
+INSERT INTO `customer_pricing_v2`.`users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (10, 'dbacon',378,'$2y$10$IaYd4efN4b.lyxRP1dIwq.qNYpnwgqNCPjt.oTB5NI6HUZO2kjkCm','David Bacon','dbacon@fultonfishmarket.com','',250,'2017-04-17 23:07:13','2016-12-21 00:42:56', 1, 'David Bacon');
 
 # ROLES
 INSERT INTO `roles` (`id`, `name`) VALUES(1, 'admin');

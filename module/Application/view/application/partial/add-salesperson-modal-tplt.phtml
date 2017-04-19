@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="addSalespersonModal.html">
-<form id="add_salesperson_form" method="post" name="addSalespersonForm">
+<form id="add_salesperson_form" autocomplete="off" method="post" name="addSalespersonForm">
     <div class="modal-header">
         <div class="container">
             <div class="row">
@@ -20,7 +20,7 @@
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
                             <label class="control-label" ng-bind="vmc.label.username"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.username.$valid && addSalespersonForm.username.$touched}">
-                                <input class="form-control" ng-required="true" ffm-validate-salesperson ffm-validate-salesperson-scenario="vmc.scenario" ffm-validate-salesperson-id="vmc.id" ffm-validate-salesperson-field="username" ng-pattern="vmc.pattern.username" ng-model="vmc.username" placeholder="Username" name="username" type="text" select-on-focus>
+                                <input class="form-control" ng-model-options="{ updateOn: 'blur' }" ng-required="true" ffm-validate-salesperson ffm-validate-salesperson-scenario="vmc.scenario" ffm-validate-salesperson-id="vmc.id" ffm-validate-salesperson-field="username" ng-pattern="vmc.pattern.username" ng-model="vmc.username" placeholder="Username" name="username" type="text" select-on-focus>
                                 <div ng-hide="addSalespersonForm.username.$valid || addSalespersonForm.username.$pristine">
                                     &nbsp;
                                 </div>
@@ -33,7 +33,7 @@
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
                             <label class="control-label" ng-bind="vmc.label.email"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.email.$valid && addSalespersonForm.email.$touched}">
-                                <input class="form-control" ng-required="true" ng-pattern="vmc.pattern.email" ffm-validate-salesperson ffm-validate-salesperson-scenario="vmc.scenario" ffm-validate-salesperson-id="vmc.id" ffm-validate-salesperson-field="email" ng-model="vmc.email" placeholder="Email" name="email" type="text" select-on-focus>
+                                <input class="form-control" ng-model-options="{ updateOn: 'blur' }" ng-required="true" ng-pattern="vmc.pattern.email" ffm-validate-salesperson ffm-validate-salesperson-scenario="vmc.scenario" ffm-validate-salesperson-id="vmc.id" ffm-validate-salesperson-field="email" ng-model="vmc.email" placeholder="Email" name="email" type="text" select-on-focus>
                                 <div ng-hide="addSalespersonForm.email.$valid || addSalespersonForm.email.$pristine">
                                     &nbsp;
                                 </div>
@@ -54,7 +54,7 @@
                             <label class="control-label" ng-bind="vmc.label.status"></label>
                             <div class="form-group input-group dropdown col-sm-12 col-md-12 col-lg-12" uib-dropdown >
                                 <button id="status-button" type="button" class="btn dropdown-toggle btn-default bool-drop-btn" uib-dropdown-toggle >
-                                    {{vmc.status === 1 ? 'Active' : 'Inactive'}}<span class="caret bool-drop-btn-caret"></span>
+                                    <span style="color: #000000 !important;">{{vmc.status === 1 ? 'Active' : 'Inactive'}}</span><span style="color: #000000 !important;" class="caret bool-drop-btn-caret"></span>
                                 </button>
                                 <ul class="dropdown-menu bool-drop-btn" uib-dropdown-menu role="menu" aria-labelledby="status-button">
                                     <li class="" ng-class="{'selected': vmc.status === 1 || vmc.status === '1'}">
@@ -93,14 +93,14 @@
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
                             <label class="control-label" ng-bind="vmc.label.password"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.password.$valid && addSalespersonForm.password.$touched}">
-                                <input id="password_check" ng-required="vmc.scenario == 'create'" class="form-control" ng-pattern="vmc.pattern.password" ng-model="vmc.password" name="password" type="password" select-on-focus>
+                                <input id="password_check" autocomplete="off" ng-required="vmc.scenario == 'create'" class="form-control" ng-pattern="vmc.pattern.password" ng-model="vmc.password" name="password" type="password" select-on-focus>
                             </div>
                         </div>
                         <!--Verify Password-->
                         <div class="col-sm-12" ng-class="{'comment col-md-12 col-lg-12': true}">
                             <label class="control-label" ng-bind="vmc.label.password_verify"></label>
                             <div class="input-group col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error': !addSalespersonForm.password_verify.$valid && addSalespersonForm.password_verify.$touched}">
-                                <input class="form-control" ng-required="vmc.scenario == 'create'" ffm-pw-check="password_check" ng-pattern="vmc.pattern.password" ng-model="vmc.password_verify" name="password_verify" type="password" select-on-focus>
+                                <input class="form-control" autocomplete="off" ng-required="vmc.scenario == 'create'" ffm-pw-check="password_check" ng-pattern="vmc.pattern.password" ng-model="vmc.password_verify" name="password_verify" type="password" select-on-focus>
                             </div>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
             <div class="row">
                 <button class="btn reset-btn" type="button" data-dismiss="modal" ng-click="vmc.cancel()">Cancel</button>
 <button class="row-save btn btn-primary" ng-click="vmc.ok(addSalespersonForm.email.$valid &&
-                            addSalespersonForm.username.$valid && addSalespersonForm.full_name.$valid && addSalespersonForm.phone1.$valid)">Save</button>
+                            addSalespersonForm.username.$valid && addSalespersonForm.full_name.$valid && addSalespersonForm.phone1.$valid && addSalespersonForm.password.$valid && addSalespersonForm.password_verify.$valid)">Save</button>
             </div>
         </div>
     </div>
