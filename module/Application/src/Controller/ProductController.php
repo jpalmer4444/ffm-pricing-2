@@ -42,16 +42,7 @@ class ProductController extends BaseController {
     private $checkboxService;
 
     public function __construct(
-    EntityManager $entityManager, 
-            Logger $logger, 
-            array $config, 
-            AuthManager $authManager, 
-            SSPJoin $sspJoin, 
-            RestService $restService, 
-            CustomerService $customerService, 
-            UserService $userService, 
-            CheckboxService $checkboxService,
-            PriceOverrideService $priceOverrideService
+    EntityManager $entityManager, Logger $logger, array $config, AuthManager $authManager, SSPJoin $sspJoin, RestService $restService, CustomerService $customerService, UserService $userService, CheckboxService $checkboxService, PriceOverrideService $priceOverrideService
     ) {
 
         parent::__construct($authManager, $config);
@@ -69,7 +60,7 @@ class ProductController extends BaseController {
         $this->userService = $userService;
 
         $this->checkboxService = $checkboxService;
-        
+
         $this->priceOverrideService = $priceOverrideService;
     }
 
@@ -102,11 +93,9 @@ class ProductController extends BaseController {
                     // or we could possibly be dealing with an Added Product.
                     if ($this->params()->fromPost('product_id')[0] == 'A') {
                         //ADDED PRODUCT
-                        $addedProduct = $this->editOrDeleteAddedProduct($data, 
-                                $this->entityManager->getRepository(AddedProduct::class)->find(substr($this->params()->fromPost('product_id'), 1)));
-                        
+                        $addedProduct = $this->editOrDeleteAddedProduct($data, $this->entityManager->getRepository(AddedProduct::class)->find(substr($this->params()->fromPost('product_id'), 1)));
+
                         return $this->jsonResponse(['success' => true, 'id' => $addedProduct->getId()]);
-                        
                     } else {
                         //PRODUCT
                         $product = $this->entityManager->getRepository(Product::class)->find(substr($this->params()->fromPost('product_id'), 1));
@@ -399,117 +388,6 @@ class ProductController extends BaseController {
 
         $sales_user_id = $sales_user->getId();
 
-        $selectPre = "SELECT "
-    . "         IFNULL(`item_table_checkbox`.`checked`, 0) 		as 'checked', "
-    . "         CONCAT('P', `products`.`id`)                            as 'id', "
-    . "         `products`.`sku`					as 'sku', "
-    . "         `products`.`productname`				as 'productname', "
-    . "         `products`.`description`				as 'description', "
-    . "         `products`.`wholesale`                                  as 'wholesale', "
-    . "         `products`.`retail`					as 'retail', "
-    . "         `products`.`uom`					as 'uom', "
-    . "         `products`.`status`                                     as 'status', "
-    . "         `products`.`saturdayenabled`                            as 'saturdayenabled', "
-    . "         `item_price_override`.`overrideprice`                   as 'overrideprice', "
-    . "         `user_product_preferences`.`comment`                    as 'comment', "
-    . "         `user_product_preferences`.`option`                     as 'option' "
-    . "             FROM `products` "
-    . "                 LEFT JOIN `item_table_checkbox` "
-    . "                     ON ("
-    . "                         `item_table_checkbox`.`product` = `products`.`id` AND "
-    . "                         `item_table_checkbox`.`customer` = $cust_id AND "
-    . "                         `item_table_checkbox`.`salesperson` = $sales_user_id"
-    . "                         ) "
-    . "                 LEFT JOIN `customer_product` "
-    . "                     ON ("
-    . "                         `products`.`id` = `customer_product`.`product` AND "
-    . "                         $cust_id = `customer_product`.`customer`"
-    . "                         ) "
-    . "                 LEFT JOIN `item_price_override` "
-    . "                     ON ("
-    . "                         `products`.`id` = `item_price_override`.`product` AND "
-    . "                         `customer_product`.`customer` = `item_price_override`.`customer` AND "
-    . "                         `item_price_override`.`salesperson` = `item_table_checkbox`.`salesperson` AND "
-    . "                         `item_price_override`.`active` = 1"
-    . "                         ) "
-    . "                 LEFT JOIN `user_customer` "
-    . "                     ON ("
-    . "                         `customer_product`.`customer` = `user_customer`.`customer_id` AND "
-    . "                         $sales_user_id = `user_customer`.`user_id`"
-    . "                         ) "
-    . "                 LEFT JOIN `user_product_preferences` "
-    . "                     ON ("
-    . "                         `products`.`id` = `user_product_preferences`.`product_id` AND "
-    . "                         `user_customer`.`user_id` = `user_product_preferences`.`user_id` AND "
-    . "                         `user_customer`.`customer_id` = `user_product_preferences`.`customer_id`"
-    . "                         ) ";
-
-        $selectCountPre = "SELECT count(*) "
-    . "     FROM `products` "
-    . "         LEFT JOIN `item_table_checkbox` "
-    . "             ON ("
-    . "                 `item_table_checkbox`.`product` = `products`.`id` AND "
-    . "                 `item_table_checkbox`.`customer` = $cust_id AND "
-    . "                 `item_table_checkbox`.`salesperson` = $sales_user_id"
-    . "                 ) "
-    . "         LEFT JOIN `customer_product` "
-    . "             ON ("
-    . "                 `products`.`id` = `customer_product`.`product` AND "
-    . "                 $cust_id = `customer_product`.`customer`"
-    . "                 ) "
-    . "         LEFT JOIN `user_customer` "
-    . "             ON ("
-    . "                 `customer_product`.`customer` = `user_customer`.`customer_id` AND "
-    . "                 $sales_user_id = `user_customer`.`user_id`"
-    . "                 ) "
-    . "         LEFT JOIN `user_product_preferences` "
-    . "             ON ("
-    . "                 `products`.`id` = `user_product_preferences`.`product_id` AND "
-    . "                 `user_customer`.`user_id` = `user_product_preferences`.`user_id` AND "
-    . "                 `user_customer`.`customer_id` = `user_product_preferences`.`customer_id`"
-    . "                 ) "
-    . "         LEFT JOIN `item_price_override` "
-    . "             ON ( "
-    . "                 `products`.`id` = `item_price_override`.`product` AND "
-    . "                 `customer_product`.`customer` = `item_price_override`.`customer` AND "
-    . "                 `item_price_override`.`salesperson` = `item_table_checkbox`.`salesperson` AND "
-    . "                 `item_price_override`.`active` = 1"
-    . "                 ) ";
-
-        $andWherePre = "`customer_product`.`customer` = $cust_id AND `user_customer`.`user_id` = $sales_user_id";
-
-        $andWherePost = "`added_product`.`customer` = $cust_id AND `added_product`.`active` = 1 ";
-
-        $selectPost = "
-            SELECT
-                IFNULL(`item_table_checkbox`.`checked`, 0)      as 'checked',
-                CONCAT('A', `added_product`.`id`)         as 'id',
-                `added_product`.`sku`                     as 'sku',
-                `added_product`.`productname`             as 'productname',
-                `added_product`.`description`             as 'description',
-                (select null)                               as 'wholesale',
-                (select null)                               as 'retail',
-                `added_product`.`uom`                     as 'uom',
-                `added_product`.`status`                as 'status',
-                (select 1)                                  as 'saturdayenabled',
-                `added_product`.`overrideprice`           as 'overrideprice',
-                `added_product`.`comment`              as 'comment',
-                (select null)                               as 'option'
-            FROM `added_product`
-                LEFT JOIN `item_table_checkbox`
-                    ON (
-                        `added_product`.`id` = `item_table_checkbox`.`added_product` AND 
-                        `added_product`.`salesperson` = $sales_user_id"
-                . "     ) ";
-
-        $selectCountPost = "SELECT count(*) "
-                . "     FROM `added_product` "
-                . "         LEFT JOIN `item_table_checkbox` "
-                . "             ON ("
-                . "                 `added_product`.`id` = `item_table_checkbox`.`added_product` AND "
-                . "                 `added_product`.`salesperson` = $sales_user_id"
-                . "                 ) ";
-
         $sql = "SELECT "
                 . " `products`.`sku` as sku, "
                 . " `products`.`uom` as uom, "
@@ -563,6 +441,93 @@ class ProductController extends BaseController {
                 . "                     `added_product`.`salesperson` = $sales_user_id AND "
                 . "                     `added_product`.`active` = 1"
                 . "                   )";
+
+        $selectPreColumns = "IFNULL(`item_table_checkbox`.`checked`, 0) 		as 'checked', "
+                . "         CONCAT('P', `products`.`id`)                            as 'id', "
+                . "         `products`.`sku`					as 'sku', "
+                . "         `products`.`productname`				as 'productname', "
+                . "         `products`.`description`				as 'description', "
+                . "         `products`.`wholesale`                                  as 'wholesale', "
+                . "         `products`.`retail`					as 'retail', "
+                . "         `products`.`uom`					as 'uom', "
+                . "         `products`.`status`                                     as 'status', "
+                . "         `products`.`saturdayenabled`                            as 'saturdayenabled', "
+                . "         `item_price_override`.`overrideprice`                   as 'overrideprice', "
+                . "         `user_product_preferences`.`comment`                    as 'comment', "
+                . "         `user_product_preferences`.`option`                     as 'option' ";
+
+        $selectCountPreColumns = "count(*) ";
+
+        $select_pre = "SELECT "
+                . "         _COLUMNS_ "
+                . "             FROM `products` "
+                . "                 LEFT JOIN `item_table_checkbox` "
+                . "                     ON ("
+                . "                         `item_table_checkbox`.`product` = `products`.`id` AND "
+                . "                         `item_table_checkbox`.`customer` = $cust_id AND "
+                . "                         `item_table_checkbox`.`salesperson` = $sales_user_id"
+                . "                         ) "
+                . "                 LEFT JOIN `customer_product` "
+                . "                     ON ("
+                . "                         `products`.`id` = `customer_product`.`product` AND "
+                . "                         $cust_id = `customer_product`.`customer`"
+                . "                         ) "
+                . "                 LEFT JOIN `item_price_override` "
+                . "                     ON ("
+                . "                         `products`.`id` = `item_price_override`.`product` AND "
+                . "                         `customer_product`.`customer` = `item_price_override`.`customer` AND "
+                . "                         `item_price_override`.`salesperson` = `item_table_checkbox`.`salesperson` AND "
+                . "                         `item_price_override`.`active` = 1"
+                . "                         ) "
+                . "                 LEFT JOIN `user_customer` "
+                . "                     ON ("
+                . "                         `customer_product`.`customer` = `user_customer`.`customer_id` AND "
+                . "                         $sales_user_id = `user_customer`.`user_id`"
+                . "                         ) "
+                . "                 LEFT JOIN `user_product_preferences` "
+                . "                     ON ("
+                . "                         `products`.`id` = `user_product_preferences`.`product_id` AND "
+                . "                         `user_customer`.`user_id` = `user_product_preferences`.`user_id` AND "
+                . "                         `user_customer`.`customer_id` = `user_product_preferences`.`customer_id`"
+                . "                         ) ";
+
+        $selectPostColumns = "IFNULL(`item_table_checkbox`.`checked`, 0)      as 'checked',
+                CONCAT('A', `added_product`.`id`)         as 'id',
+                `added_product`.`sku`                     as 'sku',
+                `added_product`.`productname`             as 'productname',
+                `added_product`.`description`             as 'description',
+                (select null)                               as 'wholesale',
+                (select null)                               as 'retail',
+                `added_product`.`uom`                     as 'uom',
+                `added_product`.`status`                as 'status',
+                (select 1)                                  as 'saturdayenabled',
+                `added_product`.`overrideprice`           as 'overrideprice',
+                `added_product`.`comment`              as 'comment',
+                (select null)                               as 'option' ";
+
+        $selectCountPostColumns = "count(*) ";
+
+        $select_post = "
+            SELECT
+                _COLUMNS_
+            FROM `added_product`
+                LEFT JOIN `item_table_checkbox`
+                    ON (
+                        `added_product`.`id` = `item_table_checkbox`.`added_product` AND 
+                        `added_product`.`salesperson` = $sales_user_id"
+                . "     ) ";
+
+        $selectPre = str_replace("_COLUMNS_", $selectPreColumns, $select_pre);
+
+        $selectCountPre = str_replace("_COLUMNS_", $selectCountPreColumns, $select_pre);
+
+        $andWherePre = "`customer_product`.`customer` = $cust_id AND `user_customer`.`user_id` = $sales_user_id";
+
+        $andWherePost = "`added_product`.`customer` = $cust_id AND `added_product`.`active` = 1 ";
+
+        $selectPost = str_replace("_COLUMNS_", $selectPostColumns, $select_post);
+
+        $selectCountPost = str_replace("_COLUMNS_", $selectCountPostColumns, $select_post);
 
         $stmt = $this->entityManager->getConnection()->executeQuery(
                 $sql, [
@@ -806,23 +771,21 @@ class ProductController extends BaseController {
                     $this->log("Matching SKU for AddedProduct SKU: " . $restItem['sku']); //WORKS
                     //now inactivate the AddedProduct.
                     $skuMatchesAddedProduct->setActive(0);
-                    
+
                     //now make sure there are no existing active price overrides.
                     $activePriceOverrides = $this->priceOverrideService->findActivePriceOverrides($customer, $product, $user);
 
-                    if(count($activePriceOverrides) > 0){
-                        
-                        foreach($activePriceOverrides as $override){
-                            
+                    if (count($activePriceOverrides) > 0) {
+
+                        foreach ($activePriceOverrides as $override) {
+
                             $override->setActive(0);
                             $this->entityManager->merge($override);
-                            
                         }
                         $some = true;
                         //$this->entityManager->flush();
-                        
                     }
-                    
+
                     $priceOverride = new PriceOverride();
                     $priceOverride->setCreated(new DateTime());
                     $priceOverride->setCustomer($customer);
@@ -900,7 +863,7 @@ class ProductController extends BaseController {
 
         return $some;
     }
-    
+
     //NEED TO ADD CUSTOMER TO PREFERENCE UPDATE AND CREATE!
 
     private function createPreference($restItem, $product, $user, $customer) {
@@ -943,11 +906,11 @@ class ProductController extends BaseController {
 
         return $query->getResult();
     }
-    
+
     private function findPreference($preferences, $productid, $customerid) {
         if (!empty($preferences) && $productid != -1) {
             foreach ($preferences as $preference) {
-                if($preference->getProduct()->getId() == $productid && $preference->getCustomer()->getId() == $customerid){
+                if ($preference->getProduct()->getId() == $productid && $preference->getCustomer()->getId() == $customerid) {
                     return $preference;
                 }
             }
@@ -1009,11 +972,6 @@ class ProductController extends BaseController {
         }
         if (strcmp($product->getProductname(), $restItem['productname']) != 0) {
             $product->setProductname($restItem['productname']);
-            $some = TRUE;
-            $thisOne = TRUE;
-        }
-        if (strcmp($product->getQty(), $restItem['qty']) != 0) {
-            $product->setQty($restItem['qty']);
             $some = TRUE;
             $thisOne = TRUE;
         }
@@ -1172,23 +1130,21 @@ class ProductController extends BaseController {
         switch ($scenario) {
 
             case "create" : {
-                
+
                     //we must lookup any overrideprice rows for this Product that might already exist.
                     $activePriceOverrides = $this->priceOverrideService->findActivePriceOverrides($customer, $product, $salesperson);
 
-                    if(count($activePriceOverrides) > 0){
-                        
-                        foreach($activePriceOverrides as $override){
-                            
+                    if (count($activePriceOverrides) > 0) {
+
+                        foreach ($activePriceOverrides as $override) {
+
                             $override->setActive(0);
                             $this->entityManager->merge($override);
-                            
                         }
-                        
+
                         $this->entityManager->flush();
-                        
                     }
-                    
+
                     $overridePrice = new PriceOverride();
                     $overridePrice->setActive(1);
                     $overridePrice->setCustomer($customer);
@@ -1255,7 +1211,6 @@ class ProductController extends BaseController {
         $product->setId($restItem['id']);
         $product->setDescription($restItem['shortescription']);
         $product->setProductname($restItem['productname']);
-        $product->setQty($restItem['qty']);
         $product->setRetail($restItem['retail']);
         $product->setSaturdayenabled($restItem['saturdayenabled'] ? true : false);
         $product->setSku($restItem['sku']);

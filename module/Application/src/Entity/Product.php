@@ -42,11 +42,6 @@ class Product {
     protected $description;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $qty;
-
-    /**
      * @ORM\Column(type="decimal")
      */
     protected $wholesale;
@@ -117,10 +112,6 @@ class Product {
         return $this->description;
     }
 
-    public function getQty() {
-        return $this->qty;
-    }
-
     public function getWholesale() {
         return $this->wholesale;
     }
@@ -170,11 +161,6 @@ class Product {
 
     public function setDescription($description) {
         $this->description = $description;
-        return $this;
-    }
-
-    public function setQty($qty) {
-        $this->qty = $qty;
         return $this;
     }
 

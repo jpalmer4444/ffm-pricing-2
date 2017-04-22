@@ -140,7 +140,6 @@ CREATE TABLE `products` (
   `sku` varchar(25) DEFAULT NULL,
   `productname` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `qty` int(11) DEFAULT NULL,
   `wholesale` decimal(22,2) DEFAULT NULL,
   `retail` decimal(22,2) DEFAULT NULL,
   `uom` varchar(100) NOT NULL,

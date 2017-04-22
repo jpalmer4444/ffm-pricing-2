@@ -76,14 +76,14 @@
 
         </div> 
         <footer id="ffm-footer">
-            <p> <?php echo $this->translate('Fulton Fish Market - Skeleton App') ?>&nbsp; <?php echo date('Y') ?> Meade Digital Enterprises </p>
+            <p> <?php echo $this->translate('Fulton Fish Market - Pricing App V2') ?>&nbsp; <?php echo date('Y') ?> Meade Digital Enterprises </p>
         </footer>
 
         <?php
             //add angular files for appropriate pages.
         if ($this->ngPage) {
             
-            $version=65;
+            $version=66;
 
             $this->inlineScript()->appendFile($this->basePath('js/jquery.min.js'))
                     ->appendFile($this->basePath('js/jquery.dataTables.min.js'))
