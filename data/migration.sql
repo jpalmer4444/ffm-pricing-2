@@ -1,4 +1,28 @@
-use `pricing_2`;
+use customer_pricing_20170419T183023Z;
+
+# DIRECTIONS
+# 1. Run the SQL between (STEP ONE START|END).
+#       At this point we have the basic DB structure in place as well as:
+#       users, roles, user_role, permissions, and role_permission tables populated.
+#
+# 2. Now we need to let the web-app populate our products, customers, user_product_preferences, 
+#    user_customer, customer_product, and item_table_checkbox tables.
+#       A. Now open a browser and navigate to:
+#           https://pricingv2.ffmalpha.com
+#       
+#       B. If you are forwarded to Salespeople or Customers page please click top-right User icon --> click Logout.
+#          This will force the correct session id to be written to DB to avoid mismatches because we just
+#          dropped and recreated all tables but your browser might have an old cookie and I want to avoid that.
+#       
+#       C. Login with production credentials for an admin --> You will be forwarded to Salespeople page.
+#
+#       D. Click on every salesperson navigating back and forth between Salespeople and Customers until you 
+#          have viewed all Customers for each Salesperson.
+#
+#       E. Now we need to run the SQL between (STEP TWO START|END).
+#          The first 2 queries will identify any missed Products that still need to be populated for the migration to work.
+
+# STEP ONE START.
 
 DROP TABLE IF EXISTS `error_log`;
 DROP TABLE IF EXISTS `item_table_checkbox`;
@@ -8,15 +32,19 @@ DROP TABLE IF EXISTS `customer_added_product`;
 DROP TABLE IF EXISTS `user_product_preferences`;
 DROP TABLE IF EXISTS `user_customer`;
 DROP TABLE IF EXISTS `customer_product`;
+DROP TABLE IF EXISTS `user_products`;
 DROP TABLE IF EXISTS `products`;
 DROP TABLE IF EXISTS `added_product`;
+DROP TABLE IF EXISTS `row_plus_items_page`;
 DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `user_role`;
 drop table if exists `role_permission`;
 drop table if exists `permissions`;
 drop table if exists `roles`;
 DROP TABLE IF EXISTS `user_sessions`;
+DROP TABLE IF EXISTS `user_role_xref`;
 DROP TABLE IF EXISTS `users`;
+
 
 CREATE TABLE `users` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -121,7 +149,6 @@ CREATE TABLE `customers` (
 
 
 /*
-    SELECT * FROM 
 */
 CREATE TABLE `user_customer` (
   `user_id` int(11) NOT NULL DEFAULT '0',
@@ -171,8 +198,6 @@ CREATE TABLE `item_price_override` (
   CONSTRAINT `FK_ITEM_PRICE_OVERRIDE_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `item_price_override` ADD UNIQUE `itc_product_unique_index`(`product`, `salesperson`, `customer`);
-
 
 CREATE TABLE `added_product` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -216,9 +241,6 @@ CREATE TABLE `item_table_checkbox` (
   CONSTRAINT `FK_ITEM_TABLE_CHECKBOX_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `item_table_checkbox` ADD UNIQUE `itc_product_unique_index`(`product`, `salesperson`, `customer`);
-ALTER TABLE `item_table_checkbox` ADD UNIQUE `itc_added_product_unique_index`(`added_product`, `salesperson`, `customer`);
-
 
 CREATE TABLE `pricing_override_report` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -259,18 +281,16 @@ CREATE TABLE `customer_added_product` (
 CREATE TABLE `user_product_preferences` (
   `user_id` INTEGER NOT NULL DEFAULT '0',
   `product_id` INTEGER NOT NULL DEFAULT '0',
-  `customer_id` INTEGER NOT NULL DEFAULT '0',
   `version` INTEGER DEFAULT '1',
   `comment` VARCHAR(255) DEFAULT NULL,
   `option` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`product_id`, `customer_id`),
+  PRIMARY KEY (`user_id`,`product_id`),
   CONSTRAINT `FK_USER_PRODUCT_PREFERENCES_PRODUCT` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
-  CONSTRAINT `FK_USER_PRODUCT_PREFERENCES_CUSTOMER_ID` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
   CONSTRAINT `FK_USER_PRODUCT_PREFERENCES_CUSTOMER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# INSERTS
-# USERS
+
+
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (1, 'jpalmer',24,'$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC',null,'jpalmer@fultonfishmarket.com','630-999-0139',null,'2017-03-03 18:44:10','2016-12-06 13:09:50', 1, 'Jason Palmer');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (2, 'foobarx',1,'$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC','Foo Bar X','foobarx@fultonfishmarket.com','802-233-9957',247,'2016-12-06 13:09:50','2016-12-06 13:09:50', 1, 'Foobar X');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (3, 'dtanzer',16,'$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', null,'dtanzer@fultonfishmarket.com','802-233-9957',null,'2017-03-01 22:24:39','2016-12-06 13:09:50', 1, 'David Tanzer');
@@ -281,6 +301,7 @@ INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`em
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (8, 'iderfler',1,'$2y$10$jTgKbfE6bqcivt4fqdVmFufvLoEX0mgtAKbg8g9ejBUnhKB2/GBxW','Iris Derfler','iderfler@fultonfishmarket.com','847-606-2555',181,'2016-12-06 13:09:51','2016-12-06 13:09:51', 1, 'Iris Derfler');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (9, 'jmeade',1024,'$2y$10$e5On29MiGz.ctu8zFMVz9.kPx98ZarMlG11ub4O2ilKpjppkBxnHm','Jody Meade','jody@fultonfishmarket.com','570-335-6484',180,'2017-04-18 18:32:56','2016-12-06 13:09:51', 1, 'Jody Meade');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (10, 'dbacon',378,'$2y$10$IaYd4efN4b.lyxRP1dIwq.qNYpnwgqNCPjt.oTB5NI6HUZO2kjkCm','David Bacon','dbacon@fultonfishmarket.com','',250,'2017-04-17 23:07:13','2016-12-21 00:42:56', 1, 'David Bacon');
+
 
 # ROLES
 INSERT INTO `roles` (`id`, `name`) VALUES(1, 'admin');
@@ -296,6 +317,7 @@ INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 7);# user bzakrinsky
 INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 2);# user foobarx
 INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 8);# user iderfler
 INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 9);# user jmeade
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 10);# user dbacon
 
 # PERMISSIONS - Set them up.
 # AuthController IS NOT PROTECTED.
@@ -379,3 +401,232 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 24);   # sa
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 25);   # sales product/report (Product Report Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 19);   # sales product/productTable (Product Product Table)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 26);   # sales product/productFormTypeahead (Product ProductForm Typeahead)
+
+# STEP ONE End.
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# STEP TWO Start.
+# Now Browse webapp until these queres return zero rows:
+SELECT itc.salesperson as 'Salesperson', c.name as 'Customer Name', p.productname as 'Product Name' 
+    FROM customer_pricing.products p
+    LEFT JOIN customer_pricing.item_table_checkbox itc ON p.id = itc.product
+    LEFT JOIN customer_pricing.customers c ON itc.customerid = c.id
+    WHERE itc.product NOT IN (SELECT id FROM customer_pricing_20170419T183023Z.products);
+    
+SELECT por.salesperson as 'Salesperson', c.name as 'Customer Name', p.productname as 'Product Name' 
+    FROM customer_pricing.products p
+    LEFT JOIN customer_pricing.pricing_override_report por ON p.id = por.product
+    LEFT JOIN customer_pricing.customers c ON por.customerid = c.id
+    WHERE por.product NOT IN (SELECT id FROM customer_pricing_20170419T183023Z.products);
+    
+SELECT rpip.salesperson as 'Salesperson', c.name as 'Customer Name' 
+    FROM customer_pricing.row_plus_items_page rpip
+    LEFT JOIN customer_pricing.customers c ON rpip.customerid = c.id
+    WHERE rpip.customerid NOT IN (SELECT id FROM customer_pricing_20170419T183023Z.customers);
+
+# STEP TWO End. 
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# STEP THREE Start.
+# When the above queries are returning zero rows
+
+# INSERT ALL ITEM_PRICE_OVERRIDE rows from V1.
+# Column name changed from customerid to customer.
+# Column salesperson datatype changed VARCHAR(100) [M:1 users.username] to INTEGER [M:1 users.id]
+use `customer_pricing_20170419T183023Z`;
+INSERT INTO `customer_pricing_20170419T183023Z`.`item_price_override` (
+        `id`, `version`, `product`, `overrideprice`, `active`, `created`, `customer`, `salesperson`
+) (
+	SELECT 
+            `item_price_override`.`id`, `item_price_override`.`version`, (
+                SELECT id FROM `customer_pricing_20170419T183023Z`.`products` WHERE sku = (
+                    SELECT sku FROM `customer_pricing`.`products` WHERE id = `item_price_override`.`product`
+                ) 
+            ), 
+            `item_price_override`.`overrideprice`, `item_price_override`.`active`, `item_price_override`.`created`, 
+            `item_price_override`.`customerid`, 
+            (
+                SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
+                    SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = `item_price_override`.`salesperson`
+                )
+            )
+        FROM `customer_pricing`.`item_price_override`
+);
+
+# INSERT all row_plus_items_page rows into added_product table.
+# Table name has changed from row_plus_items_page to added_product
+# Column name changed from customerid to customer.
+# Column salesperson datatype changed VARCHAR(100) [M:1 users.username] to INTEGER [M:1 users.id]
+INSERT INTO `customer_pricing_20170419T183023Z`.`added_product` (
+        `id`, `version`, `overrideprice`, `active`, `sku`, `productname`, `description`, 
+        `comment`, `uom`, `status`, `created`, `customer`, `salesperson`
+    ) (
+	SELECT 
+            `row_plus_items_page`.`id`, `row_plus_items_page`.`version`, `row_plus_items_page`.`overrideprice`, 
+            `row_plus_items_page`.`active`, `row_plus_items_page`.`sku`, `row_plus_items_page`.`productname`, 
+            `row_plus_items_page`.`description`, `row_plus_items_page`.`comment`, `row_plus_items_page`.`uom`, 
+            `row_plus_items_page`.`status`, `row_plus_items_page`.`created`, `row_plus_items_page`.`customerid`, 
+            (
+                SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
+                    SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = `row_plus_items_page`.`salesperson`
+                )
+            )
+            
+            FROM `customer_pricing`.`row_plus_items_page`
+);
+
+# New Table
+INSERT INTO `customer_pricing_20170419T183023Z`.`customer_added_product` (
+        `customer`, `added_product`
+    ) (
+	SELECT 
+            `row_plus_items_page`.`customerid`, `row_plus_items_page`.`id` 
+            FROM `customer_pricing`.`row_plus_items_page`
+);
+
+# When Products are populated from the DB an item_table_checkbox row is created for each one. We must DELETE those 
+# we are going to override. At this point - we have browsed the web-app and forced the rows to be inserted into 
+# item_table_checkbox. In V2 every product belonging to every customer has an item_table_checkbox row, in V1 there are 
+# only item_table_checkbox rows for Products that have been "checked" at least once. In order to deal with this mismatch 
+# we need to delete any rows that exist in the item_table_checkbox table from V1.
+# DELETE ITC2.* FROM `customer_pricing_20170419T183023Z`.`item_table_checkbox` ITC2 
+#    LEFT JOIN `customer_pricing`.`item_table_checkbox` ITC1
+#        ON  ITC2.product = ITC1.product
+#            AND ITC2.salesperson = (
+#                SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
+#                    SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = ITC1.salesperson
+#                )
+#            )
+
+#           AND ITC2.customer = ITC1.customerid
+#           AND ITC2.added_product = ITC1.row_plus_items_page_id;
+
+# drop any existing temp tables from earlier in the session
+# DROP TABLE IF EXISTS `item_table_checkbox_temp`;
+
+# temp table to hold all the rows that are left in the item_table_checkbox table. After we have inserted all the rows found in
+# item_table_checkbox V1 - we will need to iterate this temporary table and re-insert them. This was how I chose to deal with
+# DUPLICATE key problems I had when I was just leaving the rows in the item_table_checkbox table. This way when we iterate the 
+# rows in the temp table - we INSERT them one by one into the truncated item_table_checkbox table, but we DO NOT include the 
+# AUTO-INCREMENT id column - which allows the DB to re-generate the id column. And this does not hurt us in any way because id
+# column from item_table_checkbox IS NOT used as FK in any table.
+# CREATE TEMPORARY TABLE IF NOT EXISTS `item_table_checkbox_temp` AS (
+#    SELECT * FROM `customer_pricing_20170419T183023Z`.`item_table_checkbox`
+# );
+
+# now truncate the table
+DELETE FROM `customer_pricing_20170419T183023Z`.`item_table_checkbox`;
+
+# INSERT all rows from V1 item_table_checkbox into truncated V2 item_table_checkbox
+# Column name changed from customerid to customer
+# Column name changed from row_plus_items_page_id to added_product
+# Column salesperson datatype changed VARCHAR(100) [M:1 users.username] to INTEGER [M:1 users.id]
+
+
+# INSERT all rows from V2 item_table_checkbox_temp into V2 item_table_checkbox.
+# Drop the id column to allow DB to regenerate AUTOINCREMENT column id to avoid
+# DUPLICATE key errors.
+# INSERT INTO `customer_pricing_20170419T183023Z`.`item_table_checkbox` (
+#        `version`, `product`, `added_product`, `checked`, `customer`, `salesperson`, `created`
+#    ) (
+#	SELECT 
+#            `item_table_checkbox_temp`.`version`, 
+#            `item_table_checkbox_temp`.`product`,
+#            `item_table_checkbox_temp`.`added_product`, 
+#            `item_table_checkbox_temp`.`checked`, 
+#            `item_table_checkbox_temp`.`customer`, 
+#            `item_table_checkbox_temp`.`salesperson`, 
+#            `item_table_checkbox_temp`.`created` 
+#            FROM `customer_pricing_20170419T183023Z`.`item_table_checkbox_temp`
+);
+
+# INSERT all rows from pricing_override_report
+# Column name changed from customerid to customer
+# Column name changed from row_plus_items_page_id to added_product
+# Column salesperson datatype changed VARCHAR(100) [M:1 users.username] to INTEGER [M:1 users.id]
+INSERT INTO `customer_pricing_20170419T183023Z`.`pricing_override_report` (
+        `version`, `product`, `added_product`, `overrideprice`, `retail`, `customer`, `salesperson`, `created`
+    ) (
+	SELECT 
+            `pricing_override_report`.`version`, (SELECT id FROM `customer_pricing_20170419T183023Z`.`products` WHERE sku = (SELECT sku FROM `customer_pricing`.`products` WHERE id = `pricing_override_report`.`product`) ), 
+            `pricing_override_report`.`row_plus_items_page_id`, `pricing_override_report`.`overrideprice`, 
+            # We need to select the ID of the salesperson that holds sales_attr_id that matches
+            # `pricing_override_report`.`retail`, `pricing_override_report`.`customerid`, (
+            #    SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE username = (`pricing_override_report`.`salesperson`)
+            # ), 
+            `pricing_override_report`.`retail`, 
+            `pricing_override_report`.`customerid`, 
+            (
+                SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
+                    SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = `pricing_override_report`.`salesperson`
+                )
+            ), 
+            `pricing_override_report`.`created` 
+            FROM `customer_pricing`.`pricing_override_report`
+);
+
+INSERT INTO `customer_pricing_20170419T183023Z`.`item_table_checkbox` (
+        `version`, `product`, `added_product`, `checked`, `customer`, `salesperson`, `created`
+    ) (
+	SELECT 
+            `item_table_checkbox`.`version`, 
+            (
+                SELECT id FROM `customer_pricing_20170419T183023Z`.`products` WHERE sku = (
+                    SELECT sku FROM `customer_pricing_20170419T183023Z`.`products` WHERE id = `item_table_checkbox`.`product`) 
+            ), 
+            (
+                SELECT id FROM `customer_pricing_20170419T183023Z`.`added_product` WHERE productname = (
+                    SELECT productname FROM `customer_pricing`.`row_plus_items_page` WHERE id = `item_table_checkbox`.`row_plus_items_page_id`) 
+            ),
+            `item_table_checkbox`.`checked`, 
+            `item_table_checkbox`.`customerid`, 
+            (
+                SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
+                    SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = `item_table_checkbox`.`salesperson`
+                )
+            ),
+            `item_table_checkbox`.`created` 
+            FROM `customer_pricing`.`item_table_checkbox`
+);
+
+
+# STEP THREE End.

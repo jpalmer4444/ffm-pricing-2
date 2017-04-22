@@ -27,6 +27,13 @@ class Preferences {
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     protected $product;
+    
+    /**
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Customer", fetch="LAZY")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     */
+    protected $customer;
 
     /**
      * Used internally by Doctrine - Do not touch or manipulate.
@@ -52,6 +59,10 @@ class Preferences {
     public function getProduct() {
         return $this->product;
     }
+    
+    public function getCustomer() {
+        return $this->customer;
+    }
 
     public function getVersion() {
         return $this->version;
@@ -72,6 +83,11 @@ class Preferences {
 
     public function setProduct($product) {
         $this->product = $product;
+        return $this;
+    }
+    
+    public function setCustomer($customer) {
+        $this->customer = $customer;
         return $this;
     }
 

@@ -1,4 +1,7 @@
-use `pricing_2`;
+use customer_pricing_20170419T183023Z;
+
+# DIRECTIONS
+# 1. Run the SQL.
 
 DROP TABLE IF EXISTS `error_log`;
 DROP TABLE IF EXISTS `item_table_checkbox`;
@@ -8,15 +11,19 @@ DROP TABLE IF EXISTS `customer_added_product`;
 DROP TABLE IF EXISTS `user_product_preferences`;
 DROP TABLE IF EXISTS `user_customer`;
 DROP TABLE IF EXISTS `customer_product`;
+DROP TABLE IF EXISTS `user_products`;
 DROP TABLE IF EXISTS `products`;
 DROP TABLE IF EXISTS `added_product`;
+DROP TABLE IF EXISTS `row_plus_items_page`;
 DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `user_role`;
 drop table if exists `role_permission`;
 drop table if exists `permissions`;
 drop table if exists `roles`;
 DROP TABLE IF EXISTS `user_sessions`;
+DROP TABLE IF EXISTS `user_role_xref`;
 DROP TABLE IF EXISTS `users`;
+
 
 CREATE TABLE `users` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -121,7 +128,6 @@ CREATE TABLE `customers` (
 
 
 /*
-    SELECT * FROM 
 */
 CREATE TABLE `user_customer` (
   `user_id` int(11) NOT NULL DEFAULT '0',
@@ -173,7 +179,6 @@ CREATE TABLE `item_price_override` (
 
 ALTER TABLE `item_price_override` ADD UNIQUE `itc_product_unique_index`(`product`, `salesperson`, `customer`);
 
-
 CREATE TABLE `added_product` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `version` INTEGER DEFAULT 1,
@@ -194,6 +199,8 @@ CREATE TABLE `added_product` (
   CONSTRAINT `FK_ADDED_PRODUCT_SALESPERSON` FOREIGN KEY (`salesperson`) REFERENCES `users` (`id`),
   CONSTRAINT `FK_ADDED_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `added_product` ADD UNIQUE `itc_added_product_unique_index`(`id`, `salesperson`, `customer`);
 
 
 CREATE TABLE `item_table_checkbox` (
@@ -218,7 +225,6 @@ CREATE TABLE `item_table_checkbox` (
 
 ALTER TABLE `item_table_checkbox` ADD UNIQUE `itc_product_unique_index`(`product`, `salesperson`, `customer`);
 ALTER TABLE `item_table_checkbox` ADD UNIQUE `itc_added_product_unique_index`(`added_product`, `salesperson`, `customer`);
-
 
 CREATE TABLE `pricing_override_report` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -259,7 +265,7 @@ CREATE TABLE `customer_added_product` (
 CREATE TABLE `user_product_preferences` (
   `user_id` INTEGER NOT NULL DEFAULT '0',
   `product_id` INTEGER NOT NULL DEFAULT '0',
-  `customer_id` INTEGER NOT NULL DEFAULT '0',
+    `customer_id` INTEGER NOT NULL DEFAULT '0',
   `version` INTEGER DEFAULT '1',
   `comment` VARCHAR(255) DEFAULT NULL,
   `option` varchar(255) DEFAULT NULL,
@@ -269,8 +275,10 @@ CREATE TABLE `user_product_preferences` (
   CONSTRAINT `FK_USER_PRODUCT_PREFERENCES_CUSTOMER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# INSERTS
-# USERS
+
+
+
+
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (1, 'jpalmer',24,'$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC',null,'jpalmer@fultonfishmarket.com','630-999-0139',null,'2017-03-03 18:44:10','2016-12-06 13:09:50', 1, 'Jason Palmer');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (2, 'foobarx',1,'$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC','Foo Bar X','foobarx@fultonfishmarket.com','802-233-9957',247,'2016-12-06 13:09:50','2016-12-06 13:09:50', 1, 'Foobar X');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (3, 'dtanzer',16,'$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', null,'dtanzer@fultonfishmarket.com','802-233-9957',null,'2017-03-01 22:24:39','2016-12-06 13:09:50', 1, 'David Tanzer');
@@ -281,6 +289,7 @@ INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`em
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (8, 'iderfler',1,'$2y$10$jTgKbfE6bqcivt4fqdVmFufvLoEX0mgtAKbg8g9ejBUnhKB2/GBxW','Iris Derfler','iderfler@fultonfishmarket.com','847-606-2555',181,'2016-12-06 13:09:51','2016-12-06 13:09:51', 1, 'Iris Derfler');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (9, 'jmeade',1024,'$2y$10$e5On29MiGz.ctu8zFMVz9.kPx98ZarMlG11ub4O2ilKpjppkBxnHm','Jody Meade','jody@fultonfishmarket.com','570-335-6484',180,'2017-04-18 18:32:56','2016-12-06 13:09:51', 1, 'Jody Meade');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (10, 'dbacon',378,'$2y$10$IaYd4efN4b.lyxRP1dIwq.qNYpnwgqNCPjt.oTB5NI6HUZO2kjkCm','David Bacon','dbacon@fultonfishmarket.com','',250,'2017-04-17 23:07:13','2016-12-21 00:42:56', 1, 'David Bacon');
+
 
 # ROLES
 INSERT INTO `roles` (`id`, `name`) VALUES(1, 'admin');
@@ -296,6 +305,7 @@ INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 7);# user bzakrinsky
 INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 2);# user foobarx
 INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 8);# user iderfler
 INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 9);# user jmeade
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 10);# user dbacon
 
 # PERMISSIONS - Set them up.
 # AuthController IS NOT PROTECTED.
@@ -379,3 +389,155 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 24);   # sa
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 25);   # sales product/report (Product Report Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 19);   # sales product/productTable (Product Product Table)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 26);   # sales product/productFormTypeahead (Product ProductForm Typeahead)
+
+# Iterate customers
+INSERT INTO `customer_pricing_20170419T183023Z`.`customers` (id, version, email, `name`, company, created, updated) (
+    SELECT 
+            `customers`.`id`, 
+            `customers`.`version`,
+            `customers`.`email`, 
+            `customers`.`name`, 
+            `customers`.`company`, 
+            `customers`.`created`, 
+            `customers`.`updated`
+        FROM `customer_pricing`.`customers`
+);
+
+# Iterate products
+INSERT INTO `customer_pricing_20170419T183023Z`.`products` (
+id, version, sku, `productname`, description, qty, wholesale, retail, uom, `status`, saturdayenabled, created, updated) (
+    SELECT 
+            `products`.`id`, 
+            `products`.`version`,
+            `products`.`sku`, 
+            `products`.`productname`, 
+            `products`.`description`, 
+            `products`.`qty`, 
+            `products`.`wholesale`,
+            `products`.`retail`,
+            `products`.`uom`,
+            `products`.`status`,
+            `products`.`saturdayenabled`,
+            `products`.`created`,
+            `products`.`updated`
+        FROM `customer_pricing`.`products`
+);
+
+# STEP THREE Start.
+
+# INSERT ALL ITEM_PRICE_OVERRIDE rows from V1.
+# Column name changed from customerid to customer.
+# Column salesperson datatype changed VARCHAR(100) [M:1 users.username] to INTEGER [M:1 users.id]
+INSERT IGNORE INTO `customer_pricing_20170419T183023Z`.`item_price_override` (
+        `version`, `product`, `overrideprice`, `active`, `created`, `customer`, `salesperson`
+) (
+	SELECT 
+            `item_price_override`.`version`, 
+            `item_price_override`.`product`,
+            `item_price_override`.`overrideprice`, 
+            `item_price_override`.`active`, 
+            `item_price_override`.`created`, 
+            `item_price_override`.`customerid`, 
+            (
+                SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
+                    SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = `item_price_override`.`salesperson`
+                )
+            ) 
+        FROM `customer_pricing`.`item_price_override` WHERE `item_price_override`.`active` = 1
+);
+
+# Table name has changed from row_plus_items_page to added_product
+# Column name changed from customerid to customer.
+# Column salesperson datatype changed VARCHAR(100) [M:1 users.username] to INTEGER [M:1 users.id]
+INSERT INTO `customer_pricing_20170419T183023Z`.`added_product` (
+        `id`, `version`, `overrideprice`, `active`, `sku`, `productname`, `description`, 
+        `comment`, `uom`, `status`, `created`, `customer`, `salesperson`
+    ) (
+	SELECT 
+            `row_plus_items_page`.`id`, `row_plus_items_page`.`version`, `row_plus_items_page`.`overrideprice`, 
+            `row_plus_items_page`.`active`, `row_plus_items_page`.`sku`, `row_plus_items_page`.`productname`, 
+            `row_plus_items_page`.`description`, `row_plus_items_page`.`comment`, `row_plus_items_page`.`uom`, 
+            `row_plus_items_page`.`status`, `row_plus_items_page`.`created`, `row_plus_items_page`.`customerid`, 
+            (
+                SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
+                    SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = `row_plus_items_page`.`salesperson`
+                )
+            ) 
+            FROM `customer_pricing`.`row_plus_items_page`
+);
+
+# New Table
+INSERT INTO `customer_pricing_20170419T183023Z`.`customer_added_product` (
+        `customer`, `added_product`
+    ) (
+	SELECT 
+            `row_plus_items_page`.`customerid`, `row_plus_items_page`.`id` 
+            FROM `customer_pricing`.`row_plus_items_page`
+);
+
+# Now we update our checkboxes
+# Important Note - big difference between V1 and V2 V2 creates a checkbox row for every item when the item is created.
+# whereas V1 only creates the checkbox row after the Product has been "checked" one time and not before. That is why we leave the 
+# item_table_checkbox rows that are generated from browsing the web-app then we UPDATE any matching rows from V1.
+# UPDATE `customer_pricing_20170419T183023Z`.`item_table_checkbox` NITC, 
+#	`customer_pricing`.`item_table_checkbox` OITC
+#	SET NITC.`checked` = OITC.`checked`
+#		WHERE NITC.`product` = OITC.`product` AND 
+#			NITC.`customer` = OITC.`customerid` AND
+#			NITC.`salesperson` = (
+#                SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
+#                    SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = OITC.`salesperson`
+#                )
+#            );
+
+INSERT INTO `customer_pricing_20170419T183023Z`.`item_table_checkbox` (
+        `version`, `product`, `added_product`, `checked`, `customer`, `salesperson`, `created`
+    ) (
+	SELECT 
+            `item_table_checkbox`.`version`, 
+            `item_table_checkbox`.`product`,
+            `item_table_checkbox`.`row_plus_items_page_id`, 
+            `item_table_checkbox`.`checked`, 
+            `item_table_checkbox`.`customerid`, 
+            (
+                SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
+                    SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = `pricing_override_report`.`salesperson`
+                )
+            ), 
+            `item_table_checkbox`.`created` 
+            FROM `customer_pricing`.`pricing_override_report`
+);
+
+# INSERT all rows from pricing_override_report
+# Column name changed from customerid to customer
+# Column name changed from row_plus_items_page_id to added_product
+# Column salesperson datatype changed VARCHAR(100) [M:1 users.username] to INTEGER [M:1 users.id]
+INSERT INTO `customer_pricing_20170419T183023Z`.`pricing_override_report` (
+        `version`, `product`, `added_product`, `overrideprice`, `retail`, `customer`, `salesperson`, `created`
+    ) (
+	SELECT 
+            `pricing_override_report`.`version`, 
+            `pricing_override_report`.`product`,
+            `pricing_override_report`.`row_plus_items_page_id`, 
+            `pricing_override_report`.`overrideprice`, 
+            `pricing_override_report`.`retail`, 
+            `pricing_override_report`.`customerid`, 
+            (
+                SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
+                    SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = `pricing_override_report`.`salesperson`
+                )
+            ), 
+            `pricing_override_report`.`created` 
+            FROM `customer_pricing`.`pricing_override_report`
+);
+# STEP THREE End.
+
+# Now you navigate to production V1:
+# https://pricing.fultonfishmarket.com/
+
+# navigate to staging
+# https://pricingv2.ffmalpha.com/
+
+# Compare matching products checkbox selection. Because production is a live changing environment the 
+# number of Products on the 2 lists can be different, but if you compare any matching products - if it
+# is "checked" in production - it will now be checked in staging.

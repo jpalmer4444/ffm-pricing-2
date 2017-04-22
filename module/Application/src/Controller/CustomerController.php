@@ -245,8 +245,6 @@ class CustomerController extends BaseController {
 
         $this->logger->log(Logger::INFO, "inDB: " . $inDb . " inWS: " . $inSvc);
 
-        //remove every matching row in DB and rewrite them all to guarantee we have latest data
-        //in theory this should flush everything out and keep records up-to-date over time.
         $some = false;
         foreach ($json['customers'] as $customer) {
             //lookup item with id

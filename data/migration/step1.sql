@@ -1,4 +1,7 @@
-use `pricing_2`;
+use customer_pricing_20170419T183023Z;
+
+# DIRECTIONS
+# 1. Run the SQL.
 
 DROP TABLE IF EXISTS `error_log`;
 DROP TABLE IF EXISTS `item_table_checkbox`;
@@ -8,15 +11,19 @@ DROP TABLE IF EXISTS `customer_added_product`;
 DROP TABLE IF EXISTS `user_product_preferences`;
 DROP TABLE IF EXISTS `user_customer`;
 DROP TABLE IF EXISTS `customer_product`;
+DROP TABLE IF EXISTS `user_products`;
 DROP TABLE IF EXISTS `products`;
 DROP TABLE IF EXISTS `added_product`;
+DROP TABLE IF EXISTS `row_plus_items_page`;
 DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `user_role`;
 drop table if exists `role_permission`;
 drop table if exists `permissions`;
 drop table if exists `roles`;
 DROP TABLE IF EXISTS `user_sessions`;
+DROP TABLE IF EXISTS `user_role_xref`;
 DROP TABLE IF EXISTS `users`;
+
 
 CREATE TABLE `users` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -121,7 +128,6 @@ CREATE TABLE `customers` (
 
 
 /*
-    SELECT * FROM 
 */
 CREATE TABLE `user_customer` (
   `user_id` int(11) NOT NULL DEFAULT '0',
@@ -173,7 +179,6 @@ CREATE TABLE `item_price_override` (
 
 ALTER TABLE `item_price_override` ADD UNIQUE `itc_product_unique_index`(`product`, `salesperson`, `customer`);
 
-
 CREATE TABLE `added_product` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `version` INTEGER DEFAULT 1,
@@ -194,6 +199,8 @@ CREATE TABLE `added_product` (
   CONSTRAINT `FK_ADDED_PRODUCT_SALESPERSON` FOREIGN KEY (`salesperson`) REFERENCES `users` (`id`),
   CONSTRAINT `FK_ADDED_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `added_product` ADD UNIQUE `itc_added_product_unique_index`(`id`, `salesperson`, `customer`);
 
 
 CREATE TABLE `item_table_checkbox` (
@@ -218,7 +225,6 @@ CREATE TABLE `item_table_checkbox` (
 
 ALTER TABLE `item_table_checkbox` ADD UNIQUE `itc_product_unique_index`(`product`, `salesperson`, `customer`);
 ALTER TABLE `item_table_checkbox` ADD UNIQUE `itc_added_product_unique_index`(`added_product`, `salesperson`, `customer`);
-
 
 CREATE TABLE `pricing_override_report` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -269,8 +275,10 @@ CREATE TABLE `user_product_preferences` (
   CONSTRAINT `FK_USER_PRODUCT_PREFERENCES_CUSTOMER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# INSERTS
-# USERS
+
+
+
+
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (1, 'jpalmer',24,'$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC',null,'jpalmer@fultonfishmarket.com','630-999-0139',null,'2017-03-03 18:44:10','2016-12-06 13:09:50', 1, 'Jason Palmer');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (2, 'foobarx',1,'$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC','Foo Bar X','foobarx@fultonfishmarket.com','802-233-9957',247,'2016-12-06 13:09:50','2016-12-06 13:09:50', 1, 'Foobar X');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (3, 'dtanzer',16,'$2y$11$dNgq1cOKM4hEhuML8rwZD.XY195yLIz.i0.cnn92/EtnY2vl1PGrO', null,'dtanzer@fultonfishmarket.com','802-233-9957',null,'2017-03-01 22:24:39','2016-12-06 13:09:50', 1, 'David Tanzer');
@@ -281,6 +289,7 @@ INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`em
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (8, 'iderfler',1,'$2y$10$jTgKbfE6bqcivt4fqdVmFufvLoEX0mgtAKbg8g9ejBUnhKB2/GBxW','Iris Derfler','iderfler@fultonfishmarket.com','847-606-2555',181,'2016-12-06 13:09:51','2016-12-06 13:09:51', 1, 'Iris Derfler');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (9, 'jmeade',1024,'$2y$10$e5On29MiGz.ctu8zFMVz9.kPx98ZarMlG11ub4O2ilKpjppkBxnHm','Jody Meade','jody@fultonfishmarket.com','570-335-6484',180,'2017-04-18 18:32:56','2016-12-06 13:09:51', 1, 'Jody Meade');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (10, 'dbacon',378,'$2y$10$IaYd4efN4b.lyxRP1dIwq.qNYpnwgqNCPjt.oTB5NI6HUZO2kjkCm','David Bacon','dbacon@fultonfishmarket.com','',250,'2017-04-17 23:07:13','2016-12-21 00:42:56', 1, 'David Bacon');
+
 
 # ROLES
 INSERT INTO `roles` (`id`, `name`) VALUES(1, 'admin');
@@ -296,6 +305,7 @@ INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 7);# user bzakrinsky
 INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 2);# user foobarx
 INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 8);# user iderfler
 INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 9);# user jmeade
+INSERT INTO `user_role` (`role_id`, `user_id`) VALUES(2, 10);# user dbacon
 
 # PERMISSIONS - Set them up.
 # AuthController IS NOT PROTECTED.
@@ -379,3 +389,14 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 24);   # sa
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 25);   # sales product/report (Product Report Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 19);   # sales product/productTable (Product Product Table)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 26);   # sales product/productFormTypeahead (Product ProductForm Typeahead)
+
+# This Product is no longer being returned from the Web Service.
+# For the Web-App this is not a problem, but for the migration we need it
+# for referential integrity. Here - we are removing any references. This should not be
+# a problem because the Product is no longer returned and if it pops up again - it will
+# be populated automatically.
+DELETE FROM customer_pricing.user_products where product = 824;
+DELETE FROM customer_pricing.item_price_override where product = 824;
+DELETE FROM customer_pricing.item_table_checkbox where product = 824;
+DELETE FROM customer_pricing.pricing_override_report where product = 824;
+DELETE FROM customer_pricing.products where id = 824;

@@ -79,16 +79,18 @@ return [
     . "                     ON (customer_product.customer = user_customer.customer_id) "
     . "                 LEFT JOIN user_product_preferences "
     . "                     ON (products.id = user_product_preferences.product_id AND "
-    . "                         user_customer.user_id = user_product_preferences.user_id) ",
+    . "                         user_customer.user_id = user_product_preferences.user_id AND "
+    . "                         user_customer.customer_id = user_product_preferences.customer_id) ",
     
-    'selectCountPre' => "SELECT count(products.id) "
+    'selectCountPre' => "SELECT count(DISTINCT(products.id)) "
     . "     FROM item_table_checkbox "
     . "         RIGHT JOIN products ON item_table_checkbox.product = products.id "
     . "         LEFT JOIN customer_product ON products.id = customer_product.product "
     . "         LEFT JOIN user_customer ON (customer_product.customer = user_customer.customer_id) "
     . "         LEFT JOIN user_product_preferences "
-    . "             ON (products.id = user_product_preferences.product_id AND "
-    . "             user_customer.user_id  = user_product_preferences.user_id) "
+    . "                     ON (products.id = user_product_preferences.product_id AND "
+    . "                         user_customer.user_id = user_product_preferences.user_id AND "
+    . "                         user_customer.customer_id = user_product_preferences.customer_id) "
     . "         LEFT JOIN item_price_override "
     . "             ON ( products.id = item_price_override.product AND "
     . "             customer_product.customer = item_price_override.customer AND "
@@ -114,9 +116,10 @@ return [
                 RIGHT JOIN `added_product`
                 ON `added_product`.`id` = `item_table_checkbox`.`added_product` ",
     
-    'selectCountPost' => "SELECT count(item_table_checkbox.id) "
+    'selectCountPost' => "SELECT count(DISTINCT(item_table_checkbox.id)) "
                 . "     FROM item_table_checkbox "
                 . "         RIGHT JOIN added_product "
                 . "             ON added_product.id = item_table_checkbox.added_product",
-    'skuSelect' => "SELECT `products`.`sku` as sku, `products`.`uom` as uom, `products`.`productname` as product FROM `item_table_checkbox` RIGHT JOIN `products` ON `item_table_checkbox`.`product` = `products`.`id`  LEFT JOIN `customer_product` ON `products`.`id` = `customer_product`.`product` LEFT JOIN `item_price_override` ON (`products`.`id` = `item_price_override`.`product` AND `customer_product`.`customer` = `item_price_override`.`customer` AND `item_price_override`.`salesperson` = `item_table_checkbox`.`salesperson` AND `item_price_override`.`active` = 1) LEFT JOIN `user_customer` ON (`customer_product`.`customer` = `user_customer`.`customer_id`) LEFT JOIN `user_product_preferences` ON (`products`.`id` = `user_product_preferences`.`product_id` AND `user_customer`.`user_id` = `user_product_preferences`.`user_id`) WHERE `customer_product`.`customer` = ? AND `user_customer`.`user_id` = ?  UNION ALL SELECT `added_product`.`sku` as sku, `added_product`.`uom` as uom, `added_product`.`productname` as product FROM `item_table_checkbox` RIGHT JOIN `added_product` ON `added_product`.`id` = `item_table_checkbox`.`added_product` WHERE `added_product`.`customer` = ? AND `added_product`.`active` = 1"
+    
+    'skuSelect' => "SELECT `products`.`sku` as sku, `products`.`uom` as uom, `products`.`productname` as product FROM `item_table_checkbox` RIGHT JOIN `products` ON `item_table_checkbox`.`product` = `products`.`id`  LEFT JOIN `customer_product` ON `products`.`id` = `customer_product`.`product` LEFT JOIN `item_price_override` ON (`products`.`id` = `item_price_override`.`product` AND `customer_product`.`customer` = `item_price_override`.`customer` AND `item_price_override`.`salesperson` = `item_table_checkbox`.`salesperson` AND `item_price_override`.`active` = 1) LEFT JOIN `user_customer` ON (`customer_product`.`customer` = `user_customer`.`customer_id`) LEFT JOIN `user_product_preferences` ON (`products`.`id` = `user_product_preferences`.`product_id` AND `user_customer`.`user_id` = `user_product_preferences`.`user_id` AND `user_customer`.`customer_id` = `user_product_preferences`.`customer_id`) WHERE `customer_product`.`customer` = ? AND `user_customer`.`user_id` = ?  UNION ALL SELECT `added_product`.`sku` as sku, `added_product`.`uom` as uom, `added_product`.`productname` as product FROM `item_table_checkbox` RIGHT JOIN `added_product` ON `added_product`.`id` = `item_table_checkbox`.`added_product` WHERE `added_product`.`customer` = ? AND `added_product`.`active` = 1"
 ];
