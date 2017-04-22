@@ -389,14 +389,3 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 24);   # sa
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 25);   # sales product/report (Product Report Action)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 19);   # sales product/productTable (Product Product Table)
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES(2, 26);   # sales product/productFormTypeahead (Product ProductForm Typeahead)
-
-# This Product is no longer being returned from the Web Service.
-# For the Web-App this is not a problem, but for the migration we need it
-# for referential integrity. Here - we are removing any references. This should not be
-# a problem because the Product is no longer returned and if it pops up again - it will
-# be populated automatically.
-DELETE FROM customer_pricing.user_products where product = 824;
-DELETE FROM customer_pricing.item_price_override where product = 824;
-DELETE FROM customer_pricing.item_table_checkbox where product = 824;
-DELETE FROM customer_pricing.pricing_override_report where product = 824;
-DELETE FROM customer_pricing.products where id = 824;

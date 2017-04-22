@@ -5,7 +5,7 @@ use customer_pricing_20170419T183023Z;
 # INSERT ALL ITEM_PRICE_OVERRIDE rows from V1.
 # Column name changed from customerid to customer.
 # Column salesperson datatype changed VARCHAR(100) [M:1 users.username] to INTEGER [M:1 users.id]
-INSERT IGNORE INTO `customer_pricing_20170419T183023Z`.`item_price_override` (
+INSERT INTO `customer_pricing_20170419T183023Z`.`item_price_override` (
         `version`, `product`, `overrideprice`, `active`, `created`, `customer`, `salesperson`
 ) (
 	SELECT 
@@ -21,6 +21,8 @@ INSERT IGNORE INTO `customer_pricing_20170419T183023Z`.`item_price_override` (
                 )
             ) 
         FROM `customer_pricing`.`item_price_override` WHERE `item_price_override`.`active` = 1
+            AND EXISTS (SELECT * FROM `customer_pricing_20170419T183023Z`.products WHERE id = `item_price_override`.`product`)
+            AND EXISTS (SELECT * FROM `customer_pricing_20170419T183023Z`.customers WHERE id = `item_price_override`.`customerid`)
 );
 
 # Table name has changed from row_plus_items_page to added_product
@@ -65,6 +67,8 @@ UPDATE `customer_pricing_20170419T183023Z`.`item_table_checkbox` NITC,
                 SELECT id from `customer_pricing_20170419T183023Z`.`users` WHERE sales_attr_id = (
                     SELECT sales_attr_id FROM `customer_pricing`.`users` WHERE username = OITC.`salesperson`
                 )
+                    AND EXISTS (SELECT * FROM `customer_pricing_20170419T183023Z`.products WHERE id = NITC.`product`)
+                    AND EXISTS (SELECT * FROM `customer_pricing_20170419T183023Z`.customers WHERE id = NITC.`customer`)
             );
 
 # INSERT all rows from pricing_override_report
@@ -88,7 +92,10 @@ INSERT INTO `customer_pricing_20170419T183023Z`.`pricing_override_report` (
             ), 
             `pricing_override_report`.`created` 
             FROM `customer_pricing`.`pricing_override_report`
+                WHERE EXISTS (SELECT * FROM `customer_pricing_20170419T183023Z`.products WHERE id = `pricing_override_report`.`product`)
+                AND EXISTS (SELECT * FROM `customer_pricing_20170419T183023Z`.customers WHERE id = `pricing_override_report`.`customerid`)
 );
+
 # STEP THREE End.
 
 # Now you navigate to production V1:

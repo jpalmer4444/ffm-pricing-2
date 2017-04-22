@@ -428,7 +428,7 @@ class ProductController extends BaseController {
     . "                         user_customer.user_id = user_product_preferences.user_id AND "
     . "                         user_customer.customer_id = user_product_preferences.customer_id) ";
 
-        $selectCountPre = "SELECT count(DISTINCT(products.id)) "
+        $selectCountPre = "SELECT count(*) "
     . "     FROM item_table_checkbox "
     . "         RIGHT JOIN products ON item_table_checkbox.product = products.id AND item_table_checkbox.customer = $cust_id AND item_table_checkbox.salesperson = $sales_user_id "
     . "         LEFT JOIN customer_product ON  products.id = customer_product.product AND $cust_id = customer_product.customer "
@@ -466,7 +466,7 @@ class ProductController extends BaseController {
                 RIGHT JOIN `added_product`
                 ON `added_product`.`id` = `item_table_checkbox`.`added_product` AND `added_product`.`salesperson` = $sales_user_id ";
 
-        $selectCountPost = "SELECT count(DISTINCT(item_table_checkbox.id)) "
+        $selectCountPost = "SELECT count(*) "
                 . "     FROM item_table_checkbox "
                 . "         RIGHT JOIN added_product "
                 . "             ON added_product.id = item_table_checkbox.added_product AND `added_product`.`salesperson` = $sales_user_id ";
