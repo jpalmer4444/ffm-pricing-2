@@ -298,8 +298,8 @@
       for (var i = 0; i < vm.allrows.length; i++) {
         var row = vm.allrows[i];
         if (alreadyChecked.indexOf(row.id) === -1) {
-          if (row.checked === 1) {
-            if (row.status === '1.00') {
+          if (row.checked === 1 || row.checked === '1') {
+            if (row.status === '1.00' || row.status === 1) {
               selected = true;
             } else {
               //this row has disabled class = now check if there is an override price
@@ -328,8 +328,8 @@
       for (var i = 0; i < vm.allrows.length; i++) {
         var row = vm.allrows[i];
         if (alreadyChecked.indexOf(row.id) === -1) {
-          if (row.checked === 1) {
-            if (row.status === '0.00' && (!row.overrideprice || row.overrideprice === 'null')) {
+          if (row.checked === 1 || row.checked === '1') {
+            if ((row.status === '0.00' || row.status === 0) && (!row.overrideprice || row.overrideprice === 'null')) {
               selectedButDisabled = true;
             }
           }

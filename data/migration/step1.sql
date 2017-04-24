@@ -146,6 +146,7 @@ CREATE TABLE `products` (
   `sku` varchar(25) DEFAULT NULL,
   `productname` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
   `wholesale` decimal(22,2) DEFAULT NULL,
   `retail` decimal(22,2) DEFAULT NULL,
   `uom` varchar(100) NOT NULL,
@@ -176,8 +177,6 @@ CREATE TABLE `item_price_override` (
   CONSTRAINT `FK_ITEM_PRICE_OVERRIDE_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `item_price_override` ADD UNIQUE `itc_product_unique_index`(`product`, `salesperson`, `customer`);
-
 CREATE TABLE `added_product` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `version` INTEGER DEFAULT 1,
@@ -198,8 +197,6 @@ CREATE TABLE `added_product` (
   CONSTRAINT `FK_ADDED_PRODUCT_SALESPERSON` FOREIGN KEY (`salesperson`) REFERENCES `users` (`id`),
   CONSTRAINT `FK_ADDED_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-ALTER TABLE `added_product` ADD UNIQUE `itc_added_product_unique_index`(`id`, `salesperson`, `customer`);
 
 
 CREATE TABLE `item_table_checkbox` (

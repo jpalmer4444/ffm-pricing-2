@@ -103,7 +103,3 @@ INSERT INTO `customer_pricing_20170419T183023Z`.`pricing_override_report` (
 
 # navigate to staging
 # https://pricingv2.ffmalpha.com/
-
-# Compare matching products checkbox selection. Because production is a live changing environment the 
-# number of Products on the 2 lists can be different, but if you compare any matching products - if it
-# is "checked" in production - it will now be checked in staging.
