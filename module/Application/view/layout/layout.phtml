@@ -12,10 +12,13 @@
         ?>
 
         <!-- Le styles -->
-        <?=
-                $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/pricing-logo.ico'])
-                ->prependStylesheet($this->basePath('css/dist/style.css'))
-                ->prependStylesheet($this->basePath('css/style.css'));
+        <?php
+        
+            $version=69;
+        
+                echo $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/pricing-logo.ico'])
+                ->prependStylesheet($this->basePath('css/dist/style.css?v='.$version))
+                ->prependStylesheet($this->basePath('css/style.css?v='.$version));
 
         if ($this->ngPage) {
 
@@ -83,7 +86,7 @@
             //add angular files for appropriate pages.
         if ($this->ngPage) {
             
-            $version=66;
+            $version=69;
 
             $this->inlineScript()->appendFile($this->basePath('js/jquery.min.js'))
                     ->appendFile($this->basePath('js/jquery.dataTables.min.js'))

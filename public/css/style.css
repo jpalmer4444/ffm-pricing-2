@@ -344,6 +344,15 @@ tbody tr.odd td, tbody tr.even td{
     color: #fff;
 }
 
+.selected-dis{
+    background-color: #466973 !important;
+    color: #FFFFFF !important;
+}
+
+.selected-dis i::before {
+    color: #fff;
+}
+
 .checker-header{
     position: relative;
     left: 9px;

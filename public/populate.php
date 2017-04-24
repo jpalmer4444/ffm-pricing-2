@@ -1,6 +1,6 @@
 <?php
 
-$file = 'migrate_step_2.log';
+$file = 'populate.log';
 $current = file_get_contents($file);
 $current = '';
 $host = "https://svc3.ffmalpha.com";
@@ -109,8 +109,8 @@ function insertProduct($product, $current, $conn) {
 
         $status = ($product['status'] == 'Enabled' ? 1 : 0);
 
-        $sql = "INSERT IGNORE INTO products (id, version, sku, productname, description, wholesale, retail, uom, status, saturdayenabled)
-            VALUES ('" . $product["id"] . "', '1', '" . $product["sku"] . "', '" . $conn->real_escape_string($product["productname"]) . "', '" . $conn->real_escape_string($product["shortescription"]) . "', '" . $product["wholesale"] . "', '" . $product["retail"] . "', '" . $product["uom"] . "', '" . $status . "', '" . $product["saturdayenabled"] . "')";
+        $sql = "INSERT IGNORE INTO products (id, version, sku, productname, description, qty, wholesale, retail, uom, status, saturdayenabled)
+            VALUES ('" . $product["id"] . "', '1', '" . $product["sku"] . "', '" . $conn->real_escape_string($product["productname"]) . "', '" . $conn->real_escape_string($product["shortescription"]) . "', '" . $product["qty"] . "', '" . $product["wholesale"] . "', '" . $product["retail"] . "', '" . $product["uom"] . "', '" . $status . "', '" . $product["saturdayenabled"] . "')";
 
         if ($conn->query($sql) === TRUE) {
             //echo "product record created successfully";

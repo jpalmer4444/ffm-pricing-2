@@ -250,11 +250,11 @@ class UserManager {
      * This method is used to change the password for the given user. To change the password,
      * one must know the old password.
      */
-    public function changePassword($user, $data) {
-        $oldPassword = $data['old_password'];
+    public function changePassword($adminuser, $user, $data) {
+        $adminPassword = $data['admin_password'];
 
         // Check that old password is correct
-        if (!$this->validatePassword($user, $oldPassword)) {
+        if (!$this->validatePassword($adminuser, $adminPassword)) {
             return false;
         }
 

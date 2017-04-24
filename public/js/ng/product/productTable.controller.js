@@ -240,11 +240,18 @@
     }
 
     function createdRow(row, data, dataIndex) {
+      var disabled = false;
       if (eq(data[columnindex("Status")], '0')) {
         element(row).addClass('disabled');
+        var hasOverride = hasValue(data[columnindex('Override')]);
+        if(!hasOverride)
+          disabled = true;
       }
       if (eq(data[columnindex("")], '1')) {
         element(row).addClass('selected');
+        if(disabled){
+          element(row).addClass('selected-dis');
+        }
       }
       if (getDuplicateSkuStyle(data[columnindex('SKU')])) {
         element(row).addClass('skus-match');
@@ -257,15 +264,46 @@
               localStorageService.get(get);
       return op;
     }
+    
+    function hasValue(v){
+        if(v && v !== 'null'){
+          return true;
+        }else{
+          return false;
+        }
+      }
+    
+    function disabled(rowIdx){
+      return api().row(rowIdx).node().className.indexOf('disabled') !== -1;
+    }
 
     function anySelected() {
       var selected = false;
       api().rows({page: 'all'}).every(function (rowIdx, tableLoop, rowLoop) {
         if (celldata(rowIdx, 0) === '1') {
-          selected = true;
+          if(!disabled(rowIdx)){
+            selected = true;
+          }else{
+            //this row has disabled class = now check if there is an override price
+            if(hasValue(celldata(rowIdx, columnindex('Override')))){
+              selected = true;
+            }
+          }
         }
       });
       return selected;
+    }
+    
+    function selectedButDisabled(){
+      var selectedButDisabled = false;
+      api().rows({page: 'all'}).every(function (rowIdx, tableLoop, rowLoop) {
+        if (celldata(rowIdx, 0) === '1') {
+          if(disabled(rowIdx) && !hasValue(celldata(rowIdx, columnindex('Override')))){
+            selectedButDisabled = true;
+          }
+        }
+      });
+      return selectedButDisabled;
     }
 
     function formatDate(date, format, timezone) {
@@ -417,7 +455,14 @@
 
       var selected = tr.hasClass('selected');
 
-      selected ? tr.removeClass('selected') : tr.addClass('selected');
+      selected ? tr.removeClass('selected selected-dis') : tr.addClass('selected');
+      
+      if(disabled(rowindex) && !selected && !hasValue(celldata(rowindex, columnindex('Override')))){
+        
+        tr.addClass('selected-dis');
+        
+      }
+      
 
       var checkbox = cell(rowindex, 0);
 
@@ -538,7 +583,8 @@
     }
 
     function buttons() {
-      return [{
+      return [
+        {
           extend: 'pdfHtml5',
           orientation: 'landscape',
           message: '',
@@ -738,10 +784,16 @@
               searchpdf(callback);
 
             } else {
+              
+              var first = selectedButDisabled();
 
-              var title = 'No Products Selected';
+              var title = first ? 'Selected Rows Disabled' : 'No Products Selected';
 
-              var text = [
+              var text = first ? [
+                'You chose to download a PDF, but all rows you have ',
+                'selected are disabled products. Please select at least ',
+                'one enabled product. Thank You'
+              ].join('') : [
                 'You chose to download a PDF, but you have no ',
                 'products selected. Please select at least one ',
                 'product before clicking PDF. Thank You'
@@ -969,8 +1021,16 @@
 
       api().rows().every(function (rowIdx, tableLoop, rowLoop) {
 
-        vm.selected ? element('#productsTable tbody tr').eq(rowIdx).removeClass('selected') :
+        vm.selected ? element('#productsTable tbody tr').eq(rowIdx).removeClass('selected selected-dis') :
                 element('#productsTable tbody tr').eq(rowIdx).addClass('selected');
+        
+        //need to check selected rows if any exist at this point - 
+        //and add selected-dis class to any rows that are disabled
+        if(disabled(rowIdx) && !vm.selected && !hasValue(celldata(rowIdx, columnindex('Override')))){
+          
+          element('#productsTable tbody tr').eq(rowIdx).addClass('selected-dis');
+          
+        }
 
         var checkbox = cell(rowIdx, 0);
 

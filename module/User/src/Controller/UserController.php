@@ -211,6 +211,8 @@ class UserController extends BaseController {
      * This action displays a page allowing to change user's password.
      */
     public function changePasswordAction() {
+        
+        
         $id = (int) $this->params()->fromRoute('id', -1);
         if ($id < 1) {
             $this->getResponse()->setStatusCode(404);
@@ -243,9 +245,9 @@ class UserController extends BaseController {
                 $data = $form->getData();
 
                 // Try to change password.
-                if (!$this->userManager->changePassword($user, $data)) {
+                if (!$this->userManager->changePassword($this->authManager->getLoggedInUser(), $user, $data)) {
                     $this->flashMessenger()->addErrorMessage(
-                            'Sorry, the old password is incorrect. Could not set the new password.');
+                            'Sorry, the admin password is incorrect. You are the admin, you need to use the same password you used to login to this website. Please try again, could not set the new password.');
                 } else {
                     $this->flashMessenger()->addSuccessMessage(
                             'Changed the password successfully.');

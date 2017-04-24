@@ -2,7 +2,6 @@
 namespace User\Form;
 
 use Zend\Form\Form;
-use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilter;
 
 /**
@@ -43,9 +42,9 @@ class PasswordChangeForm extends Form
             // Add "old_password" field
             $this->add([            
                 'type'  => 'password',
-                'name' => 'old_password',
+                'name' => 'admin_password',
                 'options' => [
-                    'label' => 'Old Password',
+                    'label' => 'Admin Password',
                 ],
             ]);       
         }
@@ -100,9 +99,9 @@ class PasswordChangeForm extends Form
         
         if ($this->scenario == 'change') {
             
-            // Add input for "old_password" field
+            // Add input for "admin_password" field
             $inputFilter->add([
-                    'name'     => 'old_password',
+                    'name'     => 'admin_password',
                     'required' => true,
                     'filters'  => [                    
                     ],                
