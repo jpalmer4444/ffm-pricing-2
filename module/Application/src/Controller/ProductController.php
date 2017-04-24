@@ -389,9 +389,13 @@ class ProductController extends BaseController {
         $sales_user_id = $sales_user->getId();
 
         $sql = "SELECT "
-                . " `products`.`sku` as sku, "
-                . " `products`.`uom` as uom, "
-                . " `products`.`productname` as product "
+                . " `products`.`sku`                                    as sku, "
+                . " `products`.`uom`                                    as uom, "
+                . " `products`.`productname`                            as product, "
+                . " IFNULL(`item_table_checkbox`.`checked`, 0)          as 'checked', "
+                . " `item_price_override`.`overrideprice`               as 'overrideprice', "
+                . " `products`.`status`                                 as 'status', "
+                . " CONCAT('P', `products`.`id`)                            as 'id' "
                 . "     FROM `item_table_checkbox` "
                 . "         RIGHT JOIN `products` "
                 . "             ON ("
@@ -428,9 +432,13 @@ class ProductController extends BaseController {
                 . "                   )  "
                 . "UNION ALL "
                 . "SELECT "
-                . " `added_product`.`sku` as sku, "
-                . " `added_product`.`uom` as uom, "
-                . " `added_product`.`productname` as product "
+                . " `added_product`.`sku`                           as sku, "
+                . " `added_product`.`uom`                           as uom, "
+                . " `added_product`.`productname`                   as product, "
+                . " IFNULL(`item_table_checkbox`.`checked`, 0)      as 'checked', "
+                . " `added_product`.`status`                        as 'status', "
+                . " `added_product`.`overrideprice`                 as 'overrideprice', "
+                . " CONCAT('A', `added_product`.`id`)               as 'id'"
                 . "     FROM `item_table_checkbox` "
                 . "         RIGHT JOIN `added_product` "
                 . "             ON ("
@@ -540,12 +548,19 @@ class ProductController extends BaseController {
         $skus = [];
         $productnames = [];
         $uoms = [];
+        $rows = [];
 
         while ($row = $stmt->fetch()) {
 
             $skus[] = $row['sku'];
             $productnames[] = $row['product'];
             $uoms[] = $row['uom'];
+            $rows[] = [
+                "id" => $row['id'],
+                "checked" => $row['checked'],
+                "status" => $row['status'],
+                "overrideprice" => $row['overrideprice'],
+            ];
         }
 
         $response = SSPUnion::union($jsonArgs, $sql_details, $columns, $columnsPre, $columnsPost, $selectPre, $selectPost, $selectCountPre, $selectCountPost, $andWherePre, $andWherePost, $this->logger);
@@ -553,6 +568,7 @@ class ProductController extends BaseController {
         $response['skus'] = $skus;
         $response['products'] = $productnames;
         $response['uoms'] = $uoms;
+        $response['allrows'] = $rows;
 
         return $this->jsonResponse(
                         $response

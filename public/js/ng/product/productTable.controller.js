@@ -184,6 +184,7 @@
     function handleData(data) {
       vm.recordsTotal = data.recordsTotal;
       vm.recordsFiltered = data.recordsFiltered;
+      vm.allrows = data.allrows;
       var handle = function (prop, sub) {
         if (data[prop]) {
           vm[prop] = [];
@@ -244,12 +245,12 @@
       if (eq(data[columnindex("Status")], '0')) {
         element(row).addClass('disabled');
         var hasOverride = hasValue(data[columnindex('Override')]);
-        if(!hasOverride)
+        if (!hasOverride)
           disabled = true;
       }
       if (eq(data[columnindex("")], '1')) {
         element(row).addClass('selected');
-        if(disabled){
+        if (disabled) {
           element(row).addClass('selected-dis');
         }
       }
@@ -264,45 +265,77 @@
               localStorageService.get(get);
       return op;
     }
-    
-    function hasValue(v){
-        if(v && v !== 'null'){
-          return true;
-        }else{
-          return false;
-        }
+
+    function hasValue(v) {
+      if (v && v !== 'null') {
+        return true;
+      } else {
+        return false;
       }
-    
-    function disabled(rowIdx){
+    }
+
+    function disabled(rowIdx) {
       return api().row(rowIdx).node().className.indexOf('disabled') !== -1;
     }
 
     function anySelected() {
       var selected = false;
+      var alreadyChecked = [];
       api().rows({page: 'all'}).every(function (rowIdx, tableLoop, rowLoop) {
+        alreadyChecked.push(celldata(rowIdx, columnindex('ID')));
         if (celldata(rowIdx, 0) === '1') {
-          if(!disabled(rowIdx)){
+          if (!disabled(rowIdx)) {
             selected = true;
-          }else{
+          } else {
             //this row has disabled class = now check if there is an override price
-            if(hasValue(celldata(rowIdx, columnindex('Override')))){
+            if (hasValue(celldata(rowIdx, columnindex('Override')))) {
               selected = true;
             }
           }
         }
       });
+      //now iterate vm.allrows to find any other selected rows!
+      for (var i = 0; i < vm.allrows.length; i++) {
+        var row = vm.allrows[i];
+        if (alreadyChecked.indexOf(row.id) === -1) {
+          if (row.checked === 1) {
+            if (row.status === '1.00') {
+              selected = true;
+            } else {
+              //this row has disabled class = now check if there is an override price
+              if (row.overrideprice && row.overrideprice !== 'null') {
+                selected = true;
+              }
+            }
+          }
+        }
+      }
       return selected;
     }
-    
-    function selectedButDisabled(){
+
+    function selectedButDisabled() {
       var selectedButDisabled = false;
+      var alreadyChecked = [];
       api().rows({page: 'all'}).every(function (rowIdx, tableLoop, rowLoop) {
+        alreadyChecked.push(celldata(rowIdx, columnindex('ID')));
         if (celldata(rowIdx, 0) === '1') {
-          if(disabled(rowIdx) && !hasValue(celldata(rowIdx, columnindex('Override')))){
+          if (disabled(rowIdx) && !hasValue(celldata(rowIdx, columnindex('Override')))) {
             selectedButDisabled = true;
           }
         }
       });
+      //check server side rows.
+      for (var i = 0; i < vm.allrows.length; i++) {
+        var row = vm.allrows[i];
+        if (alreadyChecked.indexOf(row.id) === -1) {
+          if (row.checked === 1) {
+            if (row.status === '0.00' && (!row.overrideprice || row.overrideprice === 'null')) {
+              selectedButDisabled = true;
+            }
+          }
+        }
+      }
+      
       return selectedButDisabled;
     }
 
@@ -412,10 +445,10 @@
         element('<i/>', {
           class: 'ion ion-close'
         }).appendTo(removeAddedProductButton);
-        
+
         return aroundTableActions.prop('outerHTML');
       } else {
-        
+
         return '';
       }
     }
@@ -456,13 +489,13 @@
       var selected = tr.hasClass('selected');
 
       selected ? tr.removeClass('selected selected-dis') : tr.addClass('selected');
-      
-      if(disabled(rowindex) && !selected && !hasValue(celldata(rowindex, columnindex('Override')))){
-        
+
+      if (disabled(rowindex) && !selected && !hasValue(celldata(rowindex, columnindex('Override')))) {
+
         tr.addClass('selected-dis');
-        
+
       }
-      
+
 
       var checkbox = cell(rowindex, 0);
 
@@ -577,9 +610,9 @@
       screenService.hideOverlay();
     }
 
-    function replaceBreaks(val){
+    function replaceBreaks(val) {
       var regex = /<br\s*[\/]?>/gi;
-      return val ? val.replace(regex, ''): val;
+      return val ? val.replace(regex, '') : val;
     }
 
     function buttons() {
@@ -728,7 +761,7 @@
               if (tablerow && tablerow[0] === '1') {
                 var row = [];
                 row.push(tablerow[vm.columns.indexOf('Product')]);
-                
+
                 row.push(tablerow[vm.columns.indexOf('Description')]);
                 row.push(tablerow[vm.columns.indexOf('Comment')]);
                 var override = tablerow[vm.columns.indexOf('Override')];
@@ -784,7 +817,7 @@
               searchpdf(callback);
 
             } else {
-              
+
               var first = selectedButDisabled();
 
               var title = first ? 'Selected Rows Disabled' : 'No Products Selected';
@@ -1023,13 +1056,13 @@
 
         vm.selected ? element('#productsTable tbody tr').eq(rowIdx).removeClass('selected selected-dis') :
                 element('#productsTable tbody tr').eq(rowIdx).addClass('selected');
-        
+
         //need to check selected rows if any exist at this point - 
         //and add selected-dis class to any rows that are disabled
-        if(disabled(rowIdx) && !vm.selected && !hasValue(celldata(rowIdx, columnindex('Override')))){
-          
+        if (disabled(rowIdx) && !vm.selected && !hasValue(celldata(rowIdx, columnindex('Override')))) {
+
           element('#productsTable tbody tr').eq(rowIdx).addClass('selected-dis');
-          
+
         }
 
         var checkbox = cell(rowIdx, 0);
@@ -1141,7 +1174,7 @@
       $http.post(config.urls.productsTableProduct, param(params))
 
               .then(function (response) {
-                
+
                 vm.reloadData();
                 var data = api().ajax.json();
                 initComplete(null, data);
@@ -1312,13 +1345,13 @@
       });
 
     };
-    
+
     element('#productsTable')
-    .on('xhr.dt', function ( e, settings, json, xhr ) {
-        if(json.skus){
-          vm.skus = json.skus;
-        }
-    } );
+            .on('xhr.dt', function (e, settings, json, xhr) {
+              if (json.skus) {
+                vm.skus = json.skus;
+              }
+            });
 
     if (!config.unittest) {
       ngInit();
