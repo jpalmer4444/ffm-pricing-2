@@ -55,37 +55,37 @@ $form->prepare();
         <div class="form-group">
             <?= $this->formLabel($form->get('username')); ?>
             <?= $this->formElement($form->get('username')); ?>
-            <?= $this->formElementErrors($form->get('username')); ?>                  
+            <span style="color:red;"><?= $this->formElementErrors($form->get('username')); ?></span>                 
         </div>
         
         <div class="form-group">
             <?= $this->formLabel($form->get('email')); ?>
             <?= $this->formElement($form->get('email')); ?>
-            <?= $this->formElementErrors($form->get('email')); ?>                  
+            <span style="color:red;"><?= $this->formElementErrors($form->get('email')); ?></span>               
         </div>
         
         <div class="form-group">
             <?= $this->formLabel($form->get('full_name')); ?>
             <?= $this->formElement($form->get('full_name')); ?>
-            <?= $this->formElementErrors($form->get('full_name')); ?>                  
+            <span style="color:red;"><?= $this->formElementErrors($form->get('full_name')); ?></span>               
         </div>
         
         <div class="form-group">
             <?= $this->formLabel($form->get('password')); ?>
             <?= $this->formElement($form->get('password')); ?>
-            <?= $this->formElementErrors($form->get('password')); ?>                  
+            <span style="color:red;"><?= $this->formElementErrors($form->get('password')); ?></span>                 
         </div>
         
         <div class="form-group">
             <?= $this->formLabel($form->get('confirm_password')); ?>
             <?= $this->formElement($form->get('confirm_password')); ?>
-            <?= $this->formElementErrors($form->get('confirm_password')); ?>                  
+            <span style="color:red;"><?= $this->formElementErrors($form->get('confirm_password')); ?></span>                  
         </div>
         
         <div class="form-group">
             <?= $this->formLabel($form->get('status')); ?>
             <?= $this->formElement($form->get('status')); ?>
-            <?= $this->formElementErrors($form->get('status')); ?>                  
+            <span style="color:red;"><?= $this->formElementErrors($form->get('status')); ?></span>                  
         </div>
         
         <?= $this->formElement($form->get('submit')); ?>

@@ -55,7 +55,7 @@ class UserManager {
         $user->setDateCreated($currentDate);
 
         //email, username, full_name, password, status, dateCreated, phone1, salesAttrId, AND
-        //salespersonname <-- this is obsolete, it was only needed when there was a distinction 
+        //salespersonname <-- this is really deprecated, it was only needed when there was a distinction 
         //between the user and their default salesperson (which was quite redundant and unneeded and sloppy!)
         $user->setSalespersonname($data['full_name']);
         $user->setPhone1($data['phone1']);
