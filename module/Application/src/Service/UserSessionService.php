@@ -43,6 +43,18 @@ class UserSessionService extends BaseService
 
         return true;
     }
+    
+    public function merge($userSession)
+    {
+        try {
+            $this->getEntityManager()->merge($userSession);
+            $this->getEntityManager()->flush();
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * Delete Application\Entity\UserSession

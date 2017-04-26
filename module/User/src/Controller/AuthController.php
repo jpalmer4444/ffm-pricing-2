@@ -88,6 +88,9 @@ class AuthController extends AbstractActionController {
 
                 // Check result.
                 if ($result->getCode() == Result::SUCCESS) {
+                    
+                    $user = $this->authManager->getLoggedInUser();
+                    setcookie('guid_id', $_COOKIE['PHPSESSID'], time() + 3600, '/');
 
                     if (!empty($redirectUrl)) {
                         // The below check is to prevent possible redirect attack 
@@ -103,7 +106,7 @@ class AuthController extends AbstractActionController {
                         if ($this->authManager->isAdmin()) {
                             return $this->redirect()->toRoute('salespeople');
                         } else {
-                            $user = $this->authManager->getLoggedInUser();
+                            
                             return $this->redirect()->toRoute('customer', array('action' => 'view', 'id' => $user->getSales_attr_id));
                         }
                     } else {
@@ -122,14 +125,12 @@ class AuthController extends AbstractActionController {
                 $isLoginError = true;
             }
         } else {
-            //Very Important and slightly confusing.
             //if we are logged-in here - we should log out the User 
             //or the page shows logged in details and is wrong. So we redirect to logout
             //taking care to preserve any redirectUrl parameter then we redirect back to this
             //page where we will no longer be logged-in and the 2nd time this test is encountered
-            //it passes and we are logged-out. Tricky, but extremely useful and necessary for 
-            //seamless intuitive page flow and logic.
-            if (!empty($this->authManager->getLoggedInUser())) {
+            //it passes and we are logged-out, for page flow and logic.
+            if (!empty($this->authManager->getLoggedInUser()) || !empty($this->identity())) {
                 if ($redirectUrl) {
                     return $this->redirect()->toRoute('logout', [], ['query' => ['redirectUrl' => $redirectUrl]]);
                 } else {
@@ -159,12 +160,13 @@ class AuthController extends AbstractActionController {
      */
     public function logoutAction() {
         $this->authManager->logout();
-        $redirectUrl = (string) $this->params()->fromQuery('redirectUrl', '');
-        if ($redirectUrl) {
-            return $this->redirect()->toRoute('login', [], ['query' => ['redirectUrl' => $redirectUrl]]);
-        } else {
-            return $this->redirect()->toRoute('login');
-        }
+        //$redirectUrl = (string) $this->params()->fromQuery('redirectUrl', '');
+        //if ($redirectUrl) {
+            //return $this->redirect()->toRoute('login', [], ['query' => ['redirectUrl' => $redirectUrl]]);
+        //} else {
+            //return $this->redirect()->toRoute('login');
+        //}
+        return $this->redirect()->toRoute('login');
     }
 
 }

@@ -6,6 +6,7 @@ use Application\Entity\UserSession;
 use User\Controller\AuthController;
 use User\Service\AuthManager;
 use Zend\Log\Logger;
+use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 
@@ -37,6 +38,40 @@ class Module {
         //setup error handler
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'handleError'));
         $eventManager->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'handleError'));
+        
+        //set default sessionManager
+        $sessionManager = $event->getApplication()->
+                        getServiceManager()->get('Zend\Session\SessionManager');
+    }
+
+    public function init(ModuleManager $manager) {
+        // Get event manager.
+        $eventManager = $manager->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
+        // Register the event listener method. 
+        $sharedEventManager->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH_ERROR, [$this, 'onError'], 100);
+        $sharedEventManager->attach(__NAMESPACE__, MvcEvent::EVENT_RENDER_ERROR, [$this, 'onError'], 100);
+    }
+
+    // Event listener method.
+    public function onError(MvcEvent $event) {
+        // Get the exception information.
+        $exception = $event->getParam('exception');
+        if ($exception != null) {
+            $exceptionName = $exception->getMessage();
+            $file = $exception->getFile();
+            $line = $exception->getLine();
+            $stackTrace = $exception->getTraceAsString();
+        }
+        $error = $event->getError();
+        $controller = $event->getController();
+
+        $message = sprintf(' Error dispatching controller "%s". Error was: "%s"', $controller, $error);
+        if ($exception instanceof \Exception) {
+            $message .= ', Exception(' . $exception->getMessage() . '): ' . $exception->getTraceAsString();
+        }
+        $logger = $event->getApplication()->getServiceManager()->get('Zend\Log\Logger');
+        $logger->log(Logger::ERR, $message);
     }
 
     public function handleError(MvcEvent $event) {
@@ -59,6 +94,10 @@ class Module {
      * to the login page.
      */
     public function onDispatch(MvcEvent $event) {
+
+        // Get the instance of SessionManager.
+        $sessionManager = $event->getApplication()->
+                        getServiceManager()->get('Zend\Session\SessionManager');
 
         // Get controller and action to which the HTTP request was dispatched.
         $controller = $event->getTarget();
@@ -93,32 +132,9 @@ class Module {
         $userSessionService = $event->getApplication()->
                         getServiceManager()->get('Application\Service\UserSessionService');
 
-        // Get the instance of SessionManager.
-        $sessionManager = $event->getApplication()->
-                        getServiceManager()->get('Zend\Session\SessionManager');
-
-
-        // check if $authenticationService has a logged-in user.
-        // this is where we handle authentication across requests
-        // in a multiple server environment. Normally PHP will serialize
-        // any Session objects and store the result in a text file on the 
-        // server keyed by SESSION_ID, but this obviously breaks down when 
-        // the application runs in a multiple server environment. This is where
-        // we deal with that problem. 
-        // When we get to this point and there is no logged-in user - it might be 
-        // because the user has not logged in or it might be the user has logged in
-        // we have no real way of knowing at this point - so we check the SESSION_ID
-        // on the users Browser by way of PHPs PHPSESSION cookie. If the cookie exists
-        // then we look in the DB for a user that belongs to that cookie. If we find
-        // that user - we log them in with balanceLogin method and then we let the Request
-        // complete.
         if (empty($authenticationService->getIdentity())) {
             //attempt to lookup User by sessionId.
             try {
-                if (!$sessionManager->isValid()) {
-                    $sessionManager->destroy();
-                    $sessionManager->regenerateId();
-                }
                 $sessionId = $sessionManager->getId();
                 $this->balanceLogin($sessionId, $userService, $userSessionService, $authenticationService, $logger);
             } catch (\Exception $exc) {
@@ -166,7 +182,19 @@ class Module {
             if (!empty($userSession)) {
                 $user = $userService->find($userSession->getUserId());
             } else {
-                $this->log(Logger::ERR, "UserSession not found by session id", $logger);
+                if (isset($_COOKIE['guid_id'])) {
+                    $this->log(Logger::ERR, "Looking up user by guid_id", $logger);
+                    $userSession = $userSessionService->getEntityManager()->getRepository(UserSession::class)
+                            ->findOneBy(['sessionId' => $_COOKIE['guid_id']]);
+                    if (!empty($userSession)) {
+                        $this->log(Logger::ERR, "User Found user by guid_id", $logger);
+                        $user = $userService->find($userSession->getUserId());
+                    } else {
+                        $this->log(Logger::ERR, "UserSession not found by guid_id", $logger);
+                    }
+                } else {
+                    $this->log(Logger::ERR, "UserSession not found by session id", $logger);
+                }
             }
             if (!empty($user)) {
                 // Authenticate with login/password.

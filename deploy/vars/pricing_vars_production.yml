@@ -1,0 +1,22 @@
+pricingv2_vhost_block: |
+    LogFormat "%h %l %u %t \"%r\" %>s %b" commonv2
+
+    <VirtualHost *:80>
+        ServerName pricing.fultonfishmarket.com
+        LogLevel info
+        Redirect permanent / https://pricing.fultonfishmarket.com/
+    </VirtualHost>
+
+    <VirtualHost *:443>
+        SSLEngine on
+        SSLCertificateFile /GoDaddy/wildcard.fultonfishmarket/3b09a75da396ac90/3b09a75da396ac90.crt
+        SSLCertificateKeyFile /GoDaddy/wildcard.fultonfishmarket/fultonfishmarket.key
+        SSLCACertificateFile /GoDaddy/wildcard.fultonfishmarket/3b09a75da396ac90/gd_bundle-g2-g1.crt
+        DocumentRoot /var/www/html/pricingv2/public
+        ServerName pricing.fultonfishmarket.com
+        SetEnv APPLICATION_ENV "production"
+        LogLevel info
+        ErrorLog "/var/log/httpd/pricingv2-error.log"
+        CustomLog "/var/log/httpd/pricingv2-custom.log" commonv2
+    </VirtualHost>
+my_var: myvar

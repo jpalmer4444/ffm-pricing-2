@@ -45,8 +45,9 @@ CREATE TABLE `user_sessions` (
   `version` int(11) DEFAULT '1',
   `session_id` varchar(255) NOT NULL,
   `user_agent` varchar(255) NOT NULL,
-  PRIMARY KEY (`session_id`,`user_agent`),
+  PRIMARY KEY (`session_id`,`user_agent`, `user_id`),
   KEY `KEY_USER_SESSIONS_SESSION` (`session_id`),
+  KEY `KEY_USER_SESSIONS_USER_ID` (`user_id`),
   KEY `KEY_USER_SESSIONS_USER_AGENT` (`user_agent`),
   CONSTRAINT `FK_USER_SESSIONS_USER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

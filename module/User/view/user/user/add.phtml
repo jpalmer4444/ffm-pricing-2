@@ -88,7 +88,12 @@ $form->prepare();
             <span style="color:red;"><?= $this->formElementErrors($form->get('status')); ?></span>                  
         </div>
         
-        <?= $this->formElement($form->get('submit')); ?>
+        <?php
+        
+        $element = $form->get('submit');
+        $this->formElement($element); 
+        
+        ?>
         
         <?= $this->form()->closeTag(); ?>
     </div>    
