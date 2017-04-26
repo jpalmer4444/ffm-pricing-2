@@ -2,8 +2,8 @@
 namespace User\Form;
 
 use Zend\Form\Form;
-use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilter;
+use Zend\Session\Container;
 
 /**
  * This form is used to collect user's login, password and 'Remember Me' flag.
@@ -52,6 +52,7 @@ class LoginForm extends Form
         $this->add([            
             'type'  => 'checkbox',
             'name' => 'remember_me',
+            'required' => false,
             'options' => [
                 'label' => 'Remember me',
             ],
@@ -60,19 +61,12 @@ class LoginForm extends Form
         // Add "redirect_url" field
         $this->add([            
             'type'  => 'hidden',
+            'required'  => false,
             'name' => 'redirect_url'
         ]);
         
         // Add the CSRF field
-        $this->add([
-            'type' => 'csrf',
-            'name' => 'csrf',
-            'options' => [
-                'csrf_options' => [
-                'timeout' => 600
-                ]
-            ],
-        ]);
+        
         
         // Add the Submit button
         $this->add([

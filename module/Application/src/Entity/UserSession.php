@@ -32,6 +32,7 @@ class UserSession
     protected $version;
     
     /**
+     * @ORM\Id
      * @ORM\Column(name="user_id")
      * @ORM\ManyToOne(targetEntity="User", cascade={"all"}, fetch="LAZY")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")

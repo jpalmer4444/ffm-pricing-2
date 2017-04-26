@@ -63,7 +63,12 @@ class AuthManager {
      * Constructs the service.
      */
     public function __construct(
-    UserService $userService, UserSessionService $userSessionService, AuthenticationService $authService, SessionManager $sessionManager, Logger $logger, $config
+            UserService $userService, 
+            UserSessionService $userSessionService, 
+            AuthenticationService $authService, 
+            SessionManager $sessionManager, 
+            Logger $logger, 
+            $config
     ) {
         $this->authService = $authService;
         $this->sessionManager = $sessionManager;
@@ -109,6 +114,7 @@ class AuthManager {
      * Performs user logout.
      */
     public function logout() {
+        $this->logMessage('Logging Out! AuthManager', Logger::INFO);
         // Allow to log out only when user is logged in.
         if ($this->authService->getIdentity() == null) {
             $this->logMessage('The user is not logged in!', Logger::INFO);
@@ -118,33 +124,35 @@ class AuthManager {
         // Remove identity from session.
         $this->authService->clearIdentity();
         $this->sessionManager->expireSessionCookie();
+        setcookie('guid_id', '', 0, '/');
+        $this->sessionManager->destroy();
     }
-    
-    public function getLoggedInUser(){
+
+    public function getLoggedInUser() {
         if (!$this->authService->hasIdentity()) {
             return false;
         }
         return $this->userService->getRepository()->findOneByUsername($this->authService->getIdentity());
     }
-    
-    public function isAdmin(){
+
+    public function isAdmin() {
         $user = $this->getLoggedInUser();
-        foreach($user->getRoles() as $role){
+        foreach ($user->getRoles() as $role) {
             $name = $role->getName();
-            if(strcmp('admin', $name) == 0){
+            if (strcmp('admin', $name) == 0) {
                 return true;
             }
         }
         return FALSE;
     }
-    
-    public function hasRole($rolename){
+
+    public function hasRole($rolename) {
         $user = $this->getLoggedInUser();
-        if(empty($user)){
+        if (empty($user)) {
             return false;
         }
-        foreach($user->getRoles() as $role){
-            if(strcmp($role->getName(), $rolename) == 0){
+        foreach ($user->getRoles() as $role) {
+            if (strcmp($role->getName(), $rolename) == 0) {
                 return true;
             }
         }
@@ -192,23 +200,29 @@ class AuthManager {
         $user = $this->userService->findByUsername($username);
         //if username is not null
         if (!empty($sessionId)) {
+
             //check if we already have a UserSession record for this User and this Browser.
             $userSession = $this->userSessionService->getEntityManager()->getRepository(UserSession::class)
                     ->findOneBy(['userId' => $user->getId(), 'userAgent' => $userAgent]);
+            
             if (empty($userSession)) {
                 $userSession = new UserSession();
                 $userSession->setUserAgent($userAgent);
                 $userSession->setUserId($user->getId());
+                $userSession->setSessionId($sessionId);
+                $user->setLastLogin(new DateTime());
+                $this->userSessionService->save($userSession);
+            } else {
+                $userSession->setSessionId($sessionId);
+                $user->setLastLogin(new DateTime());
+                $this->userSessionService->merge($userSession);
             }
-            $userSession->setSessionId($sessionId);
-            $user->setLastLogin(new DateTime());
-            $this->userSessionService->save($userSession);
-        } else if (!empty($email)) {
+        } else if (!empty($user)) {
             $userSession = $this->userSessionService->getEntityManager()->getRepository(UserSession::class)
                     ->findOneBy(['userId' => $user->getId(), 'userAgent' => $userAgent]);
             if (!empty($userSession)) {
-                $userSession->setSessionId($sessionId);
-                $this->userSessionService->save($userSession);
+                $userSession->setSessionId("");
+                $this->userSessionService->merge($userSession);
             }
         } else {
             $this->logMessage("SessionId and Username passed were empty! RuntimeError! Please Fix");

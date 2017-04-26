@@ -1,10 +1,13 @@
 <?php
-
 $this->headTitle('Sign in');
 
 $this->mainMenu()->setActiveItemId('login');
 
 $this->mainMenu()->setSiteMapOverride('Sign In');
+
+$form->get('submit')->setAttributes([
+            'class' => 'btn btn-primary'
+        ]);
 
 $form->get('username')->setAttributes([
             'class' => 'form-control',
@@ -25,57 +28,39 @@ $form->get('password')->setAttributes([
             'class' => 'sr-only'
         ]);
 
-$form->get('remember_me')->setAttributes([
-    'class' => 'my_remember_me'
-]);
+$form->prepare();
 ?>
 
-
-
-
 <div class="login">
+    
     <div class="page-header">
         <h1><?php echo $this->translate('Sign in'); ?></h1>
     </div>
 
     <?php echo $this->form()->openTag($form) ?>
-    <?php foreach ($form as $element) : ?>
 
-        <div class="form-group <?php if ($this->formElementErrors($element)) echo "has-error" ?>">
-            <?php if ('checkbox' == $element->getAttribute('type')) {
-                /*
-                 * Do not render remember_me checkbox
-                 * <div class="checkbox">
-                    <label>
-                        <input type="checkbox"> Remember me
-                    </label>
-                   </div>
-                 */
-            } else if ('submit' != $element->getAttribute('type')) {
-                $element->setAttribute('class', 'form-control')
-                        ->setAttribute('placeholder', $element->getLabel());
-                echo $this->formElement($element);
-            } else {
-                $element->setAttribute('class', 'btn btn-primary');
-                echo $this->formElement($element);
-            }
-            if ($this->formElementErrors($element)) :
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<p class="help-block">')
-                        ->setMessageSeparatorString('</p><p class="help-block">')
-                        ->setMessageCloseString('</p>')
-                        ->render($element);
-                endif; ?>
-        </div>
+    <div class="form-group">
+        <?= $this->formLabel($form->get('username')); ?>
+        <?= $this->formElement($form->get('username')); ?>
+        <span style="color:red;"><?= $this->formElementErrors($form->get('username')); ?></span>                
+    </div>
+    
+    <div class="form-group">
+        <?= $this->formLabel($form->get('password')); ?>
+        <?= $this->formElement($form->get('password')); ?>
+        <span style="color:red;"><?= $this->formElementErrors($form->get('password')); ?></span>                
+    </div>
+    
+    <?= $this->formElement($form->get('submit')); ?>
 
-        <?php
-    endforeach;
+    <?php
 
     echo $this->form()->closeTag();
-    
+
     if (!empty($this->loginErrorMessage)) :
-                echo '<div class="alert alert-danger"><ul><li>' . $this->loginErrorMessage . '</li></ul></div>';
-                endif; ?>
-    
-    
+        echo '<div class="alert alert-danger"><ul><li>' . $this->loginErrorMessage . '</li></ul></div>';
+    endif;
+    ?>
+
+
 </div>

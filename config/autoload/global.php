@@ -1,5 +1,10 @@
 <?php
 
+use User\Session\BalancedHttpUserAgent;
+use User\Session\BalancedRemoteAddr;
+use Zend\Session\Config\SessionConfig;
+use Zend\Session\Storage\SessionArrayStorage;
+
 /**
  * Global Configuration Override
  *
@@ -26,7 +31,8 @@ return [
     'session_config' => [
         'cookie_lifetime' => 60 * 60 * 24, // Session cookie will expire in 24 hours.
         'gc_maxlifetime' => 60 * 60 * 24 * 30, // How long to store session data on server (for 1 month).    
-        'cookie_secure' => true
+        'cookie_secure' => true,
+        'use_cookies' => true
     ],
     // Session manager configuration.
     'session_manager' => [
@@ -39,6 +45,20 @@ return [
     // Session storage configuration.
     'session_storage' => [
         'type' => 'Zend\Session\Storage\SessionArrayStorage'
+    ],
+    'session' => [
+        'config' => [
+            'class' => SessionConfig::class,
+            'options' => [
+                'name' => 'pricing_app_v2',
+            ],
+        ],
+        'save_handler' => 'cluster',
+        'storage' => SessionArrayStorage::class,
+        'validators' => [
+            BalancedRemoteAddr::class,
+            BalancedHttpUserAgent::class,
+        ],
     ],
     'ngSettings' => [
     ],

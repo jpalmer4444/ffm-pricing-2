@@ -8,6 +8,9 @@ return [
         'factories' => [
             'User\Controller\AuthController' => 'User\Controller\Factory\AuthControllerFactory',
             'User\Controller\UserController' => 'User\Controller\Factory\UserControllerFactory',
+            'Zend\Session\ManagerInterface' => 'Zend\Session\Service\SessionManagerFactory',
+            // Provides session configuration to SessionManagerFactory
+            'Zend\Session\Config\ConfigInterface' => 'Zend\Session\Service\SessionConfigFactory',
         ],
     ],
     'service_manager' => include __DIR__ . '/services.config.php',

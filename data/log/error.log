@@ -1,1 +1,332 @@
-
+2017-04-25T23:14:49-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\CustomerController and actionName: view
+2017-04-25T23:14:49-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-25T23:14:53-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-25T23:14:54-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\CustomerController and actionName: customerTable
+2017-04-25T23:14:54-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-25T23:14:54-05:00 INFO (6): Syncing DB. Customer Controller
+2017-04-25T23:14:54-05:00 INFO (6): Querying Customers.
+2017-04-25T23:14:54-05:00 INFO (6): Querying Customers.
+2017-04-25T23:14:54-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=customers&salespersonid=183
+2017-04-25T23:14:58-05:00 INFO (6): inDB: 46 inWS: 46
+2017-04-25T23:14:58-05:00 INFO (6): SELECT `customers`.`id`, `customers`.`company`, `customers`.`name`, `customers`.`email`, `customers`.`created`, `customers`.`updated`, `customers`.`id` FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id` WHERE  `user_customer`.`user_id` = 5  ORDER BY `company` ASC LIMIT 0, 250
+2017-04-25T23:14:58-05:00 INFO (6): SQL: SELECT `customers`.`id`, `customers`.`company`, `customers`.`name`, `customers`.`email`, `customers`.`created`, `customers`.`updated`, `customers`.`id` FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id` WHERE  `user_customer`.`user_id` = 5  ORDER BY `company` ASC LIMIT 0, 250
+2017-04-25T23:14:58-05:00 INFO (6): SQL: SELECT COUNT(`customers`.`id`) FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id`   WHERE  `user_customer`.`user_id` = 5
+2017-04-25T23:14:58-05:00 INFO (6): SELECT COUNT(`customers`.`id`) FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id`   WHERE  `user_customer`.`user_id` = 5
+2017-04-25T23:14:58-05:00 INFO (6): SELECT COUNT(`customers`.`id`) FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id`  WHERE  `user_customer`.`user_id` = 5
+2017-04-25T23:14:58-05:00 INFO (6): SQL: SELECT COUNT(`customers`.`id`) FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id`  WHERE  `user_customer`.`user_id` = 5
+2017-04-26T07:38:33-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T07:38:33-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T07:38:37-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T07:38:38-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T07:38:38-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T07:38:38-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T07:38:38-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T07:38:38-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T07:38:39-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T07:38:39-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T07:38:39-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T07:38:39-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T07:38:39-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 100
+2017-04-26T07:38:39-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T07:38:39-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T07:38:39-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T07:38:39-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T09:24:42-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: logout
+2017-04-26T09:24:42-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T09:24:42-05:00 INFO (6): Logging Out! AuthManager
+2017-04-26T09:24:43-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T09:24:43-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T09:24:49-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T09:24:49-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T09:24:49-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T09:24:49-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T09:24:51-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T09:24:52-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T09:24:52-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T09:24:52-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T09:24:52-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T09:24:52-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T09:24:53-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T09:24:53-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T09:24:53-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T09:24:53-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T09:24:53-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 100
+2017-04-26T09:24:53-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T09:24:53-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T09:24:53-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T09:24:53-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T09:36:59-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: logout
+2017-04-26T09:36:59-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T09:36:59-05:00 INFO (6): Logging Out! AuthManager
+2017-04-26T09:37:00-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T09:37:00-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T09:37:07-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T09:37:07-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T09:37:08-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T09:37:08-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T09:37:10-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T09:37:11-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T09:37:11-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T09:37:11-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T09:37:11-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T09:37:11-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T09:37:12-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T09:37:12-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T09:37:12-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T09:37:12-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T09:37:12-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 100
+2017-04-26T09:37:12-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T09:37:12-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T09:37:12-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T09:37:12-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:16:14-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: logout
+2017-04-26T10:16:14-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:16:14-05:00 INFO (6): Logging Out! AuthManager
+2017-04-26T10:16:15-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:16:15-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:18:19-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:18:19-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:18:28-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:18:28-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:18:29-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T10:18:29-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:18:32-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T10:18:33-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T10:18:33-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:18:33-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T10:18:33-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T10:18:33-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T10:18:36-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T10:18:36-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T10:18:36-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T10:18:36-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T10:18:36-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 100
+2017-04-26T10:18:36-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:18:36-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:18:36-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:18:36-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:26:22-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: logout
+2017-04-26T10:26:22-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:26:22-05:00 INFO (6): Logging Out! AuthManager
+2017-04-26T10:26:22-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:26:22-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:26:28-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:26:28-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:26:34-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:26:34-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:26:35-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T10:26:35-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:26:37-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T10:26:38-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T10:26:38-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:26:38-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T10:26:38-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T10:26:38-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T10:26:39-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T10:26:39-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T10:26:39-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T10:26:39-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T10:26:39-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 100
+2017-04-26T10:26:39-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:26:39-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:26:39-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:26:39-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:39:07-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: logout
+2017-04-26T10:39:07-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:39:07-05:00 INFO (6): Logging Out! AuthManager
+2017-04-26T10:39:08-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:39:08-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:39:08-05:00 ERR (3): Argument 1 passed to Zend\Validator\Csrf::setSession() must be an instance of Zend\Session\Container, null given, called in /u/local/jasonpalmer/ffmpricing/vendor/zendframework/zend-validator/src/AbstractValidator.php on line 139 and defined {"type":"ERROR","file":"/u/local/jasonpalmer/ffmpricing/vendor/zendframework/zend-validator/src/Csrf.php","line":163,"reference":"b1adc4","uri":"https://ffmpricing.localhost/login","request":"GET https://ffmpricing.localhost/login HTTP/1.1\r\nHost: ffmpricing.localhost\r\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:52.0) Gecko/20100101 Firefox/52.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate, br\r\nReferer: https://ffmpricing.localhost/salespeople\r\nConnection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\n\r\n","ip":"::1","session_id":"9308f0283d31547179255d43df57848f","trace":"\n\n"}
+2017-04-26T10:40:45-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:40:45-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:40:45-05:00 ERR (3): Argument 1 passed to Zend\Validator\Csrf::setSession() must be an instance of Zend\Session\Container, null given, called in /u/local/jasonpalmer/ffmpricing/vendor/zendframework/zend-validator/src/AbstractValidator.php on line 139 and defined {"type":"ERROR","file":"/u/local/jasonpalmer/ffmpricing/vendor/zendframework/zend-validator/src/Csrf.php","line":163,"reference":"75dc57","uri":"https://ffmpricing.localhost/login","request":"GET https://ffmpricing.localhost/login HTTP/1.1\r\nCookie: PHPSESSID=9308f0283d31547179255d43df57848f\r\nHost: ffmpricing.localhost\r\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:52.0) Gecko/20100101 Firefox/52.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate, br\r\nReferer: https://ffmpricing.localhost/salespeople\r\nConnection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nPragma: no-cache\r\nCache-Control: no-cache\r\n\r\n","ip":"::1","session_id":"9308f0283d31547179255d43df57848f","trace":"\n\n"}
+2017-04-26T10:41:59-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:41:59-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:42:06-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:42:06-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:42:07-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T10:42:07-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:42:09-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T10:42:10-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T10:42:10-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:42:10-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T10:42:10-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T10:42:10-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T10:42:11-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T10:42:11-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T10:42:11-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T10:42:11-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T10:42:11-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 100
+2017-04-26T10:42:11-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:42:11-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:42:11-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:42:11-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:44:05-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: logout
+2017-04-26T10:44:05-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:44:05-05:00 INFO (6): Logging Out! AuthManager
+2017-04-26T10:44:06-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:44:06-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:44:09-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T10:44:09-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T10:44:10-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T10:44:10-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:44:12-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T10:44:12-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T10:44:12-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:44:12-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T10:44:12-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T10:44:12-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T10:44:13-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T10:44:13-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T10:44:13-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T10:44:13-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T10:44:13-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 100
+2017-04-26T10:44:13-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:44:13-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:44:13-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:44:13-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T10:45:11-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\CustomerController and actionName: view
+2017-04-26T10:45:11-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:45:15-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T10:45:16-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\CustomerController and actionName: customerTable
+2017-04-26T10:45:16-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T10:45:16-05:00 INFO (6): Syncing DB. Customer Controller
+2017-04-26T10:45:16-05:00 INFO (6): Querying Customers.
+2017-04-26T10:45:16-05:00 INFO (6): Querying Customers.
+2017-04-26T10:45:16-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=customers&salespersonid=250
+2017-04-26T10:45:18-05:00 INFO (6): inDB: 0 inWS: 24
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1767
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1916
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1675
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1649
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1810
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1910
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1786
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1878
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1704
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1707
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1695
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1845
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1836
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1834
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1724
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 238
+2017-04-26T10:45:18-05:00 INFO (6): Updating DB Record ID: 238
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1893
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1781
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1735
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1922
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1776
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1779
+2017-04-26T10:45:18-05:00 INFO (6): Creating DB Record ID: 1768
+2017-04-26T10:45:18-05:00 INFO (6): SELECT `customers`.`id`, `customers`.`company`, `customers`.`name`, `customers`.`email`, `customers`.`created`, `customers`.`updated`, `customers`.`id` FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id` WHERE  `user_customer`.`user_id` = 10  ORDER BY `company` ASC LIMIT 0, 250
+2017-04-26T10:45:18-05:00 INFO (6): SQL: SELECT `customers`.`id`, `customers`.`company`, `customers`.`name`, `customers`.`email`, `customers`.`created`, `customers`.`updated`, `customers`.`id` FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id` WHERE  `user_customer`.`user_id` = 10  ORDER BY `company` ASC LIMIT 0, 250
+2017-04-26T10:45:18-05:00 INFO (6): SQL: SELECT COUNT(`customers`.`id`) FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id`   WHERE  `user_customer`.`user_id` = 10
+2017-04-26T10:45:18-05:00 INFO (6): SELECT COUNT(`customers`.`id`) FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id`   WHERE  `user_customer`.`user_id` = 10
+2017-04-26T10:45:18-05:00 INFO (6): SELECT COUNT(`customers`.`id`) FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id`  WHERE  `user_customer`.`user_id` = 10
+2017-04-26T10:45:18-05:00 INFO (6): SQL: SELECT COUNT(`customers`.`id`) FROM `user_customer` LEFT OUTER JOIN `customers` ON `user_customer`.`customer_id` = `customers`.`id`  WHERE  `user_customer`.`user_id` = 10
+2017-04-26T11:14:52-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: logout
+2017-04-26T11:14:52-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T11:14:52-05:00 INFO (6): Logging Out! AuthManager
+2017-04-26T11:14:53-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T11:14:53-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T11:14:59-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T11:14:59-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T11:15:00-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T11:15:00-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T11:15:02-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T11:15:07-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T11:15:07-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T11:15:07-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T11:15:07-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T11:15:07-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T11:15:10-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T11:15:10-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T11:15:10-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T11:15:10-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T11:15:10-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 100
+2017-04-26T11:15:10-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:15:10-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:15:10-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:15:10-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:17:07-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\IndexController and actionName: index
+2017-04-26T11:17:07-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T11:17:07-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T11:17:07-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T11:17:16-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T11:17:16-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T11:17:17-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T11:17:17-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T11:17:18-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T11:17:18-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T11:17:18-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T11:17:18-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T11:17:18-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T11:17:20-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T11:17:20-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T11:17:20-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T11:17:20-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T11:17:20-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 25
+2017-04-26T11:17:20-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:17:20-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:17:20-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:17:20-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:24:39-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: logout
+2017-04-26T11:24:39-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T11:24:39-05:00 INFO (6): Logging Out! AuthManager
+2017-04-26T11:24:40-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T11:24:40-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T11:24:47-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T11:24:47-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T11:24:47-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T11:24:47-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T11:24:50-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T11:24:51-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T11:24:51-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T11:24:51-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T11:24:51-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T11:24:51-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T11:24:53-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T11:24:53-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T11:24:53-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T11:24:53-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T11:24:53-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 100
+2017-04-26T11:24:53-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:24:53-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:24:53-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T11:24:53-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T12:31:22-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: logout
+2017-04-26T12:31:22-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T12:31:22-05:00 INFO (6): Logging Out! AuthManager
+2017-04-26T12:31:23-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T12:31:23-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T12:31:28-05:00 INFO (6): (User\Module.php): Checking controllerName: User\Controller\AuthController and actionName: login
+2017-04-26T12:31:28-05:00 ERR (3): (User\Module.php): UserSession not found by session id
+2017-04-26T12:31:29-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: index
+2017-04-26T12:31:29-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T12:31:32-05:00 ERR (3):  Error dispatching controller "". Error was: "error-router-no-match"
+2017-04-26T12:31:33-05:00 INFO (6): (User\Module.php): Checking controllerName: Application\Controller\SalespeopleController and actionName: salespeopleTable
+2017-04-26T12:31:33-05:00 INFO (6): (User\Module.php): Authentication Service has logged-in user.
+2017-04-26T12:31:33-05:00 INFO (6): Retrieving Salespeople from Web Service.
+2017-04-26T12:31:33-05:00 INFO (6): Retrieving salespeople.
+2017-04-26T12:31:33-05:00 INFO (6): Calling WebService with GET URL: https://svc.localhost/bySKU.php?id=jpalmer&pw=goodbass&object=salespeople
+2017-04-26T12:31:34-05:00 INFO (6): Retrieved 5 salespeople from web service
+2017-04-26T12:31:34-05:00 INFO (6): Retrieved 6 salespeople from DB
+2017-04-26T12:31:34-05:00 INFO (6): 
+MissingFromWebService: 2
+2017-04-26T12:31:34-05:00 INFO (6): Salespeople REST/DB Sync Test Results:
+2017-04-26T12:31:34-05:00 INFO (6): SQL: SELECT `id`, `username`, `email`, `status`, `full_name`, `date_created`, `last_login`, `sales_attr_id` FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1  ORDER BY `id` ASC LIMIT 0, 100
+2017-04-26T12:31:34-05:00 INFO (6): SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T12:31:34-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM  `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T12:31:34-05:00 INFO (6): SQL: SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
+2017-04-26T12:31:34-05:00 INFO (6): SELECT COUNT(`id`) FROM `users` WHERE  sales_attr_id IS NOT NULL AND status = 1
