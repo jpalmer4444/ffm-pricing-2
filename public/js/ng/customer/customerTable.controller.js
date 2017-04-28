@@ -155,6 +155,20 @@
               config.salesAttrId;
 
       //always add sales_attr_id
+      
+      var lastIndexOf = -1;
+      
+      var loc = new String($window.location);
+      
+      while(loc.indexOf('/') > -1){
+        lastIndexOf = loc.indexOf('/');
+        lastIndexOf++;
+        loc = loc.substring(lastIndexOf);
+      }
+     
+      var routeId = loc;
+      
+      params.push('zff_route_id=' + encodeURIComponent(routeId));
 
       params.push('zff_sales_attr_id=' + encodeURIComponent(sales_attr_id));
 
@@ -200,6 +214,27 @@
           //$scope.$apply();
           fnCallback(data, textStatus, jqXHR);
           screenService.hideOverlay();
+        }, error: function(err){
+          //alert(err.status)
+          switch(err.status){
+            case 400 : {
+                $window.location.href = '/error/400';
+                break;
+            }
+            case 404 : {
+                $window.location.href = '/error/404';
+                break;
+            }
+            case '401' :
+            case 401 : {
+                $window.location.href = '/error/unauthorized';
+                break;
+            }
+            default : {
+                $window.location.href = '/error/index';
+                break;
+            }
+          }
         }
       });
     }

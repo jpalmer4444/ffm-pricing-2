@@ -18,8 +18,7 @@ use Zend\Permissions\Rbac\Role as ZendRole;
 /**
  * The AuthManager service is responsible for user's login/logout and RBAC access 
  * filtering. The access filtering feature checks whether the current visitor 
- * is allowed to see the given page or not. The AuthManager is also responsible for
- * persisting sessionId to the DB for load-balanced session management.
+ * is allowed to see the given page or not.
  */
 class AuthManager {
 
@@ -85,7 +84,7 @@ class AuthManager {
     public function login($username, $password, $rememberMe) {
         // Check if user has already logged in. If so, do not allow to log in 
         // twice.
-        if ($this->authService->getIdentity() != null) {
+        if ($this->authService->getIdentity() != null && $this->config['pricing_config']['debug']) {
             $this->logMessage('The user is already logged in!', Logger::INFO);
         }
         // Authenticate with login/password.
@@ -114,9 +113,11 @@ class AuthManager {
      * Performs user logout.
      */
     public function logout() {
-        $this->logMessage('Logging Out! AuthManager', Logger::INFO);
+        if($this->config['pricing_config']['debug']){
+            $this->logMessage('Logging Out AuthManager', Logger::INFO);
+        }
         // Allow to log out only when user is logged in.
-        if ($this->authService->getIdentity() == null) {
+        if ($this->authService->getIdentity() == null && $this->config['pricing_config']['debug']) {
             $this->logMessage('The user is not logged in!', Logger::INFO);
         }
         //pass username of logged-in user and NULL to clear sessionId in DB.
@@ -164,6 +165,7 @@ class AuthManager {
             return false;
         }
         $user = $this->userService->getRepository()->findOneByUsername($this->authService->getIdentity());
+        
         $roles = !empty($user) ? $user->getRoles() : [];
         $rbac = new Rbac();
         $controllerReflection = new ReflectionClass($controllerName);
@@ -218,14 +220,15 @@ class AuthManager {
                 $this->userSessionService->merge($userSession);
             }
         } else if (!empty($user)) {
-            $userSession = $this->userSessionService->getEntityManager()->getRepository(UserSession::class)
-                    ->findOneBy(['userId' => $user->getId(), 'userAgent' => $userAgent]);
-            if (!empty($userSession)) {
-                $userSession->setSessionId("");
-                $this->userSessionService->merge($userSession);
+            if($this->config['pricing_config']['debug'])
+            {
+                $this->logMessage("setSessionId with no session id");
             }
         } else {
-            $this->logMessage("SessionId and Username passed were empty! RuntimeError! Please Fix");
+            if($this->config['pricing_config']['debug'])
+            {
+                $this->logMessage("SessionId and Username passed were empty! Error! Error!");
+            }
         }
     }
 

@@ -362,6 +362,7 @@ class SalespeopleController extends BaseController {
                 $this->log("salespeople/validateAddSalesperson called with AJAX - BUT it was NOT a POST and therefore ignored.");
                 return $this->jsonResponse(['success' => false, 'messages' => ['Request was not a POST Request']]);
             }
+            
         } else {
             $this->log("salespeople/validateAddSalesperson called BUT was not an AJAX call - ignoring.");
             return $this->jsonResponse(['success' => false, 'messages' => ['Request was not an XHR Request']]);
@@ -384,8 +385,8 @@ class SalespeopleController extends BaseController {
         //we have 4 possible scenarios
         // 0. Web Service returns no Salespeople. (Display Warning Modal explaining Web Service has returned zero Salespeople)
         // 1. Web Service returns same number as DB. (Do nothing - we're good to go)
-        // 2. Web Service returns more than DB. (Render Add Salesperson Button)
-        // 3. Web Service returns less than DB. (Render Manage Users Button in table header)
+        // 2. Web Service returns more than DB. 
+        // 3. Web Service returns less than DB. 
         //get a reference to pricing_config array
         
         $pricingconfig = $this->getConfig()['pricing_config'];
@@ -425,8 +426,7 @@ class SalespeopleController extends BaseController {
             $salespeople = array();
 
             foreach ($users as $user) {
-                //only removed for development
-                //must make sure to remove non-sales users.
+                
                 if (!empty($user->getSales_attr_id())) {
                     $salespeople [] = $user;
                 }
@@ -437,8 +437,7 @@ class SalespeopleController extends BaseController {
             $salespeopleInactive = array();
 
             foreach ($usersInactive as $inactiveuser) {
-                //only removed for development
-                //must make sure to remove non-sales users.
+                //
                 if (!empty($inactiveuser->getSales_attr_id())) {
                     $salespeopleInactive [] = $inactiveuser;
                 }

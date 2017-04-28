@@ -64,6 +64,7 @@ return [
             'error/403' => __DIR__ . '/../view/error/403.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',
+            'error/unauthorized' => __DIR__ . '/../view/error/unauthorized.phtml',
             'partial/users-table-header-tplt' => __DIR__ . '/../../User/view/user/partial/users-table-header-tplt.phtml',
             'partial/customer-table-header-tplt' => __DIR__ . '/../view/application/partial/customer-table-header-tplt.phtml',
             'partial/product-table-header-tplt' => __DIR__ . '/../view/application/partial/product-table-header-tplt.phtml',
