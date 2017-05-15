@@ -389,12 +389,12 @@ class ProductController extends BaseController {
         $sales_user_id = $sales_user->getId();
 
         $sql = "SELECT "
-                . " `products`.`sku`                                    as sku, "
-                . " `products`.`uom`                                    as uom, "
-                . " `products`.`productname`                            as product, "
-                . " IFNULL(`item_table_checkbox`.`checked`, 0)          as 'checked', "
-                . " `item_price_override`.`overrideprice`               as 'overrideprice', "
-                . " `products`.`status`                                 as 'status', "
+                . " `products`.`sku`                                        as sku, "
+                . " `products`.`uom`                                        as uom, "
+                . " `products`.`productname`                                as product, "
+                . " IFNULL(`item_table_checkbox`.`checked`, 0)              as 'checked', "
+                . " ITEM.`overrideprice`                                    as 'overrideprice', "
+                . " `products`.`status`                                     as 'status', "
                 . " CONCAT('P', `products`.`id`)                            as 'id' "
                 . "     FROM `item_table_checkbox` "
                 . "         RIGHT JOIN `products` "
@@ -408,13 +408,25 @@ class ProductController extends BaseController {
                 . "                 `products`.`id` = `customer_product`.`product` AND "
                 . "                 `customer_product`.`customer` = $cust_id"
                 . "                 ) "
-                . "         LEFT JOIN `item_price_override` "
-                . "             ON ("
-                . "                 `products`.`id` = `item_price_override`.`product` AND "
-                . "                 `customer_product`.`customer` = `item_price_override`.`customer` AND "
-                . "                 `item_price_override`.`salesperson` = `item_table_checkbox`.`salesperson` AND "
-                . "                 `item_price_override`.`active` = 1"
-                . "                 ) "
+                . "         LEFT JOIN (
+            
+                            SELECT ipo.id,
+                                   ipo.product,
+                                   ipo.customer,
+                                   ipo.salesperson,
+                                   ipo.overrideprice,
+                                   ipo.active
+                                        FROM item_price_override ipo
+                                            ORDER BY ipo.created DESC LIMIT 1
+         
+                                ) ITEM
+				ON 
+                                (                         
+                                    `products`.`id` = ITEM.`product` AND                          
+                                    `customer_product`.`customer` = ITEM.`customer` AND                          
+                                    ITEM.`salesperson` = `item_table_checkbox`.`salesperson` AND                          
+                                    ITEM.`active` = 1                         
+                                )      "
                 . "         LEFT JOIN `user_customer` "
                 . "             ON ("
                 . "                 `customer_product`.`customer` = `user_customer`.`customer_id` AND "
@@ -451,18 +463,18 @@ class ProductController extends BaseController {
                 . "                   )";
 
         $selectPreColumns = "IFNULL(`item_table_checkbox`.`checked`, 0) 		as 'checked', "
-                . "         CONCAT('P', `products`.`id`)                            as 'id', "
-                . "         `products`.`sku`					as 'sku', "
-                . "         `products`.`productname`				as 'productname', "
-                . "         `products`.`description`				as 'description', "
-                . "         `products`.`wholesale`                                  as 'wholesale', "
-                . "         `products`.`retail`					as 'retail', "
-                . "         `products`.`uom`					as 'uom', "
-                . "         `products`.`status`                                     as 'status', "
-                . "         `products`.`saturdayenabled`                            as 'saturdayenabled', "
-                . "         `item_price_override`.`overrideprice`                   as 'overrideprice', "
-                . "         `user_product_preferences`.`comment`                    as 'comment', "
-                . "         `user_product_preferences`.`option`                     as 'option' ";
+                . "         CONCAT('P', `products`.`id`)                                as 'id', "
+                . "         `products`.`sku`                                            as 'sku', "
+                . "         `products`.`productname`                                    as 'productname', "
+                . "         `products`.`description`                                    as 'description', "
+                . "         `products`.`wholesale`                                      as 'wholesale', "
+                . "         `products`.`retail`                                         as 'retail', "
+                . "         `products`.`uom`                                            as 'uom', "
+                . "         `products`.`status`                                         as 'status', "
+                . "         `products`.`saturdayenabled`                                as 'saturdayenabled', "
+                . "         ITEM.`overrideprice`                                        as 'overrideprice', "
+                . "         `user_product_preferences`.`comment`                        as 'comment', "
+                . "         `user_product_preferences`.`option`                         as 'option' ";
 
         $selectCountPreColumns = "count(*) ";
 
@@ -480,13 +492,25 @@ class ProductController extends BaseController {
                 . "                         `products`.`id` = `customer_product`.`product` AND "
                 . "                         $cust_id = `customer_product`.`customer`"
                 . "                         ) "
-                . "                 LEFT JOIN `item_price_override` "
-                . "                     ON ("
-                . "                         `products`.`id` = `item_price_override`.`product` AND "
-                . "                         `customer_product`.`customer` = `item_price_override`.`customer` AND "
-                . "                         `item_price_override`.`salesperson` = `item_table_checkbox`.`salesperson` AND "
-                . "                         `item_price_override`.`active` = 1"
-                . "                         ) "
+                . "                 LEFT JOIN (
+            
+                            SELECT ipo.id,
+                                   ipo.product,
+                                   ipo.customer,
+                                   ipo.salesperson,
+                                   ipo.overrideprice,
+                                   ipo.active
+                                        FROM item_price_override ipo
+                                            ORDER BY ipo.created DESC LIMIT 1
+         
+                                ) ITEM
+				ON 
+                                (                         
+                                    `products`.`id` = ITEM.`product` AND                          
+                                    `customer_product`.`customer` = ITEM.`customer` AND                          
+                                    ITEM.`salesperson` = `item_table_checkbox`.`salesperson` AND                          
+                                    ITEM.`active` = 1                         
+                                )      "
                 . "                 LEFT JOIN `user_customer` "
                 . "                     ON ("
                 . "                         `customer_product`.`customer` = `user_customer`.`customer_id` AND "
@@ -499,19 +523,19 @@ class ProductController extends BaseController {
                 . "                         `user_customer`.`customer_id` = `user_product_preferences`.`customer_id`"
                 . "                         ) ";
 
-        $selectPostColumns = "IFNULL(`item_table_checkbox`.`checked`, 0)      as 'checked',
-                CONCAT('A', `added_product`.`id`)         as 'id',
-                `added_product`.`sku`                     as 'sku',
-                `added_product`.`productname`             as 'productname',
-                `added_product`.`description`             as 'description',
-                (select null)                               as 'wholesale',
-                (select null)                               as 'retail',
-                `added_product`.`uom`                     as 'uom',
-                `added_product`.`status`                as 'status',
-                (select 1)                                  as 'saturdayenabled',
-                `added_product`.`overrideprice`           as 'overrideprice',
-                `added_product`.`comment`              as 'comment',
-                (select null)                               as 'option' ";
+        $selectPostColumns = "IFNULL(`item_table_checkbox`.`checked`, 0)        as 'checked',
+                CONCAT('A', `added_product`.`id`)                               as 'id',
+                `added_product`.`sku`                                           as 'sku',
+                `added_product`.`productname`                                   as 'productname',
+                `added_product`.`description`                                   as 'description',
+                (select null)                                                   as 'wholesale',
+                (select null)                                                   as 'retail',
+                `added_product`.`uom`                                           as 'uom',
+                `added_product`.`status`                                        as 'status',
+                (select 1)                                                      as 'saturdayenabled',
+                `added_product`.`overrideprice`                                 as 'overrideprice',
+                `added_product`.`comment`                                       as 'comment',
+                (select null)                                                   as 'option' ";
 
         $selectCountPostColumns = "count(*) ";
 
@@ -625,6 +649,8 @@ class ProductController extends BaseController {
 
     private function syncDB() {
 
+        $this->logger->log(Logger::INFO, "Syncing DB");
+
         $customerid = $this->params()->fromQuery('zff_customer_id');
         $sales_attr_id = $this->params()->fromQuery('zff_sales_attr_id');
 
@@ -719,10 +745,10 @@ class ProductController extends BaseController {
                  */
                 if (!array_key_exists($restItem['id'], $productMap)) {
 
-                    //$this->logger->log(Logger::INFO, "PROCESSING: Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']}");
+                    $this->logger->log(Logger::INFO, "PROCESSING: Rest Item ID: {$restItem['id']}");
                     $productMap[$restItem['id']] = $restItem['id'];
                 } else {
-                    //$this->logger->log(Logger::INFO, "SKIPPING: Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']}");
+                    $this->logger->log(Logger::INFO, "SKIPPING: Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']}  SHORTDESCRIPTION: {$restItem['shortescription']} RETAIL: {$restItem['retail']} SATURDAYENABLED: {$restItem['saturdayenabled']} STATUS: {$restItem['status']} UOM: {$restItem['uom']} WHOLESALE: {$restItem['wholesale']}");
                     continue;
                 }
 
@@ -738,11 +764,12 @@ class ProductController extends BaseController {
                  */
                 if (!$product) {
 
+                    $this->printrestobject("CREATING ", $restItem);
                     $product = $this->createProduct($restItem, $customer, $user);
                     $productsInserted++;
                     $some = TRUE;
                 } else {
-
+                    $this->printrestobject("UPDATING ", $restItem);
                     $some = $this->updateProduct($some, $product, $restItem);
                 }
 
@@ -983,51 +1010,54 @@ class ProductController extends BaseController {
         $thisOne = FALSE;
         if (strcmp($product->getDescription(), $restItem['shortescription']) != 0) {
             $product->setDescription($restItem['shortescription']);
+            $this->log("Updating shortdescription to " . $restItem['shortescription'] . " for ID: " . $restItem['id']);
             $some = TRUE;
             $thisOne = TRUE;
         }
         if (strcmp($product->getProductname(), $restItem['productname']) != 0) {
             $product->setProductname($restItem['productname']);
+            $this->log("Updating productname to " . $restItem['productname'] . " for ID: " . $restItem['id']);
             $some = TRUE;
             $thisOne = TRUE;
         }
         if (strcmp($product->getRetail(), $restItem['retail']) != 0) {
             $product->setRetail($restItem['retail']);
+            $this->log("Updating retail to " . $restItem['retail'] . " for ID: " . $restItem['id']);
             $some = TRUE;
             $thisOne = TRUE;
         }
         if (strcmp($product->getSaturdayenabled(), $restItem['saturdayenabled']) != 0) {
             $product->setSaturdayenabled($restItem['saturdayenabled']);
+            $this->log("Updating saturdayenabled to " . $restItem['saturdayenabled'] . " for ID: " . $restItem['id']);
             $some = TRUE;
             $thisOne = TRUE;
         }
         if (strcmp($product->getSku(), $restItem['sku']) != 0) {
             $product->setSku($restItem['sku']);
+            $this->log("Updating sku to " . $restItem['sku'] . " for ID: " . $restItem['id']);
             $some = TRUE;
             $thisOne = TRUE;
         }
         if (strcmp($product->getStatus(), $restItem['status'] ? 'Enabled' : 'Disabled') != 0) {
-            $product->setStatus($restItem['shortescription'] ? true : false);
+            $product->setStatus($restItem['status'] == 'Enabled' ? true : false);
+            $this->log("Updating status to " . $restItem['status'] . " for ID: " . $restItem['id']);
             $some = TRUE;
             $thisOne = TRUE;
         }
         if (strcmp($product->getUom(), $restItem['uom']) != 0) {
             $product->setUom($restItem['uom']);
+            $this->log("Updating uom to " . $restItem['uom'] . " for ID: " . $restItem['id']);
             $some = TRUE;
             $thisOne = TRUE;
         }
         if (strcmp($product->getWholesale(), $restItem['wholesale']) != 0) {
             $product->setWholesale($restItem['wholesale']);
+            $this->log("Updating wholesale to " . $restItem['wholesale'] . " for ID: " . $restItem['id']);
             $some = TRUE;
             $thisOne = TRUE;
         }
         if ($thisOne) {
-            if ($this->isDebug() && $some) {
-                $this->logger->log(Logger::INFO, "Updating Product[ "
-                        . "id = {$product->getId()}, "
-                        . "sku = {$product->getSku()}, "
-                        . "]");
-            }
+
             $this->entityManager->merge($product);
         }
 
@@ -1185,30 +1215,63 @@ class ProductController extends BaseController {
                         'salesperson' => $salesperson->getId()
                     ];
 
-                    $overridePrice = $this->entityManager->getRepository(PriceOverride::class)->findOneBy($params);
+                    //WE must receive the ACTIVE overridePrice!
+
+                    $overridePrices = $this->entityManager->getRepository(PriceOverride::class)->findBy($params);
+
+                    $overridePrice = NULL;
+
+                    if (!empty($overridePrices)) {
+
+                        foreach ($overridePrices as $or) {
+                            if ($or->getActive()) {
+                                $overridePrice = $or;
+                            }
+                        }
+                    }
 
                     $updated = false;
 
                     if (empty($restItem['overrideprice'])) {
 
-                        //delete it
-                        $this->entityManager->remove($overridePrice);
-                        $updated = true;
-                    } else {
-
-                        //edit with new price
-                        if (strcmp($overridePrice->getOverrideprice(), $restItem['overrideprice']) != 0) {
-
-
-                            $overridePrice->setOverrideprice($restItem['overrideprice']);
-
+                        //set it INACTIVE
+                        if (!empty($overridePrice)) {
+                            $overridePrice->setActive(0);
                             $this->entityManager->merge($overridePrice);
                             $updated = true;
+                        } else {
+                            $this->log("Override Price NOT FOUND!");
+                        }
+                    } else {
+
+                        if (!empty($overridePrice)) {
+
+                            //edit with new price
+                            if (strcmp($overridePrice->getOverrideprice(), $restItem['overrideprice']) != 0) {
+
+                                //create a new and set old one INACTIVE
+                                $overridePriceNew = new PriceOverride();
+                                $overridePriceNew->setActive(1);
+                                $overridePriceNew->setCustomer($customer);
+                                $overridePriceNew->setOverrideprice($restItem['overrideprice']);
+                                $overridePriceNew->setProduct($product);
+                                $overridePriceNew->setSalesperson($salesperson);
+
+                                $this->entityManager->merge($customer);
+                                $this->entityManager->merge($product);
+                                $this->entityManager->merge($salesperson);
+                                $this->entityManager->persist($overridePriceNew);
+                                $overridePrice->setActive(0);
+                                $this->entityManager->merge($overridePrice);
+                                $updated = true;
+                            }
+                        } else {
+                            $this->log("Override Price NOT FOUND!");
                         }
                     }
 
                     if ($updated) {
-
+                        $this->log("FLUSHING");
                         $this->entityManager->flush();
                     }
 
@@ -1279,6 +1342,10 @@ class ProductController extends BaseController {
 
     private function log($msg, $info = Logger::INFO) {
         $this->logger->log($info, $msg);
+    }
+
+    private function printrestobject($message, $restItem) {
+        $this->logger->log(Logger::INFO, $msg . " Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']} SHORTDESCRIPTION: {$restItem['shortescription']} RETAIL: {$restItem['retail']} SATURDAYENABLED: {$restItem['saturdayenabled']} STATUS: {$restItem['status']} UOM: {$restItem['uom']} WHOLESALE: {$restItem['wholesale']}");
     }
 
 }

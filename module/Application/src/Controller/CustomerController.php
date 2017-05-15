@@ -73,8 +73,9 @@ class CustomerController extends BaseController {
             if (!$this->authManager->isGranted(CustomerController::class, "view", $assertion)) {
                 //do not render the page.
                 $this->logger->log(Logger::INFO, "Assertion Failed. sales_attr_id $route_id does not belong to this User");
-                $this->getResponse()->setStatusCode(401);
-                return;
+                $this->getResponse()->setStatusCode(403);
+                $message = "You are not authorized to access this resource.";
+                throw new AuthorizationException($message, 403);
             }
         }
 

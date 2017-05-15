@@ -216,24 +216,10 @@
           screenService.hideOverlay();
         }, error: function(err){
           //alert(err.status)
-          switch(err.status){
-            case 400 : {
-                $window.location.href = '/error/400';
-                break;
-            }
-            case 404 : {
-                $window.location.href = '/error/404';
-                break;
-            }
-            case '401' :
-            case 401 : {
-                $window.location.href = '/error/unauthorized';
-                break;
-            }
-            default : {
-                $window.location.href = '/error/index';
-                break;
-            }
+          if(true){
+            $window.location.href = '/error/index?message=' + encodeURIComponent("You are trying to access a restricted resource.") + '&case=' + 999;
+          }else{
+            $window.location.href = '/error/index';
           }
         }
       });
