@@ -1,6 +1,9 @@
 .vagrant/
 vendor/
 public/node_modules
+public/node_modules/expand-braces/node_modules/repeat-string/.gitattributes
+public/node_modules/expand-braces/node_modules/repeat-string/.jshintrc
+public/node_modules/expand-braces/node_modules/repeat-string/.npmignore
 config/development.config.php
 data/cache/*
 !data/cache/.gitkeep
