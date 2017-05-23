@@ -382,7 +382,7 @@
     }
 
     function renderMoney(data, type, full) {
-      if(!data){return 'N/A';}
+      if(data == 0){return 'N/A';}
       return data && data !== '0' ? '$' + data : data;
     }
 
