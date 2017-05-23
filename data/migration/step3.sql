@@ -45,15 +45,6 @@ INSERT INTO `customer_pricing_v2`.`added_product` (
             FROM `customer_pricing`.`row_plus_items_page`
 );
 
-# New Table
-INSERT INTO `customer_pricing_v2`.`customer_added_product` (
-        `customer`, `added_product`
-    ) (
-	SELECT 
-            `row_plus_items_page`.`customerid`, `row_plus_items_page`.`id` 
-            FROM `customer_pricing`.`row_plus_items_page`
-);
-
 # Now we update our checkboxes
 # Important Note - big difference between V1 and V2 V2 creates a checkbox row for every item when the item is created.
 # whereas V1 only creates the checkbox row after the Product has been "checked" one time and not before. That is why we leave the 

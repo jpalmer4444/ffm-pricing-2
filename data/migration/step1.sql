@@ -127,9 +127,6 @@ CREATE TABLE `customers` (
   KEY `KEY_CUSTOMERS_COMPANY` (`company`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-/*
-*/
 CREATE TABLE `user_customer` (
   `user_id` int(11) NOT NULL DEFAULT '0',
   `customer_id` int(11) NOT NULL,
@@ -251,14 +248,6 @@ CREATE TABLE `customer_product` (
   CONSTRAINT `FK_CUSTOMER_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `customer_added_product` (
-  `customer` INTEGER NOT NULL,
-  `added_product` INTEGER NOT NULL,
-  PRIMARY KEY (`customer`,`added_product`),
-  CONSTRAINT `FK_CUSTOMER_ADDED_PRODUCT_ADDED_PRODUCT` FOREIGN KEY (`added_product`) REFERENCES `added_product` (`id`),
-  CONSTRAINT `FK_CUSTOMER_ADDED_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `user_product_preferences` (
   `user_id` INTEGER NOT NULL DEFAULT '0',
   `product_id` INTEGER NOT NULL DEFAULT '0',
@@ -271,10 +260,6 @@ CREATE TABLE `user_product_preferences` (
   CONSTRAINT `FK_USER_PRODUCT_PREFERENCES_CUSTOMER_ID` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
   CONSTRAINT `FK_USER_PRODUCT_PREFERENCES_CUSTOMER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-
 
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (1, 'jpalmer',24,'$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC',null,'jpalmer@fultonfishmarket.com','630-999-0139',null,'2017-03-03 18:44:10','2016-12-06 13:09:50', 1, 'Jason Palmer');
 INSERT INTO `users` (`id`, `username`,`version`,`password`,`salespersonname`,`email`,`phone1`,`sales_attr_id`,`last_login`,`date_created`, `status`, `full_name`) VALUES (2, 'foobarx',1,'$2y$10$BaoRbZVUPtpZlhRJxd2dYeXEGf71LshO2AFWs6xlfYqKb6v5DgTjC','Foo Bar X','foobarx@fultonfishmarket.com','802-233-9957',247,'2016-12-06 13:09:50','2016-12-06 13:09:50', 1, 'Foobar X');

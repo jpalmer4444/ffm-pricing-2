@@ -382,6 +382,7 @@
     }
 
     function renderMoney(data, type, full) {
+      if(data == 0){return 'N/A';}
       return data && data !== '0' ? '$' + data : data;
     }
 
@@ -405,6 +406,7 @@
       if (eq(status, '0')) {
         rendered = 'N/A';
       } else {
+        
         rendered = renderMoney(wholesale);
       }
       return rendered;

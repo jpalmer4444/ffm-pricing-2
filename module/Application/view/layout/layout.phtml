@@ -14,7 +14,7 @@
         <!-- Le styles -->
         <?php
         
-            $version=138;
+            $version=146;
         
                 echo $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/pricing-logo.ico'])
                 ->prependStylesheet($this->basePath('css/dist/style.css?v='.$version))
@@ -86,7 +86,7 @@
             //add angular files for appropriate pages.
         if ($this->ngPage) {
             
-            $version=138;
+            $version=146;
 
             $this->inlineScript()->appendFile($this->basePath('js/jquery.min.js'))
                     ->appendFile($this->basePath('js/jquery.dataTables.min.js'))

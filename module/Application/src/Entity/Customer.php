@@ -51,11 +51,7 @@ class Customer
     
     /**
      * @var ArrayCollection|AddedProduct[]
-     * @ORM\ManyToMany(targetEntity="AddedProduct", inversedBy="customers", cascade={"all"}, fetch="LAZY")
-     * @ORM\JoinTable(name="customer_added_product",
-     *      joinColumns={@ORM\JoinColumn(name="customer", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="added_product", referencedColumnName="id", unique=true)}
-     *      )
+     * @ORM\OneToMany(targetEntity="AddedProduct", mappedBy="customer")
      */
     protected $addedProducts;
     

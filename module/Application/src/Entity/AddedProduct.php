@@ -84,8 +84,9 @@ class AddedProduct {
     protected $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Customer", cascade={"all"}, fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="added_product", cascade={"all"}, fetch="LAZY")
      * @ORM\JoinColumn(name="customer", referencedColumnName="id")
+     * 
      */
     protected $customer;
 

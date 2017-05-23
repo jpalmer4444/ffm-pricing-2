@@ -120,10 +120,6 @@ CREATE TABLE `customers` (
   KEY `KEY_CUSTOMERS_COMPANY` (`company`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-/*
-    SELECT * FROM 
-*/
 CREATE TABLE `user_customer` (
   `user_id` int(11) NOT NULL DEFAULT '0',
   `customer_id` int(11) NOT NULL,
@@ -171,7 +167,7 @@ CREATE TABLE `item_price_override` (
   CONSTRAINT `FK_ITEM_PRICE_OVERRIDE_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `item_price_override` ADD UNIQUE `itc_product_unique_index`(`product`, `salesperson`, `customer`);
+# alter table `item_price_override` drop index `itc_product_unique_index`;
 
 
 CREATE TABLE `added_product` (
@@ -246,14 +242,6 @@ CREATE TABLE `customer_product` (
   PRIMARY KEY (`customer`,`product`),
   CONSTRAINT `FK_CUSTOMER_PRODUCT_PRODUCT` FOREIGN KEY (`product`) REFERENCES `products` (`id`),
   CONSTRAINT `FK_CUSTOMER_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `customer_added_product` (
-  `customer` INTEGER NOT NULL,
-  `added_product` INTEGER NOT NULL,
-  PRIMARY KEY (`customer`,`added_product`),
-  CONSTRAINT `FK_CUSTOMER_ADDED_PRODUCT_ADDED_PRODUCT` FOREIGN KEY (`added_product`) REFERENCES `added_product` (`id`),
-  CONSTRAINT `FK_CUSTOMER_ADDED_PRODUCT_CUSTOMER` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `user_product_preferences` (

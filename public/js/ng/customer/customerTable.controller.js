@@ -155,6 +155,20 @@
               config.salesAttrId;
 
       //always add sales_attr_id
+      
+      var lastIndexOf = -1;
+      
+      var loc = new String($window.location);
+      
+      while(loc.indexOf('/') > -1){
+        lastIndexOf = loc.indexOf('/');
+        lastIndexOf++;
+        loc = loc.substring(lastIndexOf);
+      }
+     
+      var routeId = loc;
+      
+      params.push('zff_route_id=' + encodeURIComponent(routeId));
 
       params.push('zff_sales_attr_id=' + encodeURIComponent(sales_attr_id));
 
@@ -200,6 +214,13 @@
           //$scope.$apply();
           fnCallback(data, textStatus, jqXHR);
           screenService.hideOverlay();
+        }, error: function(err){
+          //alert(err.status)
+          if(true){
+            $window.location.href = '/error/index?message=' + encodeURIComponent("You are trying to access a restricted resource.") + '&case=' + 999;
+          }else{
+            $window.location.href = '/error/index';
+          }
         }
       });
     }

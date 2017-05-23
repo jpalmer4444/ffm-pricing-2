@@ -24,14 +24,7 @@ class CustomerController extends BaseController {
     private $userService;
 
     public function __construct(
-            EntityManager $entityManager, 
-            Logger $logger, 
-            array $config, 
-            AuthManager $authManager, 
-            SSPJoin $sspJoin, 
-            CustomerService $customerService, 
-            RestService $restService, 
-            UserService $userService
+    EntityManager $entityManager, Logger $logger, array $config, AuthManager $authManager, SSPJoin $sspJoin, CustomerService $customerService, RestService $restService, UserService $userService
     ) {
 
         parent::__construct($authManager, $config);
@@ -59,30 +52,50 @@ class CustomerController extends BaseController {
     }
 
     public function viewAction() {
-        
+
         $this->serveNgPage();
-        
     }
 
     public function customerTableAction() {
-        
-        if((int)$this->params()->fromQuery('zff_sync') == 1){
+
+        //$id is sales_attr_id to identify salesperson
+        $sales_attr_id = (int) $this->params()->fromQuery('zff_sales_attr_id', 0);
+
+        $route_id = (int) $this->params()->fromQuery('zff_route_id', 0);
+
+        $this->logger->log(Logger::INFO, "sales_attr_id: $sales_attr_id");
+
+        if ($route_id > 0) {
+
+            $assertion = $this->getSalesAttrIdMustMatchAssertion($route_id);
+
+            //restrict access if DynamicAssertion fails.
+            if (!$this->authManager->isGranted(CustomerController::class, "view", $assertion)) {
+                //do not render the page.
+                $this->logger->log(Logger::INFO, "Assertion Failed. sales_attr_id $route_id does not belong to this User");
+                $this->getResponse()->setStatusCode(403);
+                $message = "You are not authorized to access this resource.";
+                throw new AuthorizationException($message, 403);
+            }
+        }
+
+        if ((int) $this->params()->fromQuery('zff_sync') == 1) {
             $this->logger->log(Logger::INFO, "Syncing DB. Customer Controller");
-            $this->syncDB();
-        }else{
+            $this->syncDB($sales_attr_id);
+        } else {
             $this->logger->log(Logger::INFO, "DB Sync Skipped on subsequent ajax.");
         }
-        
+
         $jsonData = json_decode($this->params()->fromPost('jsonData'));
 
         $sales_attr_id = $this->params()->fromQuery('zff_sales_attr_id');
-        
+
         //because this is not always the logged-in user sales_attr_id
         //we must lookup the user associated with the passed sales_attr_id
         $userForQuery = $this->userService->findBySalesperson($sales_attr_id);
-        
+
         $salespersonphone = $userForQuery->getPhone1();
-        
+
         $salespersonemail = $userForQuery->getEmail();
 
         $table = 'customers';
@@ -171,7 +184,7 @@ class CustomerController extends BaseController {
         $this->sspJoin->setLogger($this->logger);
 
         $response = $this->sspJoin->simple($jsonArgs, $sql_details, $table, $primaryKey, $columns);
-        
+
         $response['salesperson_phone'] = $salespersonphone;
         $response['salesperson_email'] = $salespersonemail;
 
@@ -193,31 +206,10 @@ class CustomerController extends BaseController {
 
         return $assertion;
     }
-    
-    private function syncDB(){
-        
+
+    private function syncDB($sales_attr_id) {
+
         $this->logger->log(Logger::INFO, "Querying Customers.");
-
-        //$id is sales_attr_id to identify salesperson
-        $sales_attr_id = (int) $this->params()->fromQuery('zff_sales_attr_id', -1);
-        $this->logger->log(Logger::INFO, "Querying Customers.");
-        if ($sales_attr_id < 1) {
-            //no valid id - 404 Error.
-            $this->logger->log(Logger::INFO, "Sales attr id < 1.");
-            $this->getResponse()->setStatusCode(404);
-            throw new \Exception($sales_attr_id ? "Post with id=$sales_attr_id could not be found" : "No id found in request");
-        }
-
-        $assertion = $this->getSalesAttrIdMustMatchAssertion($sales_attr_id);
-
-        //restrict access if DynamicAssertion fails.
-        if (!$this->authManager->isGranted(CustomerController::class, "view", $assertion)) {
-            //do not render the page.
-            $this->logger->log(Logger::INFO, "Assertion Failed.");
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
-
         //query WebService
         //setup params from configuration
         $params = [

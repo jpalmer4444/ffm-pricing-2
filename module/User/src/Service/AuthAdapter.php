@@ -10,8 +10,8 @@ use Zend\Session\SessionManager;
 
 /**
  * Adapter used for authenticating user. It takes login and password on input
- * and checks the database if there is a user with such login (email) and password (when useBcrypt=TRUE).
- * If such user exists, the service returns its identity (email). The identity
+ * and checks the database if there is a user with such login and password (when useBcrypt=TRUE).
+ * If such user exists, the service returns its identity. The identity
  * is saved to session and can be retrieved later with Identity view helper provided
  * by ZF3. This Adapter supports extended Authentication one of two ways depending on the useBcrypt flag.
  * The 2-way authentication is needed in order to still be able to use Identity View Helper. Otherwise,
