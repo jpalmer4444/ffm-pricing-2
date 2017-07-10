@@ -417,7 +417,6 @@ class ProductController extends BaseController {
                                    ipo.overrideprice,
                                    ipo.active
                                         FROM item_price_override ipo
-                                            ORDER BY ipo.created DESC LIMIT 1
          
                                 ) ITEM
 				ON 
@@ -501,7 +500,6 @@ class ProductController extends BaseController {
                                    ipo.overrideprice,
                                    ipo.active
                                         FROM item_price_override ipo
-                                            ORDER BY ipo.created DESC LIMIT 1
          
                                 ) ITEM
 				ON 
@@ -747,7 +745,9 @@ class ProductController extends BaseController {
 
                     $this->logger->log(Logger::INFO, "PROCESSING: Rest Item ID: {$restItem['id']}");
                     $productMap[$restItem['id']] = $restItem['id'];
+                    
                 } else {
+                    
                     $this->logger->log(Logger::INFO, "SKIPPING: Rest Item ID: {$restItem['id']} SKU: {$restItem['sku']} PRODUCTNAME: {$restItem['productname']}  SHORTDESCRIPTION: {$restItem['shortescription']} RETAIL: {$restItem['retail']} SATURDAYENABLED: {$restItem['saturdayenabled']} STATUS: {$restItem['status']} UOM: {$restItem['uom']} WHOLESALE: {$restItem['wholesale']}");
                     continue;
                 }
@@ -768,9 +768,12 @@ class ProductController extends BaseController {
                     $product = $this->createProduct($restItem, $customer, $user);
                     $productsInserted++;
                     $some = TRUE;
+                    
                 } else {
+                    
                     $this->printrestobject("UPDATING ", $restItem);
                     $some = $this->updateProduct($some, $product, $restItem);
+                    
                 }
 
                 /*
